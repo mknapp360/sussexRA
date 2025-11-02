@@ -7,6 +7,10 @@ import AdminLayout from './components/AdminLayout'
 import Home from './pages/Home'
 import About from './pages/About'
 import Readings from './pages/Readings'
+import RecordedReading from './pages/readings/RecordedReading'
+import SpiritualSession from './pages/readings/SpiritualSession'
+import FourBlock from './pages/readings/FourSessionBlock'
+import Talisman from './pages/readings/Talisman'
 import BlogIndex from './pages/BlogIndexPublic'
 import BlogPost from './pages/BlogPost'
 import Contact from './pages/Contact'
@@ -28,6 +32,10 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'about', element: <About /> },
       { path: 'readings', element: <Readings /> },
+      { path: 'readings/recorded-reading', element: <RecordedReading /> },
+      { path: 'readings/spiritual-session', element: <SpiritualSession /> },
+      { path: 'readings/four-session-block', element: <FourBlock /> },
+      { path: 'readings/talisman', element: <Talisman /> },
       { path: 'blog', element: <BlogIndex /> },
       { path: 'blog/:slug', element: <BlogPost /> },
       { path: 'contact', element: <Contact /> },
