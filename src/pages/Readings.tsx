@@ -94,7 +94,7 @@ export default function Readings() {
                 key={s.slug}
                 className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow transition"
               >
-                <div className="aspect-[16/9] bg-tpwhite w-full overflow-hidden">
+                <div className="aspect-[16/9] w-full overflow-hidden">
                   <img
                     src={s.img}
                     alt={s.title}
@@ -104,14 +104,14 @@ export default function Readings() {
                 </div>
 
                 <div className="p-6 flex flex-col h-full">
-                  <div className="text-sm text-tpblack mb-2">{s.price}</div>
-                  <h2 className="text-xl font-semibold text-tpblack mb-2">{s.title}</h2>
-                  <p className="text-tpblack mb-6 flex-1">{s.blurb}</p>
+                  <div className="text-sm text-slate-500 mb-2">{s.price}</div>
+                  <h2 className="text-xl font-semibold mb-2">{s.title}</h2>
+                  <p className="text-slate-600 mb-6 flex-1">{s.blurb}</p>
 
                   <div className="mt-auto">
                     <Link
                       to={`/readings/${s.slug}`}
-                      className="inline-flex items-center gap-2 rounded-xl bg-tpgold text-tpwhite px-4 py-2 hover:opacity-90 transition"
+                      className="inline-flex items-center gap-2 rounded-xl bg-tpgold text-white px-4 py-2 hover:opacity-90 transition"
                     >
                       {s.cta}
                       <span aria-hidden>→</span>
