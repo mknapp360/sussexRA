@@ -92,7 +92,7 @@ export default function Readings() {
             {SESSIONS.map((s) => (
               <article
                 key={s.slug}
-                className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow transition"
+                className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow transition flex flex-col"
               >
                 <div className="aspect-[16/9] w-full overflow-hidden">
                   <img
@@ -103,20 +103,19 @@ export default function Readings() {
                   />
                 </div>
 
-                <div className="p-6 flex flex-col h-full">
+                <div className="flex-1 p-6 flex flex-col">
                   <div className="text-sm text-slate-500 mb-2">{s.price}</div>
                   <h2 className="text-xl font-semibold mb-2">{s.title}</h2>
                   <p className="text-slate-600 mb-6 flex-1">{s.blurb}</p>
+                </div>
 
-                  <div className="mt-auto">
-                    <Link
-                      to={`/readings/${s.slug}`}
-                      className="inline-flex items-center gap-2 rounded-xl bg-tpgold text-white px-4 py-2 hover:opacity-90 transition"
-                    >
-                      {s.cta}
-                      <span aria-hidden>→</span>
-                    </Link>
-                  </div>
+                <div className="px-6 pb-6 mt-auto">
+                  <Link
+                    to={`/readings/${s.slug}`}
+                    className="block w-full text-center rounded-xl bg-tpgold text-white px-4 py-2 hover:opacity-90 transition font-medium"
+                  >
+                    Book Here
+                  </Link>
                 </div>
               </article>
             ))}
