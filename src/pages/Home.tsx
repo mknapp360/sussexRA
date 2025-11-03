@@ -195,9 +195,9 @@ export default function Home() {
           <p className="mt-4 text-lg  mx-auto max-w-7xl text-white">
             You may be seeking clarity in your daily life, or initiation into deeper mysteries, this work helps you realign with your divine purpose, restore coherence between the seen and unseen, and walk the path of awareness with presence and grace. Some arrive for the articles, others book a reading or a session, and some stay to study the deeper teachings.
           </p>
-          <div className="mt-8 flex gap-3 justify-center">
+          {/*<div className="mt-8 flex gap-3 justify-center">
             <Link to="/readings" className="px-5 py-3 rounded-2xl bg-tpgold mb-4 text-white hover:opacity-90">Book a Reading</Link>
-          </div>
+          </div>*/}
         </div>
       </section>
 
