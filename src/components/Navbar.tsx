@@ -29,14 +29,14 @@ export default function Navbar({ transparent = false }: { transparent?: boolean 
         <NavLink to="/" className="font-display text-2xl text-tpwhite lg:text-3xl tracking-tight">Tarot Pathwork</NavLink>
         <div className="flex-grow" />
         <nav className="flex gap-1 text-xl text-tpwhite">
-          <a
+          {/*<a
             href="https://tarotpathwork.app"
             target="_blank"
             rel="noopener noreferrer"
             className="px-5 py-2 ml-2 rounded-lg bg-tpgold text-tpwhite font-display hover:opacity-90 hover:scale-105 transition-transform duration-200"
           >
             Use The App
-          </a>
+          </a>*/}
           {/*<NavLink to="/readings" className={({isActive}) => `${link} ${isActive?active:''}`}>Book A Session</NavLink> */}
           <NavLink to="/blog" className={({isActive}) => `${link} ${isActive?active:''}`} >Articles</NavLink>
           <NavLink to="/kabbalah" className={({isActive}) => `${link} ${isActive?active:''}`} >Kabbalah</NavLink>
