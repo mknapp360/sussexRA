@@ -3,6 +3,7 @@ import SEO from '../components/SEO'
 import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { Calendar, ArrowRight } from 'lucide-react'
+import { Button } from '../components/ui/button'
 
 interface Post {
   id: string
@@ -54,6 +55,8 @@ export default function Home() {
     })
   }
 
+  const [showVideo, setShowVideo] = useState(false);
+
   return (
     <>
       <SEO
@@ -98,6 +101,7 @@ export default function Home() {
     relative isolate overflow-hidden
     text-tpwhite
     bg-[#0a0d1a]
+    pb-8
   "
 >
   {/* Layered radiant gold glow */}
@@ -171,17 +175,23 @@ export default function Home() {
     </div>
   </div>
 
-  <div className="mb-4 flex gap-3 justify-center">
-    <Link to="/readings" className="px-5 py-3 rounded-2xl bg-tpred mb-4 text-white hover:opacity-90">What is an Emanation?</Link>
-  </div>
+  <div className="mt-6 flex justify-center">
+    <Button
+      className="rounded-xl text-tpwhite bg-tpred"
+      onClick={() => setShowVideo(true)}
+    >
+      What is an Emanation?
+    </Button>
+  </div>  
 
   {/* Decorative bottom edge */}
+ 
  
 </section>
 
       {/* Recent Blog Posts Section */}
       <section>
-        <div className="mx-auto bg-tpblue ">
+        <div className="mx-auto bg-tpblue pb-8">
           <h1 className="text-center py-8 text-4xl sm:text-5xl text-white font-display tracking-tight">
             What is Tarot Pathwork?
           </h1>
@@ -292,8 +302,8 @@ export default function Home() {
         </div>
       </section>
 
-
-      {/* Deeper Info Section */}
+      {/* 
+       Deeper Info Section *
       <section className="bg-tpblue mx-auto px-4 sm:px-6 lg:px-8 text-white">
         <div className="grid sm:grid-cols-3 gap-6 py-16 text-white">
           {[
@@ -307,7 +317,47 @@ export default function Home() {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
+
+      {showVideo && (
+  <div
+    className="fixed inset-0 z-[70] flex items-center justify-center"
+    aria-modal="true"
+    role="dialog"
+  >
+    {/* Backdrop */}
+    <div
+      className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+      onClick={() => setShowVideo(false)}
+    />
+
+    {/* Modal panel */}
+    <div className="relative z-10 w-[92vw] max-w-3xl rounded-2xl border border-white/10 bg-[#0b0f1f] shadow-2xl">
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
+        <h3 className="text-tpwhite/90 font-medium">What is an Emanation?</h3>
+        <button
+          onClick={() => setShowVideo(false)}
+          className="rounded-lg px-2 py-1 text-tpwhite/70 hover:text-tpwhite hover:bg-white/10"
+          aria-label="Close"
+        >
+          ✕
+        </button>
+      </div>
+
+      {/* Video */}
+      <div className="aspect-video w-full">
+        <iframe
+          className="h-full w-full rounded-b-2xl"
+          src="https://www.youtube.com/embed/xYf8ocy6bdY?autoplay=1&rel=0&modestbranding=1"
+          title="What is an Emanation?"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+        />
+      </div>
+    </div>
+  </div>
+)}
     </>
   )
 }
