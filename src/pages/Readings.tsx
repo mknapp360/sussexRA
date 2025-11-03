@@ -31,7 +31,7 @@ const SESSIONS: Session[] = [
     cta: 'Book 1-Hour Session',
   },
   {
-    slug: '4-block',
+    slug: 'four-session-block',
     title: '4-Block of Spiritual Sessions',
     price: '£200',
     blurb:

@@ -91,6 +91,95 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Recent Blog Posts Section */}
+      {/* CURRENT EMANATION */}
+<section
+  className="
+    relative isolate overflow-hidden
+    text-tpwhite
+    bg-[#0a0d1a]
+  "
+>
+  {/* Layered radiant gold glow */}
+  <div
+    className="
+      absolute inset-0 -z-10
+      bg-[radial-gradient(90%_120%_at_50%_-10%,rgba(255,215,128,0.18),transparent_60%),radial-gradient(80%_80%_at_50%_120%,rgba(255,215,128,0.08),transparent_60%),linear-gradient(180deg,#0a0d1a_10%,#0b0f1f_70%,#000_100%)]
+    "
+  />
+
+  {/* Faint moving stars / dust */}
+  <div
+    className="
+      absolute inset-0 -z-10 opacity-[0.07]
+      bg-[repeating-linear-gradient(45deg,rgba(255,255,255,0.15)_0,rgba(255,255,255,0.15)_1px,transparent_1px,transparent_4px)]
+      mix-blend-soft-light
+    "
+  />
+
+  {/* Subtle gold beam down the middle */}
+  <div
+    className="
+      absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_0%,rgba(255,223,120,0.15),transparent_70%)]
+    "
+  />
+
+  <div
+  className="
+    absolute inset-0 -z-10 pointer-events-none
+    opacity-20 mix-blend-overlay
+    bg-[url('/textures/gold-noise.webp')] bg-cover bg-center
+  "
+/>
+
+{/* --- IMAGE GRADIENT: nebula/bokeh with vignette --- */}
+
+
+ <img
+    src="/kabbalahHero.png"
+    alt=""
+    aria-hidden="true"
+    className="pointer-events-none select-none mx-auto absolute inset-0 -z-10 opacity-5 object-cover"
+  />
+
+  {/* Content */}
+  <div className="max-w-7xl mx-auto px-2 py-5 text-center">
+    <h2 className="text-4xl md:text-5xl font-display tracking-tight text-tpgold mb-8 drop-shadow-[0_0_12px_rgba(255,215,128,0.3)]">
+      Current Emanation
+    </h2>
+
+    <div
+      className="
+        mx-auto max-w-3xl
+        p-8 md:p-10
+        bg-[#111628]/80
+        border border-tpgold/20
+        backdrop-blur-md
+        rounded-3xl shadow-[0_0_25px_rgba(255,215,128,0.08),inset_0_0_8px_rgba(255,215,128,0.1)]
+      "
+    >
+      <p className="text-left text-white/90 text-lg leading-relaxed">
+        Make sure you are spiritually, emotionally, and physically aligned before you take action.
+        Revelation moves through you when will and understanding are aligned.
+      </p>
+      <p className=" mt-4 text-left text-white/90 text-lg leading-relaxed">
+        Spiritual revelation is trying to reach you right now, as Will and Understanding are aligned. However, emotional integration and material grounding are blocked, particularly when it comes to communication and manifestation.
+      </p>
+      <p className="mt-4 text-left text-white/90 text-lg leading-relaxed">
+        The Hidden Key - Faith through endurance: You need to maintain your "power to endure" until the vessel is ready. 
+      </p>
+    </div>
+  </div>
+
+  <div className="mb-4 flex gap-3 justify-center">
+    <Link to="/readings" className="px-5 py-3 rounded-2xl bg-tpred mb-4 text-white hover:opacity-90">What is an Emanation?</Link>
+  </div>
+
+  {/* Decorative bottom edge */}
+ 
+</section>
+
+      {/* Recent Blog Posts Section */}
       <section>
         <div className="mx-auto bg-tpblue ">
           <h1 className="text-center py-8 text-4xl sm:text-5xl text-white font-display tracking-tight">

@@ -37,7 +37,7 @@ export default function Navbar({ transparent = false }: { transparent?: boolean 
           >
             Use The App
           </a>
-          <NavLink to="/readings" className={({isActive}) => `${link} ${isActive?active:''}`}>Book A Session</NavLink>
+          {/*<NavLink to="/readings" className={({isActive}) => `${link} ${isActive?active:''}`}>Book A Session</NavLink> */}
           <NavLink to="/blog" className={({isActive}) => `${link} ${isActive?active:''}`} >Articles</NavLink>
           <NavLink to="/kabbalah" className={({isActive}) => `${link} ${isActive?active:''}`} >Kabbalah</NavLink>
           <NavLink to="/contact" className={({isActive}) => `${link} ${isActive?active:''}`}>Contact</NavLink>

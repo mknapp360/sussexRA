@@ -1,32 +1,61 @@
-// pages/readings/RecordedReading.tsx
 import SEO from '../../components/SEO'
 
-export default function RecordedReading() {
+export default function SpiritualSession() {
   return (
     <>
       <SEO
-        title="Recorded Reading — Book a Session"
-        description="A deep tarot-based pathworking recorded privately for you."
+        title="1-Hour Spiritual Session — Book a Session"
+        description="Live one-to-one session blending tarot, Kabbalah, and direct counsel to illuminate your path and next aligned action."
       />
-      <section className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12">
-        <img
-          src="/images/sessions/recorded-reading.jpg"
-          alt="Recorded Reading"
-          className="w-full aspect-[16/9] object-cover rounded-2xl mb-6"
-        />
-        <h1 className="text-3xl font-display tracking-tight mb-4">Recorded Reading</h1>
-        <p className="text-slate-600 mb-6">
-          A private video reading with full interpretation of your current energetic pattern and
-          angelic influences in the language of the Living Tree.
-        </p>
-        <div className="flex items-center gap-4">
-          <span className="text-xl font-semibold">£60</span>
-          <a
-            href="https://tarotpathwork.com/checkout/recorded-reading"
-            className="rounded-xl bg-tpgold text-white px-4 py-2 hover:opacity-90 transition"
-          >
-            Book Recorded Reading
-          </a>
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10">
+        <div className="grid lg:grid-cols-2 gap-8 items-start">
+          {/* Image */}
+          <div className="w-full">
+            <div className="overflow-hidden rounded-2xl">
+              <img
+                src="/images/sessions/one-hour.jpg"
+                alt="Consultation room with mystical study ambiance"
+                className="w-full h-auto object-cover"
+              />
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="text-slate-800">
+            <h1 className="text-3xl sm:text-4xl font-display tracking-tight mb-3">
+              1-Hour Spiritual Session
+            </h1>
+            <p className="list-disc pl-6 space-y-2 mb-6">
+              A live, one-to-one session via Zoom or voice. We work with tarot, Kabbalistic insight, and
+              direct spiritual counsel to illuminate your present pattern. Private Spiritual Guidance Session
+              This 60-minute session is your sacred space to receive deep, focused spiritual guidance exactly where you need it most.
+              Whether you're facing a crossroads, feeling stuck, or seeking insight on a specific issue, this session offers clarity, recalibration, and momentum. Using intuitive dialogue, tarot (as needed), and spiritual coaching, we’ll explore what’s really going on—beneath the surface—and empower you with practical steps to move forward.
+            </p>
+
+            <p className="mb-4">What’s included:</p>
+            <ul className="list-disc pl-6 space-y-2 mb-6">
+              <li>Diagnose friction on the Tree (where energy is obstructed or leaking).</li>
+              <li>Tarot insight as needed to support direction and clarity.</li>
+              <li>Gentle shadow work reflection (if appropriate).</li>
+              <li>Mindfulness and grounding tools to rebalance your energy.</li>
+              <li>Tailored guidance or an optional “homework” prompt.</li>
+            </ul>
+
+            <p className="text-sm text-tpblue/80 font-medium mb-2">
+            This session is ideal if you’re not quite ready for a full journey—but you are ready to take your next aligned step.
+            </p>
+
+
+            <div className="flex items-center gap-4">
+              <span className="text-xl font-semibold">£60</span>
+              <a
+                href="https://tarotpathwork.com/checkout/spiritual-session"
+                className="rounded-xl bg-tpgold text-white px-4 py-2 hover:opacity-90 transition"
+              >
+                Book 1-Hour Session
+              </a>
+            </div>
+          </div>
         </div>
       </section>
     </>

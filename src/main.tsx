@@ -7,6 +7,8 @@ import AdminLayout from './components/AdminLayout'
 import Home from './pages/Home'
 import About from './pages/About'
 import Readings from './pages/Readings'
+import Resources from './pages/Resources'
+import ResourceDetail from './pages/ResourceDetail';
 import RecordedReading from './pages/readings/RecordedReading'
 import SpiritualSession from './pages/readings/SpiritualSession'
 import FourBlock from './pages/readings/FourSessionBlock'
@@ -32,6 +34,8 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'about', element: <About /> },
       { path: 'readings', element: <Readings /> },
+      { path: 'resources', element: <Resources /> },
+      { path: 'resources/:slug', element: <ResourceDetail />},
       { path: 'readings/recorded-reading', element: <RecordedReading /> },
       { path: 'readings/spiritual-session', element: <SpiritualSession /> },
       { path: 'readings/four-session-block', element: <FourBlock /> },
