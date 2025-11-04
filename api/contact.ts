@@ -24,8 +24,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'Missing required fields' })
     }
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-    const supabaseAnon = process.env.SUPABASE_ANON_KEY
+    // For Vite projects, Vercel API routes need plain env var names (not VITE_)
+    const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL
+    const supabaseAnon = process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY
     const fn = process.env.CONTACT_FUNCTION_NAME || 'send-contact'
 
     console.log('Environment check:', {
