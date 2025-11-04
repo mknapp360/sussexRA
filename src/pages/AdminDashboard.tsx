@@ -58,7 +58,7 @@ export default function AdminDashboard() {
             <div>
               <h1 className="text-3xl font-bold tracking-tight">Analytics</h1>
               <p className="text-muted-foreground mt-1">
-                Last 30 days performance
+                Last 30 days vs. previous 30 days
               </p>
             </div>
             <div className="text-right">
@@ -112,7 +112,7 @@ export default function AdminDashboard() {
                 <ChangeIndicator change={analytics.bounceRate.percentageChange} />
               </div>
               <p className="text-sm text-muted-foreground mt-2">
-                {analytics.bounceRate.previousValue}% last period
+                {analytics.bounceRate.previousValue}% previous period
               </p>
             </CardContent>
           </Card>
@@ -129,7 +129,7 @@ export default function AdminDashboard() {
                 <ChangeIndicator change={analytics.avgSessionDuration.percentageChange} />
               </div>
               <p className="text-sm text-muted-foreground mt-2">
-                {formatDuration(analytics.avgSessionDuration.previousValue)} last period
+                {formatDuration(analytics.avgSessionDuration.previousValue)} previous period
               </p>
             </CardContent>
           </Card>
@@ -210,7 +210,7 @@ function StatCard({
           <ChangeIndicator change={change} />
         </div>
         <p className="text-sm text-muted-foreground mt-2">
-          {previousValue} last period
+          {previousValue} previous period
         </p>
       </CardContent>
     </Card>
