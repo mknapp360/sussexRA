@@ -163,10 +163,10 @@ export default function Home() {
       "
     >
       <p className="text-left text-white/90 text-lg leading-relaxed">
-        The world is in a moment when revelation floods the soul, but it is not yet ready to bear it. Finding the words to express yourself, no matter to deep, is difficult right now.
+        The world is in a moment when revelation floods the soul, but it is not yet ready to bear it. Finding the words to express yourself, no matter how deep, is difficult right now.
       </p>
       <p className=" mt-4 text-left text-white/90 text-lg leading-relaxed">
-       You may need to learn to speak in languages other than words: through song, art, teaching or action. Be open to this, for your job is to speak the light through beauty; weave mercy into word, and word into form. When love perfects your speech, your dreams will manifest throughout your life.
+       You may need to learn to speak in languages other than words: through song, art, teaching or action. Be open to this, for your job is to speak the light through beauty; weave mercy into speech, and speech into form. When love perfects your speech, your dreams will manifest throughout your life.
       </p>
       <p className="mt-4 text-left text-white/90 text-lg leading-relaxed">
         The Hidden Key - Speak the light in your heart. 
