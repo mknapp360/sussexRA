@@ -162,10 +162,10 @@ export default function Home() {
         rounded-3xl shadow-[0_0_25px_rgba(255,215,128,0.08),inset_0_0_8px_rgba(255,215,128,0.1)]
       "
     >
-      <p className="mt-4 text-left text-white/90 text-lg leading-relaxed">
+      <p className="text-left text-white/90 text-lg leading-relaxed">
         The Hidden Key - Speak the light in your heart. 
       </p>
-      <p className="text-left text-white/90 text-lg leading-relaxed">
+      <p className="mt-4 text-left text-white/90 text-lg leading-relaxed">
         The world is in a moment when revelation floods the soul, but it is not yet ready to bear it. Finding the words to express yourself, no matter how deep, is difficult right now.
       </p>
       <p className=" mt-4 text-left text-white/90 text-lg leading-relaxed">
