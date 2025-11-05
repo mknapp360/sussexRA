@@ -5,6 +5,7 @@ import { RichTextViewer } from '../components/RichTextEditor';
 import { Button } from '../components/ui/button';
 import { ArrowLeft, Calendar, Share2, Twitter, Facebook, Linkedin } from 'lucide-react';
 import { Card, CardContent } from '../components/ui/card';
+import SubscribeModal from '../components/SubscribeModal';
 
 interface Post {
   id: string;
@@ -18,14 +19,13 @@ interface Post {
   cover_image?: string;
 }
 
-
 export default function BlogPost() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const [post, setPost] = useState<Post | null>(null);
   const [recentPosts, setRecentPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
-  
+  const [showSubscribe, setShowSubscribe] = useState(false);
 
   useEffect(() => {
     loadPost();
@@ -148,7 +148,6 @@ export default function BlogPost() {
         </div>
 
         {/* Share Section */}
-        
         <div className="mt-12 border-t pt-8">
           <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
             <Share2 className="w-4 h-4" />
@@ -161,30 +160,31 @@ export default function BlogPost() {
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 border rounded-full hover:bg-muted transition"
+              title="Share on Twitter"
             >
-              <Twitter className="w-5 h-5 text-sky-500" />
+              <Twitter className="w-5 h-5 text-muted-foreground" />
             </a>
             <a
               href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(sharePage)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 border rounded-full hover:bg-muted transition"
+              title="Share on Facebook"
             >
-              <Facebook className="w-5 h-5 text-blue-600" />
+              <Facebook className="w-5 h-5 text-muted-foreground" />
             </a>
             <a
               href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(sharePage)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 border rounded-full hover:bg-muted transition"
+              title="Share on LinkedIn"
             >
-              <Linkedin className="w-5 h-5 text-blue-700" />
+              <Linkedin className="w-5 h-5 text-muted-foreground" />
             </a>
-
-            {/* Copy Link Button */}
             <button
               onClick={() => {
-                navigator.clipboard.writeText(window.location.href);
+                navigator.clipboard.writeText(sharePage);
                 const toast = document.createElement('div');
                 toast.textContent = 'Link copied!';
                 toast.className =
@@ -197,6 +197,24 @@ export default function BlogPost() {
             >
               <Share2 className="w-5 h-5 text-muted-foreground" />
             </button>
+          </div>
+        </div>
+
+        {/* Subscribe CTA */}
+        <div className="mt-12 border-t pt-8">
+          <div className="bg-gradient-to-r from-tpblue/10 to-tpgold/10 rounded-2xl p-8 text-center">
+            <h3 className="text-2xl font-display font-bold mb-3">
+              Want more insights like this?
+            </h3>
+            <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
+              Subscribe to receive new articles, spiritual teachings, and updates on Kabbalistic wisdom delivered to your inbox.
+            </p>
+            <Button 
+              onClick={() => setShowSubscribe(true)}
+              className="px-8 py-3 rounded-2xl bg-tpgold text-white hover:opacity-90 transition-opacity text-lg"
+            >
+              Subscribe Now
+            </Button>
           </div>
         </div>
 
@@ -250,6 +268,12 @@ export default function BlogPost() {
           </Button>
         </div>
       </article>
+
+      {/* Subscribe Modal */}
+      <SubscribeModal 
+        isOpen={showSubscribe} 
+        onClose={() => setShowSubscribe(false)} 
+      />
     </div>
   );
 }
