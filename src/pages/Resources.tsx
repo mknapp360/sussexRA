@@ -62,7 +62,7 @@ export default function Resources() {
       <section className="relative w-full overflow-hidden">
         {/* background image (swap for your own) */}
         <img
-          src="/resourcesHero.png"
+          src="/resourcesHero2.png"
           alt=""
           className="absolute inset-0 h-[44svh] w-full object-cover"
         />
