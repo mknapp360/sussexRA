@@ -34,7 +34,7 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'about', element: <About /> },
       { path: 'readings', element: <Readings /> },
-      { path: 'resources', element: <Resources /> },
+      { path: 'spiritual-resources', element: <Resources /> },
       { path: 'resources/:slug', element: <ResourceDetail />},
       { path: 'readings/recorded-reading', element: <RecordedReading /> },
       { path: 'readings/spiritual-session', element: <SpiritualSession /> },
