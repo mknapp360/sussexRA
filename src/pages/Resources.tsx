@@ -11,6 +11,7 @@ type Resource = {
   image: string;
   // optional direct download url if you want to surface it later
   downloadUrl?: string;
+  customPath?: string;
 };
 
 const RESOURCES: Resource[] = [
@@ -37,6 +38,13 @@ const RESOURCES: Resource[] = [
       "Visualize energetic flow inside and outside of the body, with pathways mapped toward Source.",
     image: 'energyPathways.png',
     downloadUrl: '/downloads/energyPathwaysChart.pdf',
+  },
+  {
+    slug: 'shem-angels',
+    title: 'Find out who your Birth Angels are',
+    excerpt: 'Everyone is assigned 3 angels at their birth, findout who yours are.',
+    image: 'BirthAngelsTiktok.png',
+    customPath: '/shem-angels', 
   },
 ];
 
@@ -116,7 +124,7 @@ export default function Resources() {
                 {/* Action */}
                 <div className="mt-auto">
                   <Button
-                    onClick={() => navigate(`/resources/${item.slug}`)}
+                    onClick={() => navigate(item.customPath || `/resources/${item.slug}`)}
                     className="w-full gap-2"
                   >
                     View
