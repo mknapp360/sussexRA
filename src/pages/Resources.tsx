@@ -59,25 +59,28 @@ export default function Resources() {
       />
 
       {/* HERO */}
-      <section className="relative w-full overflow-hidden">
-        {/* background image (swap for your own) */}
+      <section className="relative h-[100svh] w-full overflow-hidden">
+        {/* background image */}
         <img
           src="/resourcesHero2.png"
           alt=""
-          className="absolute inset-0 h-[44svh] w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover"
+          fetchPriority="high"
         />
-        <div className="absolute inset-0 h-[44svh] w-full bg-gradient-to-tr from-black/70 via-black/40 to-transparent" />
-        <div className="relative h-[44svh] flex items-center">
-          <div className="container mx-auto px-4">
-            <h1 className="font-display text-4xl md:text-5xl text-white max-w-4xl">
-              Free Resources for Your Spiritual Journey
-            </h1>
-            <p className="mt-4 text-white/90 max-w-3xl">
+        {/* gradient overlay for readability */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-black/70 via-black/30 to-transparent" />
+
+        {/* content */}
+        <div className="relative z-10 h-full">
+          <div className=" flex h-full w-full items-center px-2 lg:px-2">
+            <div className="max-w-2xl lg:ml-0 md:ml-8">
+              <h1 className="text-4xl sm:text-6xl font-display tracking-tight text-white px-12 lg:px-12">
+                Resources for Your Spiritual Journey
+              </h1>
+              <p className="text-4xl mt-6 sm:text-xl font-display tracking-tight text-white px-12 lg:px-12">
               Welcome to the sacred library. Below you’ll find tools crafted to
-              deepen your connection with Self, Spirit, and Source. All
-              offerings are free to download — may they serve you well on your
-              journey.
-            </p>
+              deepen your connection with Self, Spirit, and Source.</p>
+            </div>
           </div>
         </div>
       </section>
