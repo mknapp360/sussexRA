@@ -46,7 +46,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Get pageviews from GA4 (last 90 days)
     const [report] = await gaClient.runReport({
       property: `properties/${PROPERTY_ID}`,
-      dateRanges: [{ startDate: '90daysAgo', endDate: 'today' }],
+      dateRanges: [{ startDate: '2011-01-01', endDate: 'today' }],
       dimensions: [{ name: 'pagePath' }],
       metrics: [{ name: 'screenPageViews' }],
       dimensionFilter: {
