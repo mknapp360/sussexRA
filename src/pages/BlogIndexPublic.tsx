@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
-import { Calendar, ArrowRight } from 'lucide-react';
+import { Calendar, ArrowRight, Heart, Eye } from 'lucide-react';
 
 interface Post {
   id: string;
@@ -15,6 +15,8 @@ interface Post {
   published_at: string;
   created_at: string;
   cover_image?: string;
+  view_count: number;
+  like_count: number;
 }
 
 const PAGE_SIZE = 9;
@@ -48,7 +50,7 @@ export default function BlogIndex() {
     try {
       const { data, error } = await supabase
         .from('posts')
-        .select('id, title, content, excerpt, slug, published_at, created_at, cover_image')
+        .select('id, title, content, excerpt, slug, published_at, created_at, cover_image, view_count, like_count')
         .eq('published', true)
         .order('published_at', { ascending: false, nullsFirst: false })
         .range(from, to);
@@ -148,6 +150,21 @@ export default function BlogIndex() {
                 <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
                   {getExcerpt(post)}
                 </p>
+
+                {/* Analytics bar - ADD THIS ENTIRE SECTION */}
+                <div className="flex items-center gap-4 pt-4 mt-4 border-t border-border">
+                  {/* Views */}
+                  <div className="flex items-center gap-1.5 text-muted-foreground">
+                    <Eye className="w-4 h-4" />
+                    <span className="text-sm font-medium">{post.view_count || 0}</span>
+                  </div>
+
+                  {/* Likes */}
+                  <div className="flex items-center gap-1.5 text-muted-foreground">
+                    <Heart className="w-4 h-4" />
+                    <span className="text-sm font-medium">{post.like_count || 0}</span>
+                  </div>
+                </div>
 
                 {/* Read More Link */}
                 <div className="flex items-center gap-2 text-primary font-medium text-sm group-hover:gap-3 transition-all">
