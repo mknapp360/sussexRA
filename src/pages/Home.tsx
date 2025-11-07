@@ -255,7 +255,7 @@ export default function Home() {
                 {recentPosts.map((post) => (
                   <Link
                     key={post.id}
-                    to={`/blog/${post.slug || post.id}`}
+                    to={`/post/${post.slug || post.id}`}
                     className="group block"
                   >
                     <article className="h-full flex flex-col">
@@ -292,7 +292,7 @@ export default function Home() {
               </div>
               <div className="mt-8 text-center sm:hidden">
                 <Link 
-                  to="/blog" 
+                  to="/post" 
                   className="inline-flex items-center gap-2 text-tpblue hover:text-tpgold transition-colors"
                 >
                   View all posts
