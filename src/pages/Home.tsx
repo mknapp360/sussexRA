@@ -89,7 +89,7 @@ export default function Home() {
           <div className=" flex h-full w-full items-center px-2 lg:px-2">
             <div className="max-w-2xl lg:ml-0 md:ml-8">
               <h1 className="text-4xl sm:text-6xl font-display tracking-tight text-white px-12 lg:px-12">
-                Psychic readings & spiritual teaching
+                Psychic Readings & Spiritual Teaching
               </h1>
             </div>
           </div>
