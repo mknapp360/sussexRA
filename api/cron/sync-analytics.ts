@@ -1,5 +1,5 @@
 // api/cron/sync-analytics.ts
-// Version without auth check for testing
+// Fixed version with correct environment variable names
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { BetaAnalyticsDataClient } from '@google-analytics/data';
@@ -9,24 +9,39 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     console.log('Starting GA4 sync...');
 
-    const PROPERTY_ID = process.env.GA4_PROPERTY_ID!;
-    const CLIENT_EMAIL = process.env.GA4_CLIENT_EMAIL!;
-    const PRIVATE_KEY = process.env.GA4_PRIVATE_KEY!.replace(/\\n/g, '\n');
-    const SUPABASE_URL = process.env.VITE_SUPABASE_URL!;
-    const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+    // Get environment variables
+    // Note: In Vercel API routes, use SUPABASE_URL not VITE_SUPABASE_URL
+    const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
+    const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const PROPERTY_ID = process.env.GA4_PROPERTY_ID;
+    const CLIENT_EMAIL = process.env.GA4_CLIENT_EMAIL;
+    const PRIVATE_KEY = process.env.GA4_PRIVATE_KEY?.replace(/\\n/g, '\n');
 
-    if (!PROPERTY_ID || !CLIENT_EMAIL || !PRIVATE_KEY) {
-      return res.status(500).json({ error: 'Missing GA4 credentials' });
+    // Check credentials
+    if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
+      return res.status(500).json({ 
+        error: 'Missing Supabase credentials',
+        has_url: !!SUPABASE_URL,
+        has_service_key: !!SUPABASE_SERVICE_KEY,
+        checked_vars: ['SUPABASE_URL', 'VITE_SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY']
+      });
     }
 
-    if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
-      return res.status(500).json({ error: 'Missing Supabase credentials' });
+    if (!PROPERTY_ID || !CLIENT_EMAIL || !PRIVATE_KEY) {
+      return res.status(500).json({ 
+        error: 'Missing GA4 credentials',
+        has_property: !!PROPERTY_ID,
+        has_email: !!CLIENT_EMAIL,
+        has_key: !!PRIVATE_KEY
+      });
     }
 
     // Initialize GA4 client
     const gaClient = new BetaAnalyticsDataClient({
       credentials: { client_email: CLIENT_EMAIL, private_key: PRIVATE_KEY },
     });
+
+    console.log('GA4 client initialized');
 
     // Get pageviews from GA4 (last 90 days)
     const [report] = await gaClient.runReport({
@@ -58,10 +73,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       if (match && match[1]) {
         const slug = match[1];
         analyticsMap[slug] = (analyticsMap[slug] || 0) + views;
+        console.log(`Mapped: ${slug} = ${views} views`);
       }
     });
 
-    console.log('Analytics map:', analyticsMap);
+    console.log(`Analytics map has ${Object.keys(analyticsMap).length} slugs`);
 
     // Initialize Supabase
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
@@ -72,38 +88,53 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       .select('id, slug, title')
       .eq('published', true);
 
-    if (fetchError) throw fetchError;
+    if (fetchError) {
+      console.error('Supabase fetch error:', fetchError);
+      throw fetchError;
+    }
 
     console.log(`Found ${posts?.length || 0} posts in database`);
 
     // Update each post
     let updated = 0;
+    const updates: any[] = [];
+    
     for (const post of posts || []) {
       const slug = post.slug || post.id;
       const gaViews = analyticsMap[slug] || 0;
       
-      console.log(`Updating ${slug}: ${gaViews} views`);
+      console.log(`Updating "${post.title}" (${slug}): ${gaViews} views`);
 
-      const { error: updateError } = await supabase
+      const { error: updateError, data: updateData } = await supabase
         .from('posts')
         .update({
           view_count: gaViews,
           last_ga_sync: new Date().toISOString(),
         })
-        .eq('id', post.id);
+        .eq('id', post.id)
+        .select();
 
       if (updateError) {
         console.error(`Error updating ${slug}:`, updateError);
       } else {
         updated++;
+        updates.push({
+          title: post.title,
+          slug,
+          views: gaViews
+        });
       }
     }
+
+    console.log('Sync complete!');
 
     return res.status(200).json({
       success: true,
       message: `Synced ${updated} posts`,
       updated,
+      total_posts: posts?.length || 0,
       analyticsMap,
+      updates,
       timestamp: new Date().toISOString(),
     });
 
@@ -112,6 +143,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({
       error: 'Failed to sync analytics',
       message: err?.message,
+      stack: err?.stack,
     });
   }
 }
