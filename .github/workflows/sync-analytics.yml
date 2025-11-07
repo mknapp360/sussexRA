@@ -1,0 +1,19 @@
+name: Sync Blog Analytics
+
+on:
+  schedule:
+    # Runs every 6 hours
+    - cron: '0 */6 * * *'
+
+  # Allow manual trigger
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Analytics Sync API
+        run: |
+          curl -X POST https://tarotpathwork.com/api/cron/sync-analytics \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json"
