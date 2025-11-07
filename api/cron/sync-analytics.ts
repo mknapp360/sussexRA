@@ -38,7 +38,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           fieldName: 'pagePath',
           stringFilter: {
             matchType: 'CONTAINS',
-            value: '/blog/',
+            value: '/post/',
           },
         },
       },

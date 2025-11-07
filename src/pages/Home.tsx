@@ -230,7 +230,7 @@ export default function Home() {
               </p>
             </div>
             <Link 
-              to="/blog" 
+              to="/post" 
               className="hidden sm:flex items-center gap-2 text-tpblue hover:text-tpgold transition-colors"
             >
               View all posts

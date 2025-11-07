@@ -95,7 +95,7 @@ export default function BlogPost() {
         <p className="text-muted-foreground">
           The post you're looking for doesn't exist or has been removed.
         </p>
-        <Button onClick={() => navigate('/blog')}>Back to Blog</Button>
+        <Button onClick={() => navigate('/post')}>Back to Blog</Button>
       </div>
     );
   }
@@ -109,7 +109,7 @@ export default function BlogPost() {
       <header className="border-b border-border bg-background backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={() => navigate('/blog')}>
+            <Button variant="ghost" size="icon" onClick={() => navigate('/post')}>
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <div className="text-center flex-1">
@@ -263,7 +263,7 @@ export default function BlogPost() {
 
         {/* Back Button */}
         <div className="mt-12 pt-8 border-t border-border">
-          <Button onClick={() => navigate('/blog')} variant="outline">
+          <Button onClick={() => navigate('/post')} variant="outline">
             ← Back to Blog
           </Button>
         </div>

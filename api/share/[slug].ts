@@ -23,7 +23,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (!post) return res.status(404).send('Post not found')
 
     const site = 'https://www.tarotpathwork.com' // <- set your canonical domain
-    const postUrl = `${site}/blog/${post.slug || post.id}`
+    const postUrl = `${site}/post/${post.slug || post.id}`
     const title = post.title || 'Tarot Pathwork'
     const description =
       post.excerpt ||

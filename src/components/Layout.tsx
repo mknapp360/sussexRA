@@ -11,7 +11,7 @@ export default function Layout() {
     '/': 'Tarot Pathwork — Kabbalah, Tarot & Spiritual Sovereignty',
     '/about': 'About — Tarot Pathwork',
     '/readings': 'Tarot Readings — Book a Session',
-    '/blog': 'Blog — Insights & Teachings',
+    '/post': 'Blog — Insights & Teachings',
     '/contact': 'Contact — Get in Touch',
   }
   return (

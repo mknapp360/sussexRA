@@ -83,7 +83,7 @@ export default function BlogIndex() {
   };
 
   const getPostUrl = (post: Post) => {
-    return `/blog/${post.slug || post.id}`;
+    return `/post/${post.slug || post.id}`;
   };
 
   return (

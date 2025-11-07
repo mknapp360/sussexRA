@@ -34,7 +34,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           fieldName: 'pagePath',
           stringFilter: {
             matchType: 'CONTAINS',
-            value: '/blog/',
+            value: '/post/',
           },
         },
       },
@@ -50,7 +50,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const views = Number(row.metricValues?.[0]?.value ?? 0);
       
       // Extract slug from path (e.g., "/blog/my-post" -> "my-post")
-      const match = pagePath.match(/\/blog\/([^/?]+)/);
+      const match = pagePath.match(/\/post\/([^/?]+)/);
       if (match && match[1]) {
         const slug = match[1];
         // If same slug appears multiple times (different query params), sum them
