@@ -24,7 +24,7 @@ const SESSIONS: Session[] = [
   {
     slug: 'spiritual-session',
     title: '1-Hour Spiritual Session',
-    price: '£60',
+    price: '£80',
     blurb:
       'A live, one-to-one session via Zoom or voice. Blends tarot, Kabbalah, and direct counsel to illuminate your current path and next aligned action.',
     img: '/sessions.png',
@@ -33,7 +33,7 @@ const SESSIONS: Session[] = [
   {
     slug: 'four-session-block',
     title: '4-Block of Spiritual Sessions',
-    price: '£200',
+    price: '£260',
     blurb:
       'A structured month of mentorship. Four 1-hour sessions focused on alignment, shadow integration, and personal pathwork through the Living Tree.',
     img: '/sessions.png',
@@ -42,7 +42,7 @@ const SESSIONS: Session[] = [
   {
     slug: 'talisman',
     title: 'Talisman Creation',
-    price: '£120',
+    price: '£85',
     blurb:
       'A consecrated object crafted for your energetic and astrological pattern, designed and ritually made using Lucian Kabbalistic and planetary principles.',
     img: '/talisman.jpg',
