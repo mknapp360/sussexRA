@@ -80,8 +80,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         },
       ],
       mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://tarotpathwork.com'}/booking/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://tarotpathwork.com'}/readings/recorded-reading`,
+      success_url: `${process.env.PUBLIC_BASE_URL || 'https://tarotpathwork.com'}/booking/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.PUBLIC_BASE_URL || 'https://tarotpathwork.com'}/readings/recorded-reading`,
       customer_email: email,
       metadata: {
         serviceName,
