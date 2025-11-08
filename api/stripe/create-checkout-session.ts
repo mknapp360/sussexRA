@@ -3,13 +3,25 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import Stripe from 'stripe'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-10-29.clover',
-})
-
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
+  }
+
+  // Add this check early to prevent crashes from missing env vars
+  if (!process.env.STRIPE_SECRET_KEY) {
+    console.error('STRIPE_SECRET_KEY environment variable is missing')
+    return res.status(500).json({ error: 'Stripe configuration missing. Please check your environment variables.' })
+  }
+
+  let stripe: Stripe
+  try {
+    stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+      apiVersion: '2025-10-29.clover',
+    })
+  } catch (error: any) {
+    console.error('Failed to initialize Stripe:', error.message)
+    return res.status(500).json({ error: 'Failed to initialize payment processor' })
   }
 
   try {
