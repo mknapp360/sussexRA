@@ -3,10 +3,11 @@
 // Serverless function (Vercel) to read your Google Calendar busy times
 // and return bookable free slots for a given day.
 // =============================
+
+// Modified availability.ts with debug support
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { google, calendar_v3 } from 'googleapis'
 
-// Helper to init Google JWT client from env
 function getGoogleClient(): calendar_v3.Calendar {
   const clientEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL
   const privateKey = process.env.GOOGLE_SERVICE_ACCOUNT_KEY?.replace(/\\n/g, '\n')
@@ -20,14 +21,12 @@ function getGoogleClient(): calendar_v3.Calendar {
   return google.calendar({ version: 'v3', auth: jwt }) as calendar_v3.Calendar
 }
 
-// Build slots of `duration` between `startOfDay` and `endOfDay`,
-// excluding any that overlap a busy interval
 function buildFreeSlots({
   startOfDay,
   endOfDay,
   durationMin,
   busy,
-  stepMin = durationMin, // set to e.g. 30 for rolling 30-min start times
+  stepMin = durationMin,
 }: {
   startOfDay: Date
   endOfDay: Date
@@ -49,9 +48,8 @@ function buildFreeSlots({
   return slots
 }
 
-// Default working hours per weekday (0=Sun ... 6=Sat). Override with query if you like.
 const DEFAULT_WORKING_HOURS: Record<number, { start: string; end: string } | null> = {
-  0: null, // Sunday closed
+  0: null,
   1: { start: '10:00', end: '18:00' },
   2: { start: '10:00', end: '18:00' },
   3: { start: '10:00', end: '18:00' },
@@ -68,13 +66,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (!calendarId) return res.status(400).json({ error: 'Missing calendarId' })
 
     const tz = (req.query.tz as string) || 'Europe/London'
-    const dateStr = req.query.date as string // e.g. '2025-11-04'
+    const dateStr = req.query.date as string
     if (!dateStr) return res.status(400).json({ error: 'Missing date (YYYY-MM-DD)' })
 
-    const duration = parseInt((req.query.duration as string) || '60', 10) // minutes
+    const duration = parseInt((req.query.duration as string) || '60', 10)
     const step = parseInt((req.query.step as string) || String(duration), 10)
+    const enableDebug = req.query.debug === 'true' // Check for ?debug=true
 
-    // Working hours — optional overrides via query like ?opens=10:00&closes=18:00
     const date = new Date(`${dateStr}T00:00:00`)
     const dow = date.getUTCDay()
     const customOpen = (req.query.opens as string) || undefined
@@ -90,11 +88,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.json({ date: dateStr, timezone: tz, slots: [] })
     }
 
-    // Construct day start/end in requested TZ
     const startOfDay = new Date(`${dateStr}T${dayHours.start}:00`)
     const endOfDay = new Date(`${dateStr}T${dayHours.end}:00`)
 
-    // Google FreeBusy requires UTC ISO strings
     const timeMin = new Date(startOfDay).toISOString()
     const timeMax = new Date(endOfDay).toISOString()
 
@@ -115,7 +111,34 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const slots = buildFreeSlots({ startOfDay, endOfDay, durationMin: duration, busy, stepMin: step })
 
-    return res.json({ date: dateStr, timezone: tz, duration, slots })
+    // Build response
+    const response: any = { 
+      date: dateStr, 
+      timezone: tz, 
+      duration, 
+      slots 
+    }
+
+    // Add debug info if requested
+    if (enableDebug) {
+      response.debug = {
+        calendarId,
+        requestedDate: dateStr,
+        dayOfWeek: dow,
+        workingHours: {
+          start: startOfDay.toISOString(),
+          end: endOfDay.toISOString()
+        },
+        busyCount: busy.length,
+        busyTimes: busy.map(b => ({
+          start: b.start.toISOString(),
+          end: b.end.toISOString()
+        })),
+        rawFreeBusyResponse: fb.data.calendars?.[calendarId]
+      }
+    }
+
+    return res.json(response)
   } catch (err: any) {
     console.error(err)
     return res.status(500).json({ error: err.message || 'Server error' })
