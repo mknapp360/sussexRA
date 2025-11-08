@@ -32,7 +32,7 @@ export default function RecordedReading() {
             </p>
 
             <p className="mb-4">
-              This reading is <strong>not live</strong> — it’s recorded for you. A private video link will be
+              This reading is <strong>not live</strong> — it's recorded for you. A private video link will be
               sent to your email.
             </p>
 
@@ -40,46 +40,30 @@ export default function RecordedReading() {
             <ul className="list-disc pl-6 space-y-2 mb-6">
               <li><em>Energetic Signature</em> — locate blockages across the chakras/sephiroth and the next step of shadow work.</li>
               <li><em>Light-work reading</em> — for practitioners, identify where to focus your efforts now.</li>
-              <li><em>Life’s purpose</em> — clarify core lessons and the obstacles in the way.</li>
+              <li><em>Life's purpose</em> — clarify core lessons and the obstacles in the way.</li>
               <li><em>Future snapshot</em> — guidance toward near-term outcomes and aligned action.</li>
             </ul>
 
             <p className="mb-6">
-              If you’ve a question before ordering, feel free to reach out via the contact page or DM.
+              If you've a question before ordering, feel free to reach out via the contact page or DM.
             </p>
 
-            <div className="flex items-center gap-4">
-              <span className="text-xl font-semibold">£60</span>
-              <a
-                href="https://tarotpathwork.com/checkout/recorded-reading"
-                className="rounded-xl bg-tpgold text-white px-4 py-2 hover:opacity-90 transition"
-              >
-                Book Recorded Reading
-              </a>
-            </div>
-
             <BookingCalendar
-              //calendarId={import.meta.env.VITE_PUBLIC_GCAL_ID}
               duration={60}
               step={60}
               timezone="Europe/London"
               title="Book this Session"
-              allowBooking={false} // set to true after you plug in /api/gcal/book
-              serviceName="1 Hour Spiritual Session"
-              onBooked={(slot) => console.log('selected', slot)}
-              />
+              allowBooking={true} 
+              serviceName="Recorded Reading"
+              servicePrice="£60"
+              onBooked={(booking) => {
+                console.log('Booking successful:', booking)
+                // You can add additional tracking or analytics here
+              }}
+            />
           </div>
         </div>
       </section>
     </>
   )
 }
-
-// ENV VARS to add on Vercel (Project Settings → Environment Variables):
-// GOOGLE_SERVICE_ACCOUNT_EMAIL
-// GOOGLE_SERVICE_ACCOUNT_KEY (paste the JSON private_key value, make sure \n are preserved)
-// GOOGLE_CALENDAR_ID (the calendar you want to read)
-// VITE_PUBLIC_GCAL_ID (optional: expose the calendar id to the client)
-//
-// FINAL STEP: In Google Calendar, share the target calendar with your
-// service account email ("See all event details" at minimum).
