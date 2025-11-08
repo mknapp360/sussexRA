@@ -1,3 +1,4 @@
+// BookingCalendar.tsx - With Stripe payment integration
 import { useEffect, useState } from 'react'
 
 interface Slot { start: string; end: string }
@@ -14,7 +15,6 @@ export default function BookingCalendar({
   step = duration,
   timezone = 'Europe/London',
   title = 'Book a Session',
-  onBooked,
   allowBooking = false,
   serviceName,
   servicePrice = '£60',
@@ -37,8 +37,7 @@ export default function BookingCalendar({
   // Booking form state
   const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null)
   const [formData, setFormData] = useState<BookingFormData>({ name: '', email: '', notes: '' })
-  const [bookingInProgress, setBookingInProgress] = useState(false)
-  const [bookingSuccess, setBookingSuccess] = useState(false)
+  const [paymentInProgress, setPaymentInProgress] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -77,67 +76,48 @@ export default function BookingCalendar({
 
   function handleSlotClick(slot: Slot) {
     setSelectedSlot(slot)
-    setBookingSuccess(false)
     setFormData({ name: '', email: '', notes: '' })
   }
 
   function closeModal() {
     setSelectedSlot(null)
-    setBookingSuccess(false)
     setFormData({ name: '', email: '', notes: '' })
   }
 
-  async function handleSubmitBooking(e: React.FormEvent) {
+  async function handleProceedToPayment(e: React.FormEvent) {
     e.preventDefault()
     if (!selectedSlot || !allowBooking) return
 
-    setBookingInProgress(true)
+    setPaymentInProgress(true)
     try {
-      const res = await fetch('/api/gcal/book', {
+      // Create Stripe Checkout session
+      const res = await fetch('/api/stripe/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          calendarId,
-          title: `${serviceName} — ${formData.name}`,
-          description: `
-Booking Details:
-- Service: ${serviceName}
-- Client: ${formData.name}
-- Email: ${formData.email}
-- Price: ${servicePrice}
-${formData.notes ? `\nSpecial Requests:\n${formData.notes}` : ''}
-
-Booked via TarotPathwork.com on ${new Date().toLocaleString()}
-          `.trim(),
-          start: selectedSlot.start,
-          end: selectedSlot.end,
-          attendeeEmail: formData.email,
+          serviceName,
+          servicePrice,
+          name: formData.name,
+          email: formData.email,
+          notes: formData.notes,
+          slotStart: selectedSlot.start,
+          slotEnd: selectedSlot.end,
+          timezone,
         }),
       })
-      const json = await res.json()
-      if (!res.ok) throw new Error(json.error || 'Booking failed')
       
-      setBookingSuccess(true)
-      onBooked?.({ 
-        start: selectedSlot.start, 
-        end: selectedSlot.end, 
-        eventId: json.eventId, 
-        htmlLink: json.htmlLink 
-      })
+      const data = await res.json()
       
-      // Refresh slots to remove the booked one
-      setTimeout(() => {
-        const qs = new URLSearchParams({ date, tz: timezone, duration: String(duration), step: String(step) })
-        if (calendarId) qs.set('calendarId', calendarId)
-        fetch(`/api/gcal/availability?${qs.toString()}`)
-          .then(r => r.json())
-          .then(json => setSlots(json.slots))
-      }, 1000)
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to create checkout session')
+      }
+
+      // Redirect to Stripe Checkout
+      window.location.href = data.url
       
     } catch (e: any) {
-      alert(`Booking failed: ${e.message}`)
-    } finally {
-      setBookingInProgress(false)
+      alert(`Payment setup failed: ${e.message}`)
+      setPaymentInProgress(false)
     }
   }
 
@@ -197,105 +177,76 @@ Booked via TarotPathwork.com on ${new Date().toLocaleString()}
             className="bg-white rounded-2xl p-6 max-w-md w-full shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
-            {!bookingSuccess ? (
-              <>
-                <h3 className="text-2xl font-semibold mb-4">Book Your Session</h3>
-                
-                <div className="mb-4 p-3 bg-tpblue/10 rounded-xl">
-                  <p className="text-sm text-tpblue font-medium">{serviceName}</p>
-                  <p className="text-lg font-semibold">{prettyDate(selectedSlot.start)}</p>
-                  <p className="text-tpgold font-medium">
-                    {pretty(selectedSlot.start)} – {pretty(selectedSlot.end)}
-                  </p>
-                  <p className="text-sm text-slate-600 mt-1">Price: {servicePrice}</p>
-                </div>
+            <h3 className="text-2xl font-semibold mb-4">Book Your Session</h3>
+            
+            <div className="mb-4 p-3 bg-tpblue/10 rounded-xl">
+              <p className="text-sm text-tpblue font-medium">{serviceName}</p>
+              <p className="text-lg font-semibold">{prettyDate(selectedSlot.start)}</p>
+              <p className="text-tpgold font-medium">
+                {pretty(selectedSlot.start)} – {pretty(selectedSlot.end)}
+              </p>
+              <p className="text-sm text-slate-600 mt-1">Price: {servicePrice}</p>
+            </div>
 
-                <form onSubmit={handleSubmitBooking} className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Your Name *</label>
-                    <input
-                      type="text"
-                      required
-                      className="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-tpgold"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="John Smith"
-                    />
-                  </div>
+            <form onSubmit={handleProceedToPayment} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Your Name *</label>
+                <input
+                  type="text"
+                  required
+                  className="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-tpgold"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder="John Smith"
+                />
+              </div>
 
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Email Address *</label>
-                    <input
-                      type="email"
-                      required
-                      className="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-tpgold"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="john@example.com"
-                    />
-                    <p className="text-xs text-slate-500 mt-1">We'll send confirmation to this email</p>
-                  </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Email Address *</label>
+                <input
+                  type="email"
+                  required
+                  className="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-tpgold"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  placeholder="john@example.com"
+                />
+                <p className="text-xs text-slate-500 mt-1">For booking confirmation and session details</p>
+              </div>
 
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Special Requests (Optional)</label>
-                    <textarea
-                      className="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-tpgold"
-                      rows={3}
-                      value={formData.notes}
-                      onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                      placeholder="Any specific areas you'd like to focus on?"
-                    />
-                  </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Special Requests (Optional)</label>
+                <textarea
+                  className="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-tpgold"
+                  rows={3}
+                  value={formData.notes}
+                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                  placeholder="Any specific areas you'd like to focus on?"
+                />
+              </div>
 
-                  <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm text-amber-800">
-                    <strong>Note:</strong> This reserves your time slot. Payment will be collected separately via the link sent to your email.
-                  </div>
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 text-sm text-blue-800">
+                <strong>Secure Payment:</strong> You'll be redirected to Stripe to complete your payment. Your session will be confirmed once payment is successful.
+              </div>
 
-                  <div className="flex gap-3">
-                    <button
-                      type="button"
-                      onClick={closeModal}
-                      className="flex-1 px-4 py-2 border rounded-xl hover:bg-gray-50"
-                      disabled={bookingInProgress}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="flex-1 px-4 py-2 bg-tpgold text-white rounded-xl hover:opacity-90 disabled:opacity-50"
-                      disabled={bookingInProgress}
-                    >
-                      {bookingInProgress ? 'Booking...' : 'Reserve Time Slot'}
-                    </button>
-                  </div>
-                </form>
-              </>
-            ) : (
-              <>
-                <div className="text-center">
-                  <div className="mb-4 text-green-600 text-5xl">✓</div>
-                  <h3 className="text-2xl font-semibold mb-2">Booking Confirmed!</h3>
-                  <p className="text-slate-600 mb-4">
-                    Your time slot has been reserved for:
-                  </p>
-                  <div className="mb-4 p-3 bg-green-50 rounded-xl">
-                    <p className="font-medium">{prettyDate(selectedSlot.start)}</p>
-                    <p className="text-tpgold font-semibold">
-                      {pretty(selectedSlot.start)} – {pretty(selectedSlot.end)}
-                    </p>
-                  </div>
-                  <p className="text-sm text-slate-600 mb-6">
-                    A confirmation email with payment details has been sent to <strong>{formData.email}</strong>
-                  </p>
-                  <button
-                    onClick={closeModal}
-                    className="w-full px-4 py-2 bg-tpgold text-white rounded-xl hover:opacity-90"
-                  >
-                    Close
-                  </button>
-                </div>
-              </>
-            )}
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className="flex-1 px-4 py-2 border rounded-xl hover:bg-gray-50"
+                  disabled={paymentInProgress}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 px-4 py-2 bg-tpgold text-white rounded-xl hover:opacity-90 disabled:opacity-50"
+                  disabled={paymentInProgress}
+                >
+                  {paymentInProgress ? 'Redirecting...' : `Pay ${servicePrice}`}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
