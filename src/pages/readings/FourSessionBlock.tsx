@@ -1,11 +1,12 @@
 import SEO from '../../components/SEO'
+import BookingCalendar from '../../components/BookingCalendar'
 
 export default function FourBlock() {
   return (
     <>
       <SEO
-        title="4-Block of Spiritual Sessions — Book a Session"
-        description="A structured month of mentorship: four 1-hour sessions focused on alignment, shadow integration, and personal pathwork."
+        title="Recorded Reading — Book a Session"
+        description="A private video reading with full interpretation of your current energetic pattern and angelic influences in the language of the Living Tree."
       />
       <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10">
         <div className="grid lg:grid-cols-2 gap-8 items-start">
@@ -13,8 +14,8 @@ export default function FourBlock() {
           <div className="w-full">
             <div className="overflow-hidden rounded-2xl">
               <img
-                src="/images/sessions/four-block.jpg"
-                alt="Four-session mentorship concept imagery"
+                src="/readings.png"
+                alt="Tarot tools and candlelight prepared for a recorded reading"
                 className="w-full h-auto object-cover"
               />
             </div>
@@ -39,14 +40,26 @@ export default function FourBlock() {
             </ol>
 
             <div className="flex items-center gap-4">
-              <span className="text-xl font-semibold">£200</span>
-              <a
-                href="https://tarotpathwork.com/checkout/4-block"
-                className="rounded-xl bg-tpgold text-white px-4 py-2 hover:opacity-90 transition"
-              >
-                Book 4-Session Package
-              </a>
+              <span className="text-xl font-semibold">£260</span>
             </div>
+
+            <p className="mb-6">
+              If you've a question before ordering, feel free to reach out via the contact page or DM.
+            </p>
+
+            <BookingCalendar
+              duration={60}
+              step={60}
+              timezone="Europe/London"
+              title="Book this Session"
+              allowBooking={true} 
+              serviceName="FourBlock"
+              servicePrice="£260"
+              onBooked={(booking) => {
+                console.log('Booking successful:', booking)
+                // You can add additional tracking or analytics here
+              }}
+            />
           </div>
         </div>
       </section>

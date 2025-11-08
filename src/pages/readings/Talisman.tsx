@@ -1,11 +1,12 @@
 import SEO from '../../components/SEO'
+import BookingCalendar from '../../components/BookingCalendar'
 
 export default function Talisman() {
   return (
     <>
       <SEO
-        title="Talisman Creation — Book a Session"
-        description="A consecrated object crafted for your energetic and astrological pattern using Lucian Kabbalistic and planetary principles."
+        title="Recorded Reading — Book a Session"
+        description="A private video reading with full interpretation of your current energetic pattern and angelic influences in the language of the Living Tree."
       />
       <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10">
         <div className="grid lg:grid-cols-2 gap-8 items-start">
@@ -13,8 +14,8 @@ export default function Talisman() {
           <div className="w-full">
             <div className="overflow-hidden rounded-2xl">
               <img
-                src="/images/sessions/talisman.jpg"
-                alt="Consecrated talisman illustration in a ritual circle"
+                src="/readings.png"
+                alt="Tarot tools and candlelight prepared for a recorded reading"
                 className="w-full h-auto object-cover"
               />
             </div>
@@ -36,15 +37,23 @@ export default function Talisman() {
               <li>Consecration rite and care instructions for ongoing work.</li>
             </ul>
 
-            <div className="flex items-center gap-4">
-              <span className="text-xl font-semibold">£120</span>
-              <a
-                href="https://tarotpathwork.com/checkout/talisman"
-                className="rounded-xl bg-tpgold text-white px-4 py-2 hover:opacity-90 transition"
-              >
-                Request a Talisman
-              </a>
-            </div>
+            <p className="mb-6">
+              If you've a question before ordering, feel free to reach out via the contact page or DM.
+            </p>
+
+            <BookingCalendar
+              duration={60}
+              step={60}
+              timezone="Europe/London"
+              title="Book this Session"
+              allowBooking={true} 
+              serviceName="Talisman"
+              servicePrice="£260"
+              onBooked={(booking) => {
+                console.log('Booking successful:', booking)
+                // You can add additional tracking or analytics here
+              }}
+            />
           </div>
         </div>
       </section>

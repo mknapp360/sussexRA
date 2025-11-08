@@ -1,11 +1,12 @@
 import SEO from '../../components/SEO'
+import BookingCalendar from '../../components/BookingCalendar'
 
 export default function SpiritualSession() {
   return (
     <>
       <SEO
-        title="1-Hour Spiritual Session — Book a Session"
-        description="Live one-to-one session blending tarot, Kabbalah, and direct counsel to illuminate your path and next aligned action."
+        title="Recorded Reading — Book a Session"
+        description="A private video reading with full interpretation of your current energetic pattern and angelic influences in the language of the Living Tree."
       />
       <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10">
         <div className="grid lg:grid-cols-2 gap-8 items-start">
@@ -13,8 +14,8 @@ export default function SpiritualSession() {
           <div className="w-full">
             <div className="overflow-hidden rounded-2xl">
               <img
-                src="/images/sessions/one-hour.jpg"
-                alt="Consultation room with mystical study ambiance"
+                src="/readings.png"
+                alt="Tarot tools and candlelight prepared for a recorded reading"
                 className="w-full h-auto object-cover"
               />
             </div>
@@ -45,16 +46,23 @@ export default function SpiritualSession() {
             This session is ideal if you’re not quite ready for a full journey—but you are ready to take your next aligned step.
             </p>
 
+            <p className="mb-6">
+              If you've a question before ordering, feel free to reach out via the contact page or DM.
+            </p>
 
-            <div className="flex items-center gap-4">
-              <span className="text-xl font-semibold">£60</span>
-              <a
-                href="https://tarotpathwork.com/checkout/spiritual-session"
-                className="rounded-xl bg-tpgold text-white px-4 py-2 hover:opacity-90 transition"
-              >
-                Book 1-Hour Session
-              </a>
-            </div>
+            <BookingCalendar
+              duration={60}
+              step={60}
+              timezone="Europe/London"
+              title="Book this Session"
+              allowBooking={true} 
+              serviceName="Spiritual Session"
+              servicePrice="£80"
+              onBooked={(booking) => {
+                console.log('Booking successful:', booking)
+                // You can add additional tracking or analytics here
+              }}
+            />
           </div>
         </div>
       </section>
