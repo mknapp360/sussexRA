@@ -48,7 +48,7 @@ export default function Talisman() {
               title="Book this Session"
               allowBooking={true} 
               serviceName="Talisman"
-              servicePrice="£260"
+              servicePrice="£85"
               onBooked={(booking) => {
                 console.log('Booking successful:', booking)
                 // You can add additional tracking or analytics here
