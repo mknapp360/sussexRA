@@ -1,4 +1,4 @@
-// Fixed: api/gcal/book.ts
+// Fixed: api/gcal/book.ts (without attendee to avoid Domain-Wide Delegation requirement)
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { google } from 'googleapis'
 
@@ -36,7 +36,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         description,
         start: { dateTime: start },
         end: { dateTime: end },
-        attendees: attendeeEmail ? [{ email: attendeeEmail }] : undefined,
+        // NOTE: attendees removed to avoid Domain-Wide Delegation requirement
+        // Client email is already in the description field
       },
       conferenceDataVersion: 1,
     })
