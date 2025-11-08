@@ -59,7 +59,7 @@ export default function RecordedReading() {
             </div>
 
             <BookingCalendar
-              calendarId={import.meta.env.VITE_PUBLIC_GCAL_ID}
+              //calendarId={import.meta.env.VITE_PUBLIC_GCAL_ID}
               duration={60}
               step={60}
               timezone="Europe/London"
