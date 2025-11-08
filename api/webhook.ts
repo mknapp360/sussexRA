@@ -1,9 +1,7 @@
-// api/stripe/webhook.ts
-// Handles Stripe webhook events (payment success)
+// api/webhook.ts - Simplified version without bodyParser config
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import Stripe from 'stripe'
 import { google } from 'googleapis'
-import { Readable } from 'stream'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-10-29.clover',
@@ -22,43 +20,34 @@ function getGoogleCalendarClient() {
   return google.calendar({ version: 'v3', auth: jwt })
 }
 
-// This tells Vercel not to parse the body
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-}
-
-async function getRawBody(req: VercelRequest): Promise<Buffer> {
-  const chunks: Buffer[] = []
-  const reader = req as unknown as Readable
-  
-  for await (const chunk of reader) {
-    chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk)
-  }
-  
-  return Buffer.concat(chunks)
-}
-
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  console.log('Webhook received:', req.method)
+  console.log('=== Webhook called ===')
+  console.log('Method:', req.method)
+  console.log('Headers:', JSON.stringify(req.headers))
   
   if (req.method !== 'POST') {
-    console.log('Method not POST, returning 405')
-    return res.status(405).json({ error: 'Method not allowed' })
+    return res.status(200).json({ message: 'Webhook endpoint ready. Use POST requests only.' })
   }
 
   try {
-    const rawBody = await getRawBody(req)
+    // Get the raw body - Vercel should provide it in req.body for webhooks
     const sig = req.headers['stripe-signature']
-
-    console.log('Signature present:', !!sig)
-    console.log('Raw body length:', rawBody.length)
-
+    
     if (!sig) {
-      console.log('Missing signature header')
+      console.error('Missing stripe-signature header')
       return res.status(400).json({ error: 'Missing stripe-signature header' })
     }
+
+    // For Vercel, try getting raw body from req.body first
+    let rawBody: string | Buffer = req.body
+    
+    // If body is already parsed as object, we need to stringify it
+    if (typeof req.body === 'object' && !Buffer.isBuffer(req.body)) {
+      rawBody = JSON.stringify(req.body)
+    }
+
+    console.log('Body type:', typeof rawBody)
+    console.log('Body length:', rawBody.length || 0)
 
     let event: Stripe.Event
 
@@ -68,30 +57,32 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         sig as string,
         process.env.STRIPE_WEBHOOK_SECRET!
       )
-      console.log('Event verified:', event.type)
+      console.log('✓ Event verified:', event.type)
     } catch (err: any) {
-      console.error('Webhook signature verification failed:', err.message)
+      console.error('Webhook verification failed:', err.message)
       return res.status(400).json({ error: `Webhook Error: ${err.message}` })
     }
 
-    // Handle the event
+    // Handle checkout.session.completed
     if (event.type === 'checkout.session.completed') {
-      console.log('Processing checkout.session.completed')
+      console.log('Processing checkout completion...')
       const session = event.data.object as Stripe.Checkout.Session
 
-      try {
-        const metadata = session.metadata
-        
-        if (!metadata) {
-          console.error('No metadata in session')
-          return res.status(400).json({ error: 'Missing metadata' })
-        }
+      const metadata = session.metadata
+      
+      if (!metadata) {
+        console.error('No metadata in session')
+        return res.status(400).json({ error: 'Missing metadata' })
+      }
 
-        console.log('Creating calendar event for:', metadata.customerEmail)
-        
+      console.log('Metadata:', metadata)
+      
+      try {
         // Create calendar event
         const calendar = getGoogleCalendarClient()
         const calendarId = process.env.GOOGLE_CALENDAR_ID
+
+        console.log('Creating calendar event...')
 
         const eventResult = await calendar.events.insert({
           calendarId,
@@ -114,18 +105,21 @@ Payment processed: ${new Date().toLocaleString()}
         })
 
         console.log('✓ Calendar event created:', eventResult.data.id)
-
-        // TODO: Send confirmation email here (next step)
         
-        return res.status(200).json({ received: true, eventId: eventResult.data.id })
+        return res.status(200).json({ 
+          received: true, 
+          eventId: eventResult.data.id,
+          message: 'Calendar event created successfully'
+        })
       } catch (error: any) {
-        console.error('Error processing payment:', error)
+        console.error('Calendar creation error:', error)
         return res.status(500).json({ error: error.message })
       }
     }
 
     console.log('Event type not handled:', event.type)
     return res.status(200).json({ received: true })
+    
   } catch (error: any) {
     console.error('Webhook handler error:', error)
     return res.status(500).json({ error: error.message })
