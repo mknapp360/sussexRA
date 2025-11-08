@@ -1,7 +1,8 @@
-// api/webhook.ts - Simplified version without bodyParser config
+// api/webhook.ts - Handles raw body for Stripe signature verification
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import Stripe from 'stripe'
 import { google } from 'googleapis'
+import { buffer } from 'micro'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-10-29.clover',
@@ -20,69 +21,64 @@ function getGoogleCalendarClient() {
   return google.calendar({ version: 'v3', auth: jwt })
 }
 
+// Disable body parsing so we can get raw body
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   console.log('=== Webhook called ===')
-  console.log('Method:', req.method)
-  console.log('Headers:', JSON.stringify(req.headers))
   
   if (req.method !== 'POST') {
-    return res.status(200).json({ message: 'Webhook endpoint ready. Use POST requests only.' })
+    return res.status(200).json({ message: 'Webhook endpoint ready' })
   }
 
   try {
-    // Get the raw body - Vercel should provide it in req.body for webhooks
     const sig = req.headers['stripe-signature']
     
     if (!sig) {
-      console.error('Missing stripe-signature header')
+      console.error('Missing stripe-signature')
       return res.status(400).json({ error: 'Missing stripe-signature header' })
     }
 
-    // For Vercel, try getting raw body from req.body first
-    let rawBody: string | Buffer = req.body
+    // Get raw body using micro's buffer function
+    const buf = await buffer(req)
     
-    // If body is already parsed as object, we need to stringify it
-    if (typeof req.body === 'object' && !Buffer.isBuffer(req.body)) {
-      rawBody = JSON.stringify(req.body)
-    }
-
-    console.log('Body type:', typeof rawBody)
-    console.log('Body length:', rawBody.length || 0)
+    console.log('Raw buffer length:', buf.length)
 
     let event: Stripe.Event
 
     try {
       event = stripe.webhooks.constructEvent(
-        rawBody,
+        buf,
         sig as string,
         process.env.STRIPE_WEBHOOK_SECRET!
       )
       console.log('✓ Event verified:', event.type)
     } catch (err: any) {
-      console.error('Webhook verification failed:', err.message)
+      console.error('Verification failed:', err.message)
       return res.status(400).json({ error: `Webhook Error: ${err.message}` })
     }
 
     // Handle checkout.session.completed
     if (event.type === 'checkout.session.completed') {
-      console.log('Processing checkout completion...')
+      console.log('Processing checkout...')
       const session = event.data.object as Stripe.Checkout.Session
 
       const metadata = session.metadata
       
       if (!metadata) {
-        console.error('No metadata in session')
+        console.error('No metadata')
         return res.status(400).json({ error: 'Missing metadata' })
       }
 
-      console.log('Metadata:', metadata)
+      console.log('Creating calendar event for:', metadata.customerEmail)
       
       try {
-        // Create calendar event
         const calendar = getGoogleCalendarClient()
         const calendarId = process.env.GOOGLE_CALENDAR_ID
-
-        console.log('Creating calendar event...')
 
         const eventResult = await calendar.events.insert({
           calendarId,
@@ -108,20 +104,18 @@ Payment processed: ${new Date().toLocaleString()}
         
         return res.status(200).json({ 
           received: true, 
-          eventId: eventResult.data.id,
-          message: 'Calendar event created successfully'
+          eventId: eventResult.data.id 
         })
       } catch (error: any) {
-        console.error('Calendar creation error:', error)
+        console.error('Calendar error:', error)
         return res.status(500).json({ error: error.message })
       }
     }
 
-    console.log('Event type not handled:', event.type)
     return res.status(200).json({ received: true })
     
   } catch (error: any) {
-    console.error('Webhook handler error:', error)
+    console.error('Handler error:', error)
     return res.status(500).json({ error: error.message })
   }
 }
