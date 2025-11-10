@@ -4,10 +4,19 @@ import { useEffect, useState } from "react";
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
-  // Prevent background scroll when the drawer is open
+  // Prevent background scroll when drawer is open + handle Escape key
   useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && open) setOpen(false);
+    };
+    
+    document.addEventListener('keydown', handleEscape);
     document.documentElement.classList.toggle("overflow-hidden", open);
-    return () => document.documentElement.classList.remove("overflow-hidden");
+    
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.documentElement.classList.remove("overflow-hidden");
+    };
   }, [open]);
 
   const link = "px-3 py-2 rounded-md hover:bg-gray-100 transition";
@@ -26,14 +35,14 @@ export default function Navbar() {
       <div className="hidden md:block w-px h-6 bg-gray-300 mx-2" />
 
       <div className="flex items-center gap-2">
-        <a href="https://www.tiktok.com/@tarotpathwork" target="_blank" rel="noopener" className="opacity-80 hover:opacity-100">
-          <img src="/tiktok-onBrand.png" className="w-6 h-6 object-contain" />
+        <a href="https://www.tiktok.com/@tarotpathwork" target="_blank" rel="noopener" className="opacity-80 hover:opacity-100" aria-label="TikTok">
+          <img src="/tiktok-onBrand.png" alt="" className="w-6 h-6 object-contain" />
         </a>
-        <a href="https://www.reddit.com/user/Daoist360/" target="_blank" rel="noopener" className="opacity-80 hover:opacity-100">
-          <img src="/reddit-onBrand.png" className="w-6 h-6 object-contain" />
+        <a href="https://www.reddit.com/user/Daoist360/" target="_blank" rel="noopener" className="opacity-80 hover:opacity-100" aria-label="Reddit">
+          <img src="/reddit-onBrand.png" alt="" className="w-6 h-6 object-contain" />
         </a>
-        <a href="https://www.youtube.com/@tarotpathwork" target="_blank" rel="noopener" className="opacity-80 hover:opacity-100">
-          <img src="/youtube-onBrand.png" className="w-6 h-6 object-contain" />
+        <a href="https://www.youtube.com/@tarotpathwork" target="_blank" rel="noopener" className="opacity-80 hover:opacity-100" aria-label="YouTube">
+          <img src="/youtube-onBrand.png" alt="" className="w-6 h-6 object-contain" />
         </a>
       </div>
     </>
@@ -45,11 +54,8 @@ export default function Navbar() {
       <div className="mx-auto max-w-7xl w-full h-16 flex items-center justify-between px-6 lg:px-12">
         {/* Logo + Title */}
         <NavLink to="/" className="flex items-center gap-2">
-          {/* Inline SVG ensures it’s ALWAYS red */}
           <span className="inline-block w-7 h-7">
-            <div className="w-7 h-7">
-              <img src="/tripleTau.png" />
-            </div>
+            <img src="/tripleTau.png" alt="Sussex Royal Arch Masonry logo" className="w-7 h-7" />
           </span>
           <span className="font-semibold text-xl lg:text-2xl text-gray-900 tracking-tight">
             Sussex Royal Arch Masonry
@@ -76,19 +82,24 @@ export default function Navbar() {
       {/* Mobile drawer + backdrop */}
       {/* Backdrop */}
       <div
-        className={`md:hidden fixed inset-0 bg-black/40 transition-opacity ${open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+        className={`md:hidden fixed inset-0 bg-black/40 transition-opacity duration-300 ${
+          open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
         onClick={() => setOpen(false)}
+        aria-hidden="true"
       />
+      
       {/* Drawer panel */}
       <aside
         className={`md:hidden fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white shadow-xl border-l
                     transition-transform duration-300 ${open ? 'translate-x-0' : 'translate-x-full'}`}
-        role="dialog" aria-modal="true"
+        role="dialog" 
+        aria-modal="true"
+        aria-label="Mobile navigation menu"
       >
         <div className="h-16 flex items-center justify-between px-6 border-b">
           <div className="flex items-center gap-2">
             <span className="inline-block w-7 h-7">
-              {/* same always-red icon */}
               <svg viewBox="0 0 512 512" className="w-7 h-7" aria-hidden="true">
                 <circle cx="256" cy="256" r="240" fill="none" stroke="#c81410" strokeWidth="32" />
                 <polygon points="256,64 448,384 64,384" fill="none" stroke="#c81410" strokeWidth="32" />
