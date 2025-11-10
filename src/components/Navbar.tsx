@@ -24,7 +24,7 @@ export default function Navbar() {
 
   const NavItems = ({ onClick }: { onClick?: () => void }) => (
     <>
-      <NavLink to="/articles"    className={({ isActive }) => `${link} ${isActive ? active : ""}`} onClick={onClick}>Articles</NavLink>
+      <NavLink to="/posts"    className={({ isActive }) => `${link} ${isActive ? active : ""}`} onClick={onClick}>Articles</NavLink>
       <NavLink to="/exaltations" className={({ isActive }) => `${link} ${isActive ? active : ""}`} onClick={onClick}>Exaltations</NavLink>
       <NavLink to="/events"      className={({ isActive }) => `${link} ${isActive ? active : ""}`} onClick={onClick}>Events</NavLink>
       <NavLink to="/archway"     className={({ isActive }) => `${link} ${isActive ? active : ""}`} onClick={onClick}>Archway</NavLink>

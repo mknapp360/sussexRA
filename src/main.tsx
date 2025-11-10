@@ -24,7 +24,8 @@ import AuthCallback from './pages/AuthCallback'
 import CreatePostPage from './pages/CreatePostPage';
 import EditPostPage from './pages/EditPostPage';
 import PostsListPage from './pages/PostsListPage';
-import BookingSuccess from './pages/booking/success'
+import BookingSuccess from './pages/booking/success';
+import Events from './pages/events'
 
 
 const router = createBrowserRouter([
@@ -42,7 +43,8 @@ const router = createBrowserRouter([
       { path: 'readings/four-session-block', element: <FourBlock /> },
       { path: 'readings/talisman', element: <Talisman /> },
       { path: 'booking/success', element: <BookingSuccess /> },
-      { path: 'post', element: <BlogIndex /> },
+      { path: 'events', element: <Events /> },
+      { path: 'posts', element: <BlogIndex /> },
       { path: 'post/:slug', element: <BlogPost /> },
       { path: 'contact', element: <Contact /> },
       { path: 'kabbalah', element: <Kabbalah /> },
