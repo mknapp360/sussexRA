@@ -1,93 +1,46 @@
-// Navbar.tsx
-import { NavLink } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { NavLink } from "react-router-dom";
 
-export default function Navbar({ transparent = false }: { transparent?: boolean }) {
-  const [scrolled, setScrolled] = useState(false)
-
-  useEffect(() => {
-    if (!transparent) return
-    const onScroll = () => setScrolled(window.scrollY > 16)
-    onScroll()
-    window.addEventListener('scroll', onScroll)
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [transparent])
-
-  const base = 'h-16 w-full flex items-center justify-between px-12 lg:px-12'
-  const link = 'px-3 py-2 rounded-xl hover:bg-white/10 transition'
-  const active = 'bg-tpblack/10'
+export default function Navbar() {
+  const link = "px-3 py-2 rounded-md hover:bg-gray-100 transition";
+  const active = "bg-gray-200";
 
   return (
-    <header
-      className={
-        transparent
-          ? `fixed inset-x-0 top-0 z-50 ${scrolled ? 'bg-tpblack/80 backdrop-blur' : 'bg-transparent'}`
-          : 'sticky top-0 z-50 bg-tpblack backdrop-blur'
-      }
-    >
-      <div className={base + (transparent && !scrolled ? ' text-tpwhite' : '')}>
-        <NavLink to="/" className="font-display text-2xl text-tpwhite lg:text-3xl tracking-tight">Tarot Pathwork</NavLink>
-        <div className="flex-grow" />
-        <nav className="flex gap-1 text-xl text-tpwhite">
-          {/*<a
-            href="https://tarotpathwork.app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-5 py-2 ml-2 rounded-lg bg-tpgold text-tpwhite font-display hover:opacity-90 hover:scale-105 transition-transform duration-200"
-          >
-            Use The App
-          </a>*/}
-          <NavLink to="/readings" className={({isActive}) => `${link} ${isActive?active:''}`}>Book A Session</NavLink>
-          <NavLink to="/post" className={({isActive}) => `${link} ${isActive?active:''}`} >Articles</NavLink>
-          <NavLink to="/kabbalah" className={({isActive}) => `${link} ${isActive?active:''}`} >Kabbalah</NavLink>
-          <NavLink to="/spiritual-resources" className={({isActive}) => `${link} ${isActive?active:''}`} >Resources</NavLink>
-          <NavLink to="/contact" className={({isActive}) => `${link} ${isActive?active:''}`}>Contact</NavLink>
-          
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b">
+      <div className="mx-auto max-w-7xl w-full h-16 flex items-center justify-between px-6 lg:px-12">
         
-         {/* Divider (optional) */}
-        <div className="h-15 w-px bg-white/20 mx-1 hidden sm:block" />
-
-        {/* Social icons as custom images */}
-        <a
-          href="https://www.tiktok.com/@tarotpathwork"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="transition hover:scale-110"
+        {/* Logo / Name */}
+        <NavLink
+          to="/"
+          className="font-semibold text-xl lg:text-2xl text-gray-900 tracking-tight"
         >
-          <img
-            src="/tiktok-onBrand.png"
-            alt="TikTok"
-            className="w-10 h-10 object-contain opacity-80 hover:opacity-100 transition"
-          />
-        </a>
+          Sussex Royal Arch Masonry
+        </NavLink>
 
-        <a
-          href="https://www.reddit.com/user/Daoist360/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="transition hover:scale-110"
-        >
-          <img
-            src="reddit-onBrand.png"
-            alt="Reddit"
-            className="w-10 h-10 object-contain opacity-80 hover:opacity-100 transition"
-          />
-        </a>
+        {/* Nav Links */}
+        <nav className="flex items-center gap-2 text-base text-gray-900">
+          <NavLink to="/articles"   className={({ isActive }) => `${link} ${isActive ? active : ""}`}>Articles</NavLink>
+          <NavLink to="/exaltations" className={({ isActive }) => `${link} ${isActive ? active : ""}`}>Exaltations</NavLink>
+          <NavLink to="/events"      className={({ isActive }) => `${link} ${isActive ? active : ""}`}>Events</NavLink>
+          <NavLink to="/archway"     className={({ isActive }) => `${link} ${isActive ? active : ""}`}>Archway</NavLink>
+          <NavLink to="/membership"  className={({ isActive }) => `${link} ${isActive ? active : ""}`}>Membership</NavLink>
+          <NavLink to="/mentoring"   className={({ isActive }) => `${link} ${isActive ? active : ""}`}>Mentoring</NavLink>
+          <NavLink to="/contact"     className={({ isActive }) => `${link} ${isActive ? active : ""}`}>Contact</NavLink>
 
-        <a
-          href="https://www.youtube.com/@tarotpathwork"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="transition hover:scale-110"
-        >
-          <img
-            src="youtube-onBrand.png"
-            alt="YouTube"
-            className="w-10 h-10 object-contain opacity-80 hover:opacity-100 transition"
-          />
-        </a>
-      </nav>
+          {/* Divider */}
+          <div className="hidden sm:block w-px h-6 bg-gray-300 mx-2" />
+
+          {/* Social Logos */}
+          <a href="https://www.tiktok.com/@tarotpathwork" target="_blank" rel="noopener" className="opacity-80 hover:opacity-100">
+            <img src="/tiktok-onBrand.png" className="w-6 h-6 object-contain" />
+          </a>
+          <a href="https://www.reddit.com/user/Daoist360/" target="_blank" rel="noopener" className="opacity-80 hover:opacity-100">
+            <img src="/reddit-onBrand.png" className="w-6 h-6 object-contain" />
+          </a>
+          <a href="https://www.youtube.com/@tarotpathwork" target="_blank" rel="noopener" className="opacity-80 hover:opacity-100">
+            <img src="/youtube-onBrand.png" className="w-6 h-6 object-contain" />
+          </a>
+        </nav>
       </div>
     </header>
-  )
+  );
 }

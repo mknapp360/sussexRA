@@ -73,26 +73,39 @@ export default function Home() {
       />
 
       {/* HERO */}
-      <section className="relative h-[100svh] w-full overflow-hidden">
-        {/* background image */}
-        <img
-          src="/ChakraTree2025.png"
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover"
-          fetchPriority="high"
-        />
-        {/* gradient overlay for readability */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-black/70 via-black/30 to-transparent" />
-
-        {/* content */}
-        <div className="relative z-10 h-full">
-          <div className=" flex h-full w-full items-center px-2 lg:px-2">
-            <div className="max-w-2xl lg:ml-0 md:ml-8">
-              <h1 className="text-4xl sm:text-6xl font-display tracking-tight text-white px-12 lg:px-12">
-                Psychic Readings & Spiritual Teaching
-              </h1>
-            </div>
+      <section className="bg-gray-50">
+        {/* Heading + subheading */}
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="py-12 sm:py-16">
+            <h1 className="text-center font-semibold tracking-tight text-gray-900
+                          text-4xl pt-8 sm:text-5xl md:text-6xl">
+              Welcome to Sussex Royal Arch Masonry
+            </h1>
+            <p className="mt-4 text-center md:text-2xl sm:text-lg text-gray-600">
+              A one journey, one organisation BLOG
+            </p>
           </div>
+        </div>
+
+        {/* Large featured image */}
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 pb-16">
+          <img
+            src="/homeHero2.png"
+            alt="Royal Arch regalia"
+            className="w-full h-auto object-cover rounded-2xl shadow"
+            fetchPriority="high"
+          />
+        </div>
+      </section>
+
+      <section className="bg-gray-50">
+        <div className="mx-auto">
+          <img
+            src="/border.png"
+            alt="woven border"
+            className="w-full"
+            fetchPriority="high"
+          />
         </div>
       </section>
 
