@@ -100,13 +100,7 @@ export default function Navbar() {
         <div className="h-16 flex items-center justify-between px-6 border-b">
           <div className="flex items-center gap-2">
             <span className="inline-block w-7 h-7">
-              <svg viewBox="0 0 512 512" className="w-7 h-7" aria-hidden="true">
-                <circle cx="256" cy="256" r="240" fill="none" stroke="#c81410" strokeWidth="32" />
-                <polygon points="256,64 448,384 64,384" fill="none" stroke="#c81410" strokeWidth="32" />
-                <polygon points="256,120 392,360 120,360" fill="none" stroke="#c81410" strokeWidth="24" />
-                <path d="M228 200h56m-28 0v104m-96 0h208m-168 0v48m128-48v48"
-                      stroke="#c81410" strokeWidth="26" fill="none" strokeLinecap="square"/>
-              </svg>
+              <img src="/tripleTau.png" alt="Sussex Royal Arch Masonry logo" className="w-7 h-7" />
             </span>
             <span className="font-semibold">Menu</span>
           </div>
