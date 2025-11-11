@@ -68,7 +68,7 @@ export default function AdminLayout() {
     <div className="min-h-screen bg-background">
       {/* Mobile Header */}
       <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-background border-b border-border z-40 flex items-center justify-between px-4">
-        <h1 className="text-xl font-semibold">Tarot Pathwork Admin</h1>
+        <h1 className="text-xl font-semibold">Sussex Royal Arch Admin</h1>
         <Button
           variant="ghost"
           size="sm"
@@ -88,7 +88,7 @@ export default function AdminLayout() {
           {/* Logo */}
           <div className="h-16 flex items-center px-6 border-b border-border">
             <Link to="/" className="text-xl font-semibold">
-              Tarot Pathwork
+              Sussex Royal Arch
             </Link>
           </div>
 

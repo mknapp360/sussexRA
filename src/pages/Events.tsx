@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Calendar, MapPin } from 'lucide-react';
@@ -6,15 +7,21 @@ import SEO from '../components/SEO';
 
 interface Event {
   id: string;
-  name: string;
-  date: string;
-  location: string;
-  image: string;
-  description?: string;
-  rsvpLink?: string;
+  slug: string;
+  event_title: string;
+  event_date: string;
+  event_time: string;
+  event_location_name: string;
+  event_image: string;
+  event_address: string;
+  event_info: string;
+  rsvp_url: string | null;
+  rsvp_contact: string | null;
+  published: boolean;
 }
 
 export default function Events() {
+  const navigate = useNavigate();
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -22,30 +29,45 @@ export default function Events() {
   const PLACEHOLDER_EVENTS: Event[] = [
     {
       id: '1',
-      name: 'Royal Arch Tracing Board Presentation',
-      date: 'Sat 22 Nov',
-      location: 'Horsham Masonic Hall',
-      image: '/events/tracing-board.jpg',
-      description: 'Are you a recently exalted Companion? Never heard an explanation of the Royal Arch Tracing Boards? Then this is a meeting not to be missed!',
-      rsvpLink: '#',
+      slug: 'royal-arch-tracing-board-presentation',
+      event_title: 'Royal Arch Tracing Board Presentation',
+      event_date: 'Sat 22 Nov',
+      event_time: '17:00 - 21:00',
+      event_location_name: 'Horsham Masonic Hall',
+      event_image: '/events/tracing-board.jpg',
+      event_address: 'Denne Road, Horsham, West Sussex, RH12 1JF',
+      event_info: 'Are you a recently exalted Companion? Never heard an explanation of the Royal Arch Tracing Boards? Then this is a meeting not to be missed!',
+      rsvp_url: '#',
+      rsvp_contact: null,
+      published: true,
     },
     {
       id: '2',
-      name: 'Chichester Chapter of Improvement',
-      date: 'Sat 29 Nov',
-      location: 'Chichester',
-      image: '/events/chichester-chapter.jpg',
-      description: 'Did you miss out on hearing the three Royal Arch lectures being presented in your Chapter? Well, come along to North Sussex First Principals Chapter and listen to our members deliver, in sections, all three lectures.',
-      rsvpLink: '#',
+      slug: 'chichester-chapter-improvement',
+      event_title: 'Chichester Chapter of Improvement',
+      event_date: 'Sat 29 Nov',
+      event_time: '14:00 - 17:00',
+      event_location_name: 'Chichester',
+      event_image: '/events/chichester-chapter.jpg',
+      event_address: 'Chichester, West Sussex',
+      event_info: 'Did you miss out on hearing the three Royal Arch lectures being presented in your Chapter? Well, come along to North Sussex First Principals Chapter and listen to our members deliver, in sections, all three lectures.',
+      rsvp_url: '#',
+      rsvp_contact: null,
+      published: true,
     },
     {
       id: '3',
-      name: 'Annual Family Carol Service',
-      date: 'Sun 14 Dec',
-      location: 'Ardingly College Chapel',
-      image: '/events/carol-service.jpg',
-      description: 'Family Carol Service - Everyone Welcome. Hosted by the Royal Arch on 14th December 2025 at 2:30pm.',
-      rsvpLink: '#',
+      slug: 'annual-family-carol-service',
+      event_title: 'Annual Family Carol Service',
+      event_date: 'Sun 14 Dec',
+      event_time: '14:30',
+      event_location_name: 'Ardingly College Chapel',
+      event_image: '/events/carol-service.jpg',
+      event_address: 'Haywards Heath, RH17 6SQ',
+      event_info: 'Family Carol Service - Everyone Welcome. Hosted by the Royal Arch on 14th December 2025 at 2:30pm.',
+      rsvp_url: 'https://arco.de/bgNXro',
+      rsvp_contact: 'pgs@sussexram.org.uk',
+      published: true,
     },
   ];
 
@@ -92,13 +114,14 @@ export default function Events() {
               {events.map((event) => (
                 <Card 
                   key={event.id} 
-                  className="overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col"
+                  className="overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col cursor-pointer"
+                  onClick={() => navigate(`/events/${event.slug}`)}
                 >
                   {/* Event Image */}
                   <div className="aspect-[4/3] overflow-hidden bg-slate-100">
                     <img
-                      src={event.image}
-                      alt={event.name}
+                      src={event.event_image}
+                      alt={event.event_title}
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                       onError={(e) => {
                         // Fallback for missing images
@@ -111,25 +134,25 @@ export default function Events() {
                   <CardContent className="flex flex-col flex-1 p-6">
                     {/* Event Name */}
                     <h2 className="text-xl font-bold mb-3 text-foreground">
-                      {event.name}
+                      {event.event_title}
                     </h2>
 
                     {/* Date */}
                     <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
                       <Calendar className="w-4 h-4" />
-                      <span>{event.date}</span>
+                      <span>{event.event_date}</span>
                     </div>
 
                     {/* Location */}
                     <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
                       <MapPin className="w-4 h-4" />
-                      <span>{event.location}</span>
+                      <span>{event.event_location_name}</span>
                     </div>
 
                     {/* Description (if available) */}
-                    {event.description && (
+                    {event.event_info && (
                       <p className="text-sm text-muted-foreground mb-4 line-clamp-3 flex-1">
-                        {event.description}
+                        {event.event_info.replace(/<[^>]*>/g, '')}
                       </p>
                     )}
 
@@ -137,10 +160,9 @@ export default function Events() {
                     <div className="flex justify-center mt-auto pt-4">
                       <Button
                         variant="outline"
-                        onClick={() => {
-                          if (event.rsvpLink) {
-                            window.location.href = event.rsvpLink;
-                          }
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/events/${event.slug}`);
                         }}
                         className="w-full max-w-[200px]"
                       >
