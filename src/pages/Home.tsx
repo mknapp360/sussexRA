@@ -16,9 +16,22 @@ interface Post {
   published_at: string | null
 }
 
+interface Event {
+  id: string;
+  slug: string;
+  event_title: string;
+  event_date: string;
+  event_time: string;
+  event_location_name: string;
+  event_image: string;
+  event_info: string;
+  published: boolean;
+}
+
 export default function Home() {
   const [recentPosts, setRecentPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(true)
+  const [recentEvents, setRecentEvents] = useState<Event[]>([]);
 
   useEffect(() => {
     fetchRecentPosts()
@@ -42,6 +55,31 @@ export default function Home() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+  fetchRecentEvents();
+}, []);
+
+// Add this function to fetch the next 3 upcoming events
+const fetchRecentEvents = async () => {
+  try {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('events')
+      .select('id, slug, event_title, event_date, event_time, event_location_name, event_image, event_info')
+      .eq('published', true)
+      .order('created_at', { ascending: false })
+      .limit(3);
+
+    if (error) throw error;
+    setRecentEvents((data as Event[]) || []);
+  } catch (error) {
+    console.error('Error fetching events:', error);
+    setRecentEvents([]);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const getExcerpt = (post: Post) => {
     if (post.excerpt) return post.excerpt
@@ -316,6 +354,98 @@ export default function Home() {
           ) : (
             <div className="text-center py-12 text-slate-500">
               <p>No published posts yet. Check back soon!</p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Upcoming Events Section */}
+      <section className="py-16 bg-white">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-3xl sm:text-4xl font-display tracking-tight text-slate-900">
+                Upcoming Events
+              </h2>
+              <p className="mt-2 text-slate-600">
+                Join us for our upcoming meetings and special gatherings
+              </p>
+            </div>
+            <Link 
+              to="/events" 
+              className="hidden sm:flex items-center gap-2 text-tpblue hover:text-tpgold transition-colors"
+            >
+              View all events
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          {loading ? (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="animate-pulse">
+                  <div className="bg-slate-200 h-48 rounded-lg mb-4" />
+                  <div className="h-4 bg-slate-200 rounded w-3/4 mb-2" />
+                  <div className="h-3 bg-slate-200 rounded w-full mb-1" />
+                  <div className="h-3 bg-slate-200 rounded w-5/6" />
+                </div>
+              ))}
+            </div>
+          ) : recentEvents.length > 0 ? (
+            <>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {recentEvents.map((event) => (
+                  <Link
+                    key={event.id}
+                    to={`/events/${event.slug}`}
+                    className="group block"
+                  >
+                    <article className="h-full flex flex-col">
+                      {event.event_image && (
+                        <div className="relative aspect-video overflow-hidden rounded-lg mb-4 bg-slate-100">
+                          <img 
+                            src={event.event_image}
+                            alt={event.event_title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        </div>
+                      )}
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 text-sm text-slate-500 mb-2">
+                          <Calendar className="w-4 h-4" />
+                          <span>{event.event_date}</span>
+                        </div>
+                        <h3 className="text-xl font-medium text-slate-900 group-hover:text-tpblue transition-colors mb-2">
+                          {event.event_title}
+                        </h3>
+                        <p className="text-slate-600 text-sm mb-2">
+                          📍 {event.event_location_name}
+                        </p>
+                        <p className="text-slate-600 text-sm line-clamp-2">
+                          {event.event_info.replace(/<[^>]*>/g, '')}
+                        </p>
+                      </div>
+                      <div className="mt-4 flex items-center text-tpblue group-hover:text-tpgold transition-colors">
+                        <span className="text-sm font-medium">View details</span>
+                        <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </article>
+                  </Link>
+                ))}
+              </div>
+              <div className="mt-8 text-center sm:hidden">
+                <Link 
+                  to="/events" 
+                  className="inline-flex items-center gap-2 text-tpblue hover:text-tpgold transition-colors"
+                >
+                  View all events
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </>
+          ) : (
+            <div className="text-center py-12 text-slate-500">
+              <p>No upcoming events scheduled. Check back soon!</p>
             </div>
           )}
         </div>

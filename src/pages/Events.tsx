@@ -4,6 +4,7 @@ import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Calendar, MapPin } from 'lucide-react';
 import SEO from '../components/SEO';
+import { supabase } from '../lib/supabase';
 
 interface Event {
   id: string;
@@ -25,59 +26,28 @@ export default function Events() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Placeholder data - replace with Supabase fetch later
-  const PLACEHOLDER_EVENTS: Event[] = [
-    {
-      id: '1',
-      slug: 'royal-arch-tracing-board-presentation',
-      event_title: 'Royal Arch Tracing Board Presentation',
-      event_date: 'Sat 22 Nov',
-      event_time: '17:00 - 21:00',
-      event_location_name: 'Horsham Masonic Hall',
-      event_image: '/events/tracing-board.jpg',
-      event_address: 'Denne Road, Horsham, West Sussex, RH12 1JF',
-      event_info: 'Are you a recently exalted Companion? Never heard an explanation of the Royal Arch Tracing Boards? Then this is a meeting not to be missed!',
-      rsvp_url: '#',
-      rsvp_contact: null,
-      published: true,
-    },
-    {
-      id: '2',
-      slug: 'chichester-chapter-improvement',
-      event_title: 'Chichester Chapter of Improvement',
-      event_date: 'Sat 29 Nov',
-      event_time: '14:00 - 17:00',
-      event_location_name: 'Chichester',
-      event_image: '/events/chichester-chapter.jpg',
-      event_address: 'Chichester, West Sussex',
-      event_info: 'Did you miss out on hearing the three Royal Arch lectures being presented in your Chapter? Well, come along to North Sussex First Principals Chapter and listen to our members deliver, in sections, all three lectures.',
-      rsvp_url: '#',
-      rsvp_contact: null,
-      published: true,
-    },
-    {
-      id: '3',
-      slug: 'annual-family-carol-service',
-      event_title: 'Annual Family Carol Service',
-      event_date: 'Sun 14 Dec',
-      event_time: '14:30',
-      event_location_name: 'Ardingly College Chapel',
-      event_image: '/events/carol-service.jpg',
-      event_address: 'Haywards Heath, RH17 6SQ',
-      event_info: 'Family Carol Service - Everyone Welcome. Hosted by the Royal Arch on 14th December 2025 at 2:30pm.',
-      rsvp_url: 'https://arco.de/bgNXro',
-      rsvp_contact: 'pgs@sussexram.org.uk',
-      published: true,
-    },
-  ];
-
   useEffect(() => {
-    // Simulate loading - replace with actual Supabase call
-    setTimeout(() => {
-      setEvents(PLACEHOLDER_EVENTS);
-      setLoading(false);
-    }, 500);
+    loadEvents();
   }, []);
+
+  const loadEvents = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .eq('published', true)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setEvents((data as Event[]) || []);
+    } catch (error) {
+      console.error('Error loading events:', error);
+      setEvents([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
