@@ -101,13 +101,13 @@ const fetchRecentEvents = async () => {
   return (
     <>
       <SEO
-        title="Tarot Pathwork"
-        description="Psychic readings & spiritual teachings through a Kabbalistic lens."
+        title="Sussex Royal Arch"
+        description="Royal Arch Freemasonry in Sussex"
         jsonLd={[{
           "@context":"https://schema.org",
           "@type":"WebSite",
-          "name":"Tarot Pathwork",
-          "url":"https://www.tarotpathwork.com"
+          "name":"Sussex Royal Arch",
+          "url":"https://www.sussexroyalarch.co.uk"
         }]}
       />
 
@@ -376,7 +376,7 @@ const fetchRecentEvents = async () => {
             </Card>
 
             {/* Near Eastbourne */}
-            <Card className="bg-[#f0f0f0] hover:shadow-lg transition-shadow">
+            <Card className="bg-[#f2f2f2] hover:shadow-lg transition-shadow">
               <CardContent className="p-8">
                 <h3 className="text-2xl font-bold mb-6 text-headerText text-center">
                   Near Eastbourne
@@ -398,125 +398,66 @@ const fetchRecentEvents = async () => {
         </div>
       </section>
 
+      <section className="bg-gray-50">
+        <div className="mx-auto">
+          <img
+            src="/border.png"
+            alt="woven border"
+            className="w-full"
+            fetchPriority="high"
+          />
+        </div>
+      </section>
 
-      {/* Recent Blog Posts Section */}
-      {/* CURRENT EMANATION */}
-<section
-  className="
-    relative isolate overflow-hidden
-    text-tpwhite
-    bg-[#0a0d1a]
-    pb-8
-  "
->
-  {/* Layered radiant gold glow */}
-  <div
-    className="
-      absolute inset-0 -z-10
-      bg-[radial-gradient(90%_120%_at_50%_-10%,rgba(255,215,128,0.18),transparent_60%),radial-gradient(80%_80%_at_50%_120%,rgba(255,215,128,0.08),transparent_60%),linear-gradient(180deg,#0a0d1a_10%,#0b0f1f_70%,#000_100%)]
-    "
-  />
+      {/* Membership & Mentoring Section */}
+      <section className="bg-white py-16">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 text-headerText">
+            Membership & Mentoring
+          </h2>
+          
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Left Column - Image */}
+            <div className="order-2 md:order-1">
+              <img
+                src="/mentoring.png"
+                alt="Membership and mentoring materials"
+                
+              />
+            </div>
 
-  {/* Faint moving stars / dust */}
-  <div
-    className="
-      absolute inset-0 -z-10 opacity-[0.07]
-      bg-[repeating-linear-gradient(45deg,rgba(255,255,255,0.15)_0,rgba(255,255,255,0.15)_1px,transparent_1px,transparent_4px)]
-      mix-blend-soft-light
-    "
-  />
-
-  {/* Subtle gold beam down the middle */}
-  <div
-    className="
-      absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_0%,rgba(255,223,120,0.15),transparent_70%)]
-    "
-  />
-
-  <div
-  className="
-    absolute inset-0 -z-10 pointer-events-none
-    opacity-20 mix-blend-overlay
-    bg-[url('/textures/gold-noise.webp')] bg-cover bg-center
-  "
-/>
-
-{/* --- IMAGE GRADIENT: nebula/bokeh with vignette --- */}
-
-
- <img
-    src="/kabbalahHero.png"
-    alt=""
-    aria-hidden="true"
-    className="pointer-events-none select-none mx-auto absolute inset-0 -z-10 opacity-5 object-cover"
-  />
-
-  {/* Content */}
-  <div className="max-w-7xl mx-auto px-2 py-5 text-center">
-    <h2 className="text-4xl md:text-5xl font-display tracking-tight text-tpgold mb-8 drop-shadow-[0_0_12px_rgba(255,215,128,0.3)]">
-      Current Emanation
-    </h2>
-
-    <div
-      className="
-        mx-auto max-w-3xl
-        p-8 md:p-10
-        bg-[#111628]/80
-        border border-tpgold/20
-        backdrop-blur-md
-        rounded-3xl shadow-[0_0_25px_rgba(255,215,128,0.08),inset_0_0_8px_rgba(255,215,128,0.1)]
-      "
-    >
-      <p className="text-left text-white/90 text-lg leading-relaxed">
-        The Hidden Key - Revelation in Time. 
-      </p>
-      <p className="mt-4 text-left text-white/90 text-lg leading-relaxed">
-        Hold steady in silence. Transformation is occurring beneath still waters.
-      </p>
-      <p className=" mt-4 text-left text-white/90 text-lg leading-relaxed">
-        When the balance is kept and faith maintained, the light of the Star will reopen the path to manifestation.
-      </p>
-    </div>
-  </div>
-
-  <div className="mt-6 flex justify-center">
-    <Button
-      className="rounded-xl text-tpwhite bg-tpred"
-      onClick={() => setShowVideo(true)}
-    >
-      What is an Emanation?
-    </Button>
-  </div>  
-
-  {/* Decorative bottom edge */}
- 
- 
-</section>
-
-      {/* Recent Blog Posts Section */}
-      <section>
-        <div className="mx-auto bg-tpblue pb-8">
-          <h1 className="text-center py-8 text-4xl sm:text-5xl text-white font-display tracking-tight">
-            What is Tarot Pathwork?
-          </h1>
-          <p className="mt-4 text-lg  mx-auto max-w-7xl text-white">
-            It is a living synthesis of Kabbalah, rooted in the ancient traditions of angelology and tarot, offering a way to discern divine order in real time. 
-          </p>
-          <p className="mt-4 text-lg  mx-auto max-w-7xl text-white">
-            Whether you find yourself at a crossroads or seeking a greater sense of purpose, it reveals the soul's architecture through direct experience rather than belief.
-            Through the cards, the Tree of Life becomes a diagnostic map of your consciousness—each spread reflecting the state of your inner alignment. Tarot Pathwork serves as a sacred technology of translation, turning revelation into action and spirit into form.
-          </p>
-          <p className="mt-4 text-lg  mx-auto max-w-7xl text-white">
-            You may be seeking clarity in your daily life, or initiation into deeper mysteries, this work helps you realign with your divine purpose, restore coherence between the seen and unseen, and walk the path of awareness with presence and grace. Some arrive for the articles, others book a reading or a session, and some stay to study the deeper teachings.
-          </p>
-          <div className="mt-8 flex justify-center pb-6">
-            <Button 
-              onClick={() => setShowSubscribe(true)}
-              className="px-8 py-3 rounded-2xl bg-tpgold text-white hover:opacity-90 transition-opacity text-lg font-medium"
-            >
-              Subscribe Now
-            </Button>
+            {/* Right Column - Text */}
+            <div className="order-1 md:order-2">
+              <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+                As Royal Arch Companions we are all members of the ONUS team. In the 
+                words of Shakespeare "one man in his time plays many parts" and you 
+                might well be a Candidate's Proposer and Personal Mentor and at the 
+                same time the Chapter Director of Ceremonies or perhaps a Royal Arch 
+                Representative in your Craft Lodge. A similar set of circumstances 
+                could equally apply to other Chapter Officers.
+              </p>
+              <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+                In the ONUS system, whatever part, or parts we may play dovetail 
+                together so that no one individual carries the responsibility for 
+                looking after their fellow Companions. The onus is with us all.
+              </p>
+              <button className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors">
+                Learn more
+                <span>→</span>
+              </button>
+            </div>
           </div>
+        </div>
+      </section>
+
+      <section className="bg-gray-50">
+        <div className="mx-auto">
+          <img
+            src="/border.png"
+            alt="woven border"
+            className="w-full"
+            fetchPriority="high"
+          />
         </div>
       </section>
 

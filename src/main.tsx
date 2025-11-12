@@ -30,6 +30,7 @@ import EventPost from './pages/EventPost'
 import CreateEvent from './pages/CreateEvent';
 import EventsListPage from './pages/EventsListPage';
 import EditEvent from './pages/EditEventPage';
+import Exaltations from './pages/Exaltations'
 
 
 const router = createBrowserRouter([
@@ -49,6 +50,7 @@ const router = createBrowserRouter([
       { path: 'booking/success', element: <BookingSuccess /> },
       { path: 'events', element: <Events /> },     
       { path: 'events/:slug', element: <EventPost /> },
+      { path: 'exaltations', element: <Exaltations /> },
       { path: 'posts', element: <BlogIndex /> },
       { path: 'post/:slug', element: <BlogPost /> },
       { path: 'contact', element: <Contact /> },
