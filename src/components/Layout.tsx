@@ -8,29 +8,23 @@ export default function Layout() {
   const { pathname } = useLocation()
   const isHome = pathname === '/'
   const titles: Record<string, string> = {
-    '/': 'Tarot Pathwork — Kabbalah, Tarot & Spiritual Sovereignty',
-    '/about': 'About — Tarot Pathwork',
-    '/readings': 'Tarot Readings — Book a Session',
-    '/post': 'Blog — Insights & Teachings',
-    '/contact': 'Contact — Get in Touch',
+    '/': 'Home | Sussex Royal Arch',
+    '/posts': 'Articles | Sussex Royal Arch',
+    '/contact': 'Sussex Royal Arch - Contact',
   }
   return (
     <div className="min-h-screen bg-white text-slate-900">
       <SEO
-        title={titles[pathname] ?? 'Tarot Pathwork'}
-        description="Kabbalah-rooted tarot, angelic correspondences, and sovereign spiritual practice."
+        title={titles[pathname] ?? 'Sussex Royal Arch'}
+        description="Royal Arch Freemasonry in Sussex."
         // Default Organization JSON-LD on every page:
         jsonLd={[
           {
             "@context":"https://schema.org",
             "@type":"Organization",
-            "name":"Tarot Pathwork",
-            "url":"https://www.yourdomain.com",
-            "logo":"https://www.yourdomain.com/og/logo.png",
-            "sameAs":[
-              "https://www.tiktok.com/@tarotpathwork",
-              "https://www.youtube.com/@tarotpathwork"
-            ]
+            "name":"Sussex Royal Arch",
+            "url":"https://www.sussexroyalarch.co.uk/",
+            "logo":"https://www.sussexroyalarch.co.uk//og/logo.png",
           }
         ]}
       />
