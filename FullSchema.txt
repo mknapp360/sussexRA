@@ -1,90 +1,20 @@
 -- WARNING: This schema is for context only and is not meant to be run.
 -- Table order and constraints may not be valid for execution.
 
-CREATE TABLE public.birth_charts (
+CREATE TABLE public.events (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
-  user_id uuid NOT NULL UNIQUE,
-  birth_date_time timestamp with time zone NOT NULL,
-  birth_city text NOT NULL,
-  birth_country text NOT NULL,
-  birth_latitude numeric NOT NULL,
-  birth_longitude numeric NOT NULL,
-  birth_timezone text NOT NULL,
-  natal_planets jsonb NOT NULL,
-  ascendant_sign text NOT NULL,
-  ascendant_degree numeric NOT NULL,
-  midheaven_sign text NOT NULL,
-  midheaven_degree numeric NOT NULL,
-  house_cusps ARRAY NOT NULL,
-  created_at timestamp with time zone NOT NULL DEFAULT now(),
-  updated_at timestamp with time zone NOT NULL DEFAULT now(),
-  natal_aspects jsonb DEFAULT '[]'::jsonb,
-  planetary_positions jsonb DEFAULT '{}'::jsonb,
-  CONSTRAINT birth_charts_pkey PRIMARY KEY (id),
-  CONSTRAINT birth_charts_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id)
-);
-CREATE TABLE public.post_views (
-  id uuid NOT NULL DEFAULT gen_random_uuid(),
-  post_id uuid NOT NULL,
-  viewed_at timestamp with time zone NOT NULL DEFAULT now(),
-  user_id uuid,
-  ip_address text,
-  CONSTRAINT post_views_pkey PRIMARY KEY (id),
-  CONSTRAINT post_views_post_id_fkey FOREIGN KEY (post_id) REFERENCES public.posts(id)
-);
-CREATE TABLE public.posts (
-  id uuid NOT NULL DEFAULT gen_random_uuid(),
-  title text NOT NULL,
-  content text NOT NULL,
-  author_id uuid NOT NULL,
-  published boolean DEFAULT false,
-  slug text UNIQUE,
-  excerpt text,
-  featured_image text,
+  slug text NOT NULL UNIQUE,
+  event_title text NOT NULL,
+  event_date text NOT NULL,
+  event_time text NOT NULL,
+  event_location_name text NOT NULL,
+  event_image text,
+  event_address text NOT NULL,
+  event_info text NOT NULL,
+  rsvp_url text,
+  rsvp_contact text,
+  published boolean DEFAULT true,
   created_at timestamp with time zone DEFAULT now(),
   updated_at timestamp with time zone DEFAULT now(),
-  published_at timestamp with time zone,
-  cover_image text,
-  tags ARRAY DEFAULT '{}'::text[],
-  view_count integer DEFAULT 0,
-  meta_description text,
-  meta_keywords ARRAY,
-  like_count integer DEFAULT 0,
-  last_ga_sync timestamp with time zone,
-  CONSTRAINT posts_pkey PRIMARY KEY (id),
-  CONSTRAINT posts_author_id_fkey FOREIGN KEY (author_id) REFERENCES auth.users(id)
-);
-CREATE TABLE public.readings (
-  id uuid NOT NULL DEFAULT gen_random_uuid(),
-  user_id uuid DEFAULT auth.uid(),
-  question text DEFAULT ''::text,
-  cards jsonb,
-  interpretation text DEFAULT ''::text,
-  created_at timestamp with time zone NOT NULL DEFAULT now(),
-  CONSTRAINT readings_pkey PRIMARY KEY (id)
-);
-CREATE TABLE public.subscribers (
-  id uuid NOT NULL DEFAULT uuid_generate_v4(),
-  first_name text,
-  last_name text,
-  email text NOT NULL UNIQUE,
-  phone text,
-  message text,
-  source text DEFAULT 'contact_form'::text,
-  created_at timestamp with time zone DEFAULT now(),
-  subscribed boolean DEFAULT true,
-  CONSTRAINT subscribers_pkey PRIMARY KEY (id)
-);
-CREATE TABLE public.transit_readings (
-  id uuid NOT NULL DEFAULT gen_random_uuid(),
-  user_id uuid NOT NULL,
-  birth_chart_id uuid NOT NULL,
-  transit_date timestamp with time zone NOT NULL DEFAULT now(),
-  transit_planets jsonb NOT NULL,
-  transit_aspects jsonb NOT NULL,
-  personalized_message jsonb NOT NULL,
-  created_at timestamp with time zone NOT NULL DEFAULT now(),
-  CONSTRAINT transit_readings_pkey PRIMARY KEY (id),
-  CONSTRAINT transit_readings_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id),
-  CONSTRAINT transit_readings_birth_chart_id_fkey FOREIGN KEY (birth_chart_id) REFERENCES public.birth_charts(id)
+  CONSTRAINT events_pkey PRIMARY KEY (id)
 );

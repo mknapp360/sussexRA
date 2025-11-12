@@ -27,6 +27,9 @@ import PostsListPage from './pages/PostsListPage';
 import BookingSuccess from './pages/booking/success';
 import Events from './pages/Events'
 import EventPost from './pages/EventPost'
+import CreateEvent from './pages/CreateEvent';
+import EventsListPage from './pages/EventsListPage';
+import EditEvent from './pages/EditEventPage';
 
 
 const router = createBrowserRouter([
@@ -44,7 +47,7 @@ const router = createBrowserRouter([
       { path: 'readings/four-session-block', element: <FourBlock /> },
       { path: 'readings/talisman', element: <Talisman /> },
       { path: 'booking/success', element: <BookingSuccess /> },
-      { path: 'events', element: <Events /> },
+      { path: 'events', element: <Events /> },     
       { path: 'events/:slug', element: <EventPost /> },
       { path: 'posts', element: <BlogIndex /> },
       { path: 'post/:slug', element: <BlogPost /> },
@@ -65,6 +68,9 @@ const router = createBrowserRouter([
       { path: 'posts', element: <PostsListPage /> },
       { path: 'posts/new', element: <CreatePostPage /> },
       { path: 'posts/:id/edit', element: <EditPostPage /> },
+      { path: 'events', element: <EventsListPage /> }, 
+      { path: 'events/new', element: <CreateEvent /> },
+      { path: 'events/:id/edit', element: <EditEvent /> },
     ],
   },
 ])
