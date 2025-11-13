@@ -70,37 +70,33 @@ export default function Contact() {
   const jsonLd = [{
     '@context': 'https://schema.org',
     '@type': 'ContactPage',
-    'name': 'Contact — Tarot Pathwork',
-    'url': 'https://www.tarotpathwork.com/contact',
+    'name': 'Contact | Sussex Royal Arch',
+    'url': 'https://www.sussexroyalarch.co.uk/contact',
     'mainEntity': {
       '@type': 'Organization',
-      'name': 'Tarot Pathwork',
-      'email': 'fraterlucis@tarotpathwork.com'
+      'name': 'Sussex Royal Arch',
+      'email': 'martinknapp@sussexmasons.org.uk'
     }
   }]
 
   return (
     <>
       <SEO
-        title="Contact — Tarot Pathwork"
-        description="Book a session or ask a question. All sessions are confidential."
+        title="Contact | Sussex Royal Arch"
+        description="Do you want to attend a Royal Arch meeting or create an event?."
         jsonLd={jsonLd}
       />
 
-      <section className="min-h-screen bg-background">
+      <section className="min-h-screen mt-16 bg-background">
         <div className="mx-auto max-w-7xl px-4 py-12 lg:py-20">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             {/* Left copy block */}
             <div>
               <h1 className="font-display text-4xl sm:text-5xl text-headerText tracking-tight">
-                If you would like a session<br />or have a question…
+                Do you want to attend a<br />meeting or create an event?
               </h1>
               <p className="mt-8 text-lg text-muted-foreground">
-                Just drop your email address and a brief message of your main concern.
-                All sessions are confidential.
-              </p>
-              <p className="mt-8 text-lg text-muted-foreground">
-                If you would prefer to message me, send a DM at any of the links in the header.
+                Fill out the form, and we will book you into the chapter you would like to attend, or help you get the word out about your chapter event. 
               </p>
             </div>
 

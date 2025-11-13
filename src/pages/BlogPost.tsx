@@ -109,12 +109,12 @@ export default function BlogPost() {
       <header className="border-b border-border bg-background backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={() => navigate('/post')}>
+            <Button variant="ghost" size="icon" onClick={() => navigate('/posts')}>
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <div className="text-center flex-1">
-              <h1 className="font-serif text-2xl md:text-3xl font-bold bg-gradient-to-r from-yellow-700 via-yellow-500 to-yellow-600 bg-clip-text text-transparent">
-                Tarot Pathwork
+              <h1 className="font-serif text-2xl md:text-3xl font-bold bg-gradient-to-r from-red-600 to-red-700 bg-clip-text text-transparent">
+                Sussex Royal Arch
               </h1>
             </div>
           </div>
@@ -204,10 +204,10 @@ export default function BlogPost() {
         <div className="mt-12 border-t pt-8">
           <div className="bg-gradient-to-r from-tpblue/10 to-tpgold/10 rounded-2xl p-8 text-center">
             <h3 className="text-2xl font-display font-bold mb-3">
-              Want more insights like this?
+              Stay updated with the latest Provincial news.
             </h3>
             <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-              Subscribe to receive new articles, spiritual teachings, and updates on Kabbalistic wisdom delivered to your inbox.
+              Subscribe to receive new articles direct to your inbox.
             </p>
             <Button 
               onClick={() => setShowSubscribe(true)}
@@ -263,7 +263,7 @@ export default function BlogPost() {
 
         {/* Back Button */}
         <div className="mt-12 pt-8 border-t border-border">
-          <Button onClick={() => navigate('/post')} variant="outline">
+          <Button onClick={() => navigate('/posts')} variant="outline">
             ← Back to Blog
           </Button>
         </div>

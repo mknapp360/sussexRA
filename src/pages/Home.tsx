@@ -112,7 +112,7 @@ const fetchRecentEvents = async () => {
       />
 
       {/* HERO */}
-      <section className="bg-gray-50">
+      <section className="bg-[#f0f0f0]">
         {/* Heading + subheading */}
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="py-12 sm:py-16">
@@ -131,7 +131,7 @@ const fetchRecentEvents = async () => {
           <img
             src="/homeHero2.png"
             alt="Royal Arch regalia"
-            className="w-full h-auto object-cover rounded-2xl shadow"
+            className="w-full h-auto object-cover"
             fetchPriority="high"
           />
         </div>
@@ -184,42 +184,46 @@ const fetchRecentEvents = async () => {
             <>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {recentEvents.map((event) => (
-                  <Link
-                    key={event.id}
-                    to={`/events/${event.slug}`}
-                    className="group block"
-                  >
-                    <article className="h-full flex flex-col">
-                      {event.event_image && (
-                        <div className="relative aspect-video overflow-hidden rounded-lg mb-4 bg-slate-100">
-                          <img 
-                            src={event.event_image}
-                            alt={event.event_title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
-                        </div>
-                      )}
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 text-sm text-slate-500 mb-2">
-                          <Calendar className="w-4 h-4" />
-                          <span>{event.event_date}</span>
-                        </div>
-                        <h3 className="text-xl font-medium text-slate-900 group-hover:text-tpblue transition-colors mb-2">
-                          {event.event_title}
-                        </h3>
-                        <p className="text-slate-600 text-sm mb-2">
-                          📍 {event.event_location_name}
-                        </p>
-                        <p className="text-slate-600 text-sm line-clamp-2">
-                          {event.event_info.replace(/<[^>]*>/g, '')}
-                        </p>
-                      </div>
-                      <div className="mt-4 flex items-center text-tpblue group-hover:text-tpgold transition-colors">
-                        <span className="text-sm font-medium">View details</span>
-                        <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    </article>
-                  </Link>
+                  <Card className="bg-[#f0f0f0] hover:shadow-lg transition-shadow">
+                    <CardContent className="p-8">
+                      <Link
+                        key={event.id}
+                        to={`/events/${event.slug}`}
+                        className="group block"
+                      >
+                        <article className="h-full flex flex-col">
+                          {event.event_image && (
+                            <div className="relative aspect-video overflow-hidden rounded-lg mb-4 bg-slate-100">
+                              <img 
+                                src={event.event_image}
+                                alt={event.event_title}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              />
+                            </div>
+                          )}
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 text-sm text-slate-500 mb-2">
+                              <Calendar className="w-4 h-4" />
+                              <span>{event.event_date}</span>
+                            </div>
+                            <h3 className="text-xl font-medium text-slate-900 group-hover:text-tpblue transition-colors mb-2">
+                              {event.event_title}
+                            </h3>
+                            <p className="text-slate-600 text-sm mb-2">
+                              📍 {event.event_location_name}
+                            </p>
+                            <p className="text-slate-600 text-sm line-clamp-2">
+                              {event.event_info.replace(/<[^>]*>/g, '')}
+                            </p>
+                          </div>
+                          <div className="mt-4 flex items-center text-tpblue group-hover:text-tpgold transition-colors">
+                            <span className="text-sm font-medium">View details</span>
+                            <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                          </div>
+                        </article>
+                      </Link>
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
               <div className="mt-8 text-center sm:hidden">
@@ -252,7 +256,7 @@ const fetchRecentEvents = async () => {
       </section>
 
       {/* Chapters Near You */}
-      <section className="bg-gray-50 pb-16">
+      <section className="bg-white pb-16">
         <div className="mx-auto">
           <img
             src="/provincialMap.png"
@@ -277,11 +281,11 @@ const fetchRecentEvents = async () => {
           <div className="grid gap-8 md:grid-cols-3 max-w-6xl mx-auto">
             {/* Near 1066 */}
             <Card className="bg-[#f0f0f0] hover:shadow-lg transition-shadow">
-              <CardContent className="p-8">
+              <CardContent className="p-8 flex flex-col h-full">
                 <h3 className="text-2xl font-bold mb-6 text-headerText text-center">
                   Near 1066
                 </h3>
-                <ul className="space-y-2 text-center">
+                <ul className="space-y-2 mb-6 text-center flex-1">
                   <li className="text-muted-foreground">Battle</li>
                   <li className="text-muted-foreground">Bexhill</li>
                   <li className="text-muted-foreground">Burwash</li>
@@ -289,7 +293,7 @@ const fetchRecentEvents = async () => {
                   <li className="text-muted-foreground">Rye</li>
                   <li className="text-muted-foreground">St. Leonards</li>
                 </ul>
-                <div className="mt-8 text-center">
+                <div className="mt-auto text-center">
                   <Button variant="outline" className="w-full">
                     See upcoming meetings
                   </Button>
@@ -299,17 +303,17 @@ const fetchRecentEvents = async () => {
 
             {/* Near Brighton */}
             <Card className="bg-[#f0f0f0] hover:shadow-lg transition-shadow">
-              <CardContent className="p-8">
+              <CardContent className="p-8 flex flex-col h-full">
                 <h3 className="text-2xl font-bold mb-6 text-headerText text-center">
                   Near Brighton
                 </h3>
-                <ul className="space-y-2 text-center">
+                <ul className="space-y-2 mb-6 text-center flex-1">
                   <li className="text-muted-foreground">Brighton</li>
                   <li className="text-muted-foreground">Hove</li>
                   <li className="text-muted-foreground">Lewes</li>
                   <li className="text-muted-foreground">Peacehaven</li>
                 </ul>
-                <div className="mt-8 text-center">
+                <div className="mt-auto text-center">
                   <Button variant="outline" className="w-full">
                     See upcoming meetings
                   </Button>
@@ -319,16 +323,16 @@ const fetchRecentEvents = async () => {
 
             {/* Near Chichester */}
             <Card className="bg-[#f0f0f0] hover:shadow-lg transition-shadow">
-              <CardContent className="p-8">
+              <CardContent className="p-8 flex flex-col h-full">
                 <h3 className="text-2xl font-bold mb-6 text-headerText text-center">
                   Near Chichester
                 </h3>
-                <ul className="space-y-2 text-center">
+                <ul className="space-y-2 mb-6 text-center flex-1">
                   <li className="text-muted-foreground">Bognor Regis</li>
                   <li className="text-muted-foreground">Chichester</li>
                   <li className="text-muted-foreground">Midhurst</li>
                 </ul>
-                <div className="mt-8 text-center">
+                <div className="mt-auto text-center">
                   <Button variant="outline" className="w-full">
                     See upcoming meetings
                   </Button>
@@ -338,16 +342,16 @@ const fetchRecentEvents = async () => {
 
             {/* Near Worthing */}
             <Card className="bg-[#f0f0f0] hover:shadow-lg transition-shadow">
-              <CardContent className="p-8">
+              <CardContent className="p-8 flex flex-col h-full">
                 <h3 className="text-2xl font-bold mb-6 text-headerText text-center">
                   Near Worthing
                 </h3>
-                <ul className="space-y-2 text-center">
+                <ul className="space-y-2 mb-6 text-center flex-1">
                   <li className="text-muted-foreground">Littlehampton</li>
                   <li className="text-muted-foreground">Pullborough</li>
                   <li className="text-muted-foreground">Worthing</li>
                 </ul>
-                <div className="mt-8 text-center">
+                <div className="mt-auto text-center">
                   <Button variant="outline" className="w-full">
                     See upcoming meetings
                   </Button>
@@ -357,17 +361,17 @@ const fetchRecentEvents = async () => {
 
             {/* Near Crawley */}
             <Card className="bg-[#f0f0f0] hover:shadow-lg transition-shadow">
-              <CardContent className="p-8">
+              <CardContent className="p-8 flex flex-col h-full">
                 <h3 className="text-2xl font-bold mb-6 text-headerText text-center">
                   Near Crawley
                 </h3>
-                <ul className="space-y-2 text-center">
+                <ul className="space-y-2 mb-6 text-center flex-1">
                   <li className="text-muted-foreground">Crawley</li>
                   <li className="text-muted-foreground">East Grinstead</li>
                   <li className="text-muted-foreground">Horsham</li>
                   <li className="text-muted-foreground">Pullborough</li>
                 </ul>
-                <div className="mt-8 text-center">
+                <div className="mt-auto text-center">
                   <Button variant="outline" className="w-full">
                     See upcoming meetings
                   </Button>
@@ -377,17 +381,17 @@ const fetchRecentEvents = async () => {
 
             {/* Near Eastbourne */}
             <Card className="bg-[#f2f2f2] hover:shadow-lg transition-shadow">
-              <CardContent className="p-8">
+              <CardContent className="p-8 flex flex-col h-full">
                 <h3 className="text-2xl font-bold mb-6 text-headerText text-center">
                   Near Eastbourne
                 </h3>
-                <ul className="space-y-2 text-center">
+                <ul className="space-y-2 mb-6 text-center flex-1">
                   <li className="text-muted-foreground">Eastbourne</li>
                   <li className="text-muted-foreground">Herstmonceux</li>
                   <li className="text-muted-foreground">Lewes</li>
                   <li className="text-muted-foreground">Uckfield</li>
                 </ul>
-                <div className="mt-8 text-center">
+                <div className="mt-auto text-center">
                   <Button variant="outline" className="w-full">
                     See upcoming meetings
                   </Button>
@@ -497,42 +501,47 @@ const fetchRecentEvents = async () => {
             <>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {recentPosts.map((post) => (
-                  <Link
-                    key={post.id}
-                    to={`/post/${post.slug || post.id}`}
-                    className="group block"
-                  >
-                    <article className="h-full flex flex-col">
-                      {post.cover_image && (
-                        <div className="relative aspect-video overflow-hidden rounded-lg mb-4 bg-slate-100">
-                          <img 
-                            src={post.cover_image}
-                            alt={post.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
-                        </div>
-                      )}
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 text-sm text-slate-500 mb-2">
-                          <Calendar className="w-4 h-4" />
-                          <time dateTime={post.published_at || ''}>
-                            {formatDate(post.published_at)}
-                          </time>
-                        </div>
-                        <h3 className="text-xl font-medium text-slate-900 group-hover:text-tpblue transition-colors mb-2">
-                          {post.title}
-                        </h3>
-                        <p className="text-slate-600 text-sm line-clamp-3">
-                          {getExcerpt(post)}
-                        </p>
-                      </div>
-                      <div className="mt-4 flex items-center text-tpblue group-hover:text-tpgold transition-colors">
-                        <span className="text-sm font-medium">Read more</span>
-                        <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    </article>
-                  </Link>
+                  <Card className="bg-[#f0f0f0] hover:shadow-lg transition-shadow">
+                    <CardContent className="p-8">
+                      <Link
+                        key={post.id}
+                        to={`/post/${post.slug || post.id}`}
+                        className="group block"
+                      >
+                        <article className="h-full flex flex-col">
+                          {post.cover_image && (
+                            <div className="relative aspect-video overflow-hidden rounded-lg mb-4 bg-slate-100">
+                              <img 
+                                src={post.cover_image}
+                                alt={post.title}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              />
+                            </div>
+                          )}
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 text-sm text-slate-500 mb-2">
+                              <Calendar className="w-4 h-4" />
+                              <time dateTime={post.published_at || ''}>
+                                {formatDate(post.published_at)}
+                              </time>
+                            </div>
+                            <h3 className="text-xl font-medium text-slate-900 group-hover:text-tpblue transition-colors mb-2">
+                              {post.title}
+                            </h3>
+                            <p className="text-slate-600 text-sm line-clamp-3">
+                              {getExcerpt(post)}
+                            </p>
+                          </div>
+                          <div className="mt-4 flex items-center text-tpblue hover:text-red-600 ">
+                            <span className="text-sm font-medium">Read more</span>
+                            <ArrowRight className="w-4 h-4 ml-2 hover:text-red-600 transition-transform" />
+                          </div>
+                        </article>
+                      </Link>
+                    </CardContent>
+                  </Card>
                 ))}
+                    
               </div>
               <div className="mt-8 text-center sm:hidden">
                 <Link 

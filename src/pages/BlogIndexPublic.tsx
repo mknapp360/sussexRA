@@ -90,14 +90,11 @@ export default function BlogIndex() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border bg-background backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto mt-16 px-4 py-8">
           <div className="text-center">
-            <h1 className="font-serif text-4xl md:text-5xl font-bold bg-gradient-to-r from-yellow-700 via-yellow-500 to-yellow-600 bg-clip-text text-transparent mb-4">
-              Blog & Teachings
+            <h1 className="font-serif text-4xl md:text-5xl font-bold bg-gradient-to-r from-red-600 via-red-700 to-red-600 bg-clip-text text-transparent mb-4">
+              Articles & Announcements
             </h1>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Explore insights on Kabbalah, Tarot, angelic correspondences, and the path of spiritual sovereignty
-            </p>
           </div>
         </div>
       </header>
