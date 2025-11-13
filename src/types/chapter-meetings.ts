@@ -10,6 +10,7 @@ export type MeetingType = 'regular' | 'exaltation' | 'installation' | 'special';
  * Complete ChapterMeeting interface matching the database schema
  */
 export interface ChapterMeeting {
+  generated_from_rule_id: any;
   id: string;
   chapter_name: string;
   chapter_number: string;

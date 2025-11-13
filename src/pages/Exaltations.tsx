@@ -39,7 +39,7 @@ export default function Exaltations() {
     }
   }
 
-  const handleDateClick = (date: Date, dayMeetings: ChapterMeeting[]) => {
+  const handleDateClick = (_date: Date, dayMeetings: ChapterMeeting[]) => {
     setSelectedMeetings(dayMeetings);
     setShowModal(true);
   };
@@ -62,9 +62,9 @@ export default function Exaltations() {
       />
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-purple-700 to-purple-900 text-white py-16 px-4">
+      <section className="bg-gradient-to-r from-red-600 to-red-700 text-white py-12 px-4">
         <div className="container mx-auto max-w-6xl text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold mt-8 mb-2">
             Sussex Chapter Calendar
           </h1>
           <p className="text-xl text-purple-100">
@@ -78,7 +78,7 @@ export default function Exaltations() {
         <div className="container mx-auto max-w-6xl">
           <p className="text-center text-muted-foreground">
             If you are a Scribe E and don't see your exaltation listed here, make sure to{' '}
-            <a href="/contact" className="text-purple-600 hover:underline font-medium">
+            <a href="/contact" className="text-blue-600 hover:underline font-medium">
               contact us
             </a>{' '}
             so we may add it.

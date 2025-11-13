@@ -28,10 +28,6 @@ export default function Calendar({ meetings, onDateClick, className = '' }: Cale
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
   };
 
-  const goToToday = () => {
-    setCurrentDate(new Date());
-  };
-
   // Generate calendar days
   const calendarDays = useMemo(() => {
     const year = currentDate.getFullYear();
@@ -40,7 +36,6 @@ export default function Calendar({ meetings, onDateClick, className = '' }: Cale
     // First day of the month
     const firstDay = new Date(year, month, 1);
     // Last day of the month
-    const lastDay = new Date(year, month + 1, 0);
     
     // Start from Monday
     const startDate = new Date(firstDay);
@@ -94,7 +89,7 @@ export default function Calendar({ meetings, onDateClick, className = '' }: Cale
   return (
     <div className={`bg-white rounded-lg border shadow-sm ${className}`}>
       {/* Header */}
-      <div className="bg-purple-600 text-white p-4 rounded-t-lg">
+      <div className="bg-red-600 text-white p-4 rounded-t-lg">
         <div className="flex items-center justify-between mb-2">
           <Button
             variant="ghost"
@@ -106,14 +101,7 @@ export default function Calendar({ meetings, onDateClick, className = '' }: Cale
           </Button>
           
           <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={goToToday}
-              className="text-white hover:bg-purple-700 text-sm"
-            >
-              TODAY
-            </Button>
+            
             <h2 className="text-xl font-semibold">
               {MONTHS[currentDate.getMonth()]} {currentDate.getFullYear()}
             </h2>

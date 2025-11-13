@@ -31,6 +31,10 @@ import CreateEvent from './pages/CreateEvent';
 import EventsListPage from './pages/EventsListPage';
 import EditEvent from './pages/EditEventPage';
 import Exaltations from './pages/Exaltations'
+import AdminMeetings from './pages/AdminMeetings'
+import AdminMeetingForm from './pages/AdminMeetingForm'
+import AdminRecurringMeetingForm from './pages/AdminRecurringMeetingForm'
+import AdminLocations from './pages/AdminLocations'
 
 
 const router = createBrowserRouter([
@@ -73,6 +77,12 @@ const router = createBrowserRouter([
       { path: 'events', element: <EventsListPage /> }, 
       { path: 'events/new', element: <CreateEvent /> },
       { path: 'events/:id/edit', element: <EditEvent /> },
+      { path: 'meetings', element: <AdminMeetings /> },
+      { path: 'meetings/new', element: <AdminMeetingForm /> },
+      { path: 'meetings/:id/edit', element: <AdminMeetingForm /> },
+      { path: 'meetings/recurring/new', element: <AdminRecurringMeetingForm /> },
+      { path: 'meetings/recurring/:id/edit', element: <AdminRecurringMeetingForm /> },
+      { path: 'locations', element: <AdminLocations /> },
     ],
   },
 ])
