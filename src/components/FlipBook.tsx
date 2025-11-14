@@ -10,22 +10,67 @@ interface PDFPageProxy {
   render: (params: any) => { promise: Promise<void> };
 }
 
-const FlipbookPage = () => {
+
+interface FlipbookPageProps {
+  pdfUrl?: string;
+}
+
+const FlipbookPage = ({ pdfUrl }: FlipbookPageProps) => {
   const [pages, setPages] = useState<PDFPageProxy[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [isFlipping, setIsFlipping] = useState(false);
   const [zoom, setZoom] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [pdfLibLoaded, setPdfLibLoaded] = useState(false);
   const canvasRefs = useRef<{ [key: number]: HTMLCanvasElement | null }>({});
   const renderingRef = useRef<{ [key: number]: boolean }>({});
+
+  // Load PDF.js library
+  useEffect(() => {
+    const loadPdfLib = async () => {
+      // Check if already loaded
+      if ((window as any)['pdfjs-dist/build/pdf']) {
+        setPdfLibLoaded(true);
+        return;
+      }
+
+      // Load PDF.js library
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+      script.async = true;
+      
+      script.onload = () => {
+        setPdfLibLoaded(true);
+      };
+
+      script.onerror = () => {
+        console.error('Failed to load PDF.js library');
+      };
+
+      document.head.appendChild(script);
+    };
+
+    loadPdfLib();
+  }, []);
 
   // Load PDF and render pages
   const loadPDF = async (url: string) => {
     if (!url) return;
     
+    // Wait for PDF.js library to load
+    if (!pdfLibLoaded) {
+      console.log('Waiting for PDF.js library to load...');
+      setTimeout(() => loadPDF(url), 100);
+      return;
+    }
+    
     setLoading(true);
     try {
       const pdfjsLib = (window as any)['pdfjs-dist/build/pdf'];
+      if (!pdfjsLib) {
+        throw new Error('PDF.js library not loaded');
+      }
+      
       pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
       
       const loadingTask = pdfjsLib.getDocument(url);
@@ -44,6 +89,13 @@ const FlipbookPage = () => {
       setLoading(false);
     }
   };
+
+  // Load PDF when pdfUrl prop changes
+  useEffect(() => {
+    if (pdfUrl) {
+      loadPDF(pdfUrl);
+    }
+  }, [pdfUrl]);
 
   // Render a specific page to canvas
   const renderPage = useCallback(async (pageNum: number, canvas: HTMLCanvasElement | null) => {
@@ -292,8 +344,6 @@ const FlipbookPage = () => {
         }
       `}</style>
 
-      {/* PDF.js Library */}
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     </div>
   );
 };

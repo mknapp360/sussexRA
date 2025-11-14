@@ -6,25 +6,15 @@ import Layout from './components/Layout'
 import AdminLayout from './components/AdminLayout'
 import Home from './pages/Home'
 import About from './pages/About'
-import Readings from './pages/Readings'
-import Resources from './pages/Resources'
-import ResourceDetail from './pages/ResourceDetail';
-import RecordedReading from './pages/readings/RecordedReading'
-import SpiritualSession from './pages/readings/SpiritualSession'
-import FourBlock from './pages/readings/FourSessionBlock'
-import Talisman from './pages/readings/Talisman'
 import BlogIndex from './pages/BlogIndexPublic'
 import BlogPost from './pages/BlogPost'
 import Contact from './pages/Contact'
-import Kabbalah from './pages/Kabbalah'
-import ShemAngels from './pages/ShemAngels'
 import AdminNewPost from './pages/AdminNewPost'
 import AdminDashboard from './pages/AdminDashboard'
 import AuthCallback from './pages/AuthCallback'
 import CreatePostPage from './pages/CreatePostPage';
 import EditPostPage from './pages/EditPostPage';
 import PostsListPage from './pages/PostsListPage';
-import BookingSuccess from './pages/booking/success';
 import Events from './pages/Events'
 import EventPost from './pages/EventPost'
 import CreateEvent from './pages/CreateEvent';
@@ -35,6 +25,12 @@ import AdminMeetings from './pages/AdminMeetings'
 import AdminMeetingForm from './pages/AdminMeetingForm'
 import AdminRecurringMeetingForm from './pages/AdminRecurringMeetingForm'
 import AdminLocations from './pages/AdminLocations'
+import Membership from './pages/Membership'
+import Archway from './pages/Archway'
+import Mentoring from './pages/Mentoring'
+import AdminFlipbooks from './pages/Adminflipbooks'
+import Near1066Meetings from './pages/1066Page'
+import NearBrightonMeetings from './pages/BrightonPage'
 
 
 const router = createBrowserRouter([
@@ -44,22 +40,17 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: 'about', element: <About /> },
-      { path: 'readings', element: <Readings /> },
-      { path: 'spiritual-resources', element: <Resources /> },
-      { path: 'resources/:slug', element: <ResourceDetail />},
-      { path: 'readings/recorded-reading', element: <RecordedReading /> },
-      { path: 'readings/spiritual-session', element: <SpiritualSession /> },
-      { path: 'readings/four-session-block', element: <FourBlock /> },
-      { path: 'readings/talisman', element: <Talisman /> },
-      { path: 'booking/success', element: <BookingSuccess /> },
       { path: 'events', element: <Events /> },     
       { path: 'events/:slug', element: <EventPost /> },
       { path: 'exaltations', element: <Exaltations /> },
       { path: 'posts', element: <BlogIndex /> },
       { path: 'post/:slug', element: <BlogPost /> },
       { path: 'contact', element: <Contact /> },
-      { path: 'kabbalah', element: <Kabbalah /> },
-      { path: 'shem-angels', element: <ShemAngels /> },
+      { path: 'membership', element: <Membership /> },
+      { path: 'archway', element: <Archway /> },
+      { path: 'mentoring', element: <Mentoring /> },
+      { path: '1066-royal-arch', element: <Near1066Meetings /> },
+      { path: 'near-brighton-royal-arch', element: <NearBrightonMeetings /> },
       { path: 'auth/callback', element: <AuthCallback /> },
       // Standalone admin login page (not in AdminLayout)
       { path: 'admin/login', element: <AdminNewPost /> },
@@ -83,6 +74,7 @@ const router = createBrowserRouter([
       { path: 'meetings/recurring/new', element: <AdminRecurringMeetingForm /> },
       { path: 'meetings/recurring/:id/edit', element: <AdminRecurringMeetingForm /> },
       { path: 'locations', element: <AdminLocations /> },
+      { path: 'flipbooks', element: <AdminFlipbooks /> },
     ],
   },
 ])

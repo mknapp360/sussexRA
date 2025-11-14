@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import type { Session } from '@supabase/supabase-js';
-import { LayoutDashboard, FileText, Calendar, LogOut, Menu, X, MapPin } from 'lucide-react';
+import { LayoutDashboard, FileText, Calendar, LogOut, Menu, X, MapPin, BookOpen } from 'lucide-react';
 import { Button } from './ui/button';
 
 export default function AdminLayout() {
@@ -76,6 +76,11 @@ export default function AdminLayout() {
       href: '/admin/locations',
       label: 'Locations',
       icon: MapPin,
+    },
+    {
+      href: '/admin/flipbooks',
+      label: 'Flipbooks',
+      icon: BookOpen,
     },
 
   ];

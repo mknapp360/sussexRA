@@ -10,7 +10,6 @@ export type MeetingType = 'regular' | 'exaltation' | 'installation' | 'special';
  * Complete ChapterMeeting interface matching the database schema
  */
 export interface ChapterMeeting {
-  generated_from_rule_id: any;
   id: string;
   chapter_name: string;
   chapter_number: string;
@@ -21,6 +20,9 @@ export interface ChapterMeeting {
   meeting_contact: string | null;
   meeting_type: MeetingType;
   published: boolean;
+  area: string | null; // Area filter (e.g., "1066", "Brighton", "Chichester", "Worthing", "Crawley", "Eastbourne")
+  location_id?: string | null;
+  generated_from_rule_id?: string | null;
   created_at: string;
   updated_at?: string;
 }

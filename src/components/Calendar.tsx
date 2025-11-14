@@ -8,6 +8,7 @@ interface CalendarProps {
   meetings: ChapterMeeting[];
   onDateClick?: (date: Date, meetings: ChapterMeeting[]) => void;
   className?: string;
+  areaFilter?: string | null; // Optional area filter (e.g., "1066", "Brighton", "Chichester")
 }
 
 const DAYS_OF_WEEK = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -16,8 +17,18 @@ const MONTHS = [
   'July', 'August', 'September', 'October', 'November', 'December'
 ];
 
-export default function Calendar({ meetings, onDateClick, className = '' }: CalendarProps) {
+export default function Calendar({ meetings, onDateClick, className = '', areaFilter = null }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
+
+  // Filter meetings by area if areaFilter is provided
+  const filteredMeetings = useMemo(() => {
+    if (!areaFilter) return meetings;
+    
+    return meetings.filter(meeting => {
+      const meetingArea = (meeting as any).area;
+      return meetingArea && meetingArea.toLowerCase() === areaFilter.toLowerCase();
+    });
+  }, [meetings, areaFilter]);
 
   // Navigation functions
   const goToPreviousMonth = () => {
@@ -26,6 +37,10 @@ export default function Calendar({ meetings, onDateClick, className = '' }: Cale
 
   const goToNextMonth = () => {
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+  };
+
+  const goToToday = () => {
+    setCurrentDate(new Date());
   };
 
   // Generate calendar days
@@ -58,7 +73,7 @@ export default function Calendar({ meetings, onDateClick, className = '' }: Cale
       const isToday = date.getTime() === today.getTime();
       
       // Filter meetings for this date
-      const dayMeetings = meetings.filter(m => m.meeting_date === dateString);
+      const dayMeetings = filteredMeetings.filter(m => m.meeting_date === dateString);
       
       days.push({
         date,
@@ -70,7 +85,7 @@ export default function Calendar({ meetings, onDateClick, className = '' }: Cale
     }
     
     return days;
-  }, [currentDate, meetings]);
+  }, [currentDate, filteredMeetings]);
 
   // Get meeting color based on type
   const getMeetingColor = (type: string) => {
@@ -89,7 +104,7 @@ export default function Calendar({ meetings, onDateClick, className = '' }: Cale
   return (
     <div className={`bg-white rounded-lg border shadow-sm ${className}`}>
       {/* Header */}
-      <div className="bg-red-600 text-white p-4 rounded-t-lg">
+      <div className="bg-purple-600 text-white p-4 rounded-t-lg">
         <div className="flex items-center justify-between mb-2">
           <Button
             variant="ghost"
@@ -101,7 +116,14 @@ export default function Calendar({ meetings, onDateClick, className = '' }: Cale
           </Button>
           
           <div className="flex items-center gap-3">
-            
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={goToToday}
+              className="text-white hover:bg-purple-700 text-sm"
+            >
+              TODAY
+            </Button>
             <h2 className="text-xl font-semibold">
               {MONTHS[currentDate.getMonth()]} {currentDate.getFullYear()}
             </h2>

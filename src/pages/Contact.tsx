@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import SEO from '../components/SEO'
+import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
 import { Label } from '../components/ui/label'
@@ -87,9 +88,11 @@ export default function Contact() {
         jsonLd={jsonLd}
       />
 
-      <section className="min-h-screen mt-16 bg-background">
+      <section className="min-h-screen bg-[#f0f0f0] mt-16 ">
         <div className="mx-auto max-w-7xl px-4 py-12 lg:py-20">
-          <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
+          <Card>
+            <CardContent>
+          <div className="grid gap-12 lg:grid-cols-2 pt-8 lg:gap-16">
             {/* Left copy block */}
             <div>
               <h1 className="font-display text-4xl sm:text-5xl text-headerText tracking-tight">
@@ -183,6 +186,8 @@ export default function Contact() {
               </Button>
             </form>
           </div>
+          </CardContent>
+          </Card>
         </div>
       </section>
     </>

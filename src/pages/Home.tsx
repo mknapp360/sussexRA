@@ -294,9 +294,13 @@ const fetchRecentEvents = async () => {
                   <li className="text-muted-foreground">St. Leonards</li>
                 </ul>
                 <div className="mt-auto text-center">
-                  <Button variant="outline" className="w-full">
-                    See upcoming meetings
-                  </Button>
+                  <Link
+                    to={`/1066-royal-arch`}
+                    >
+                    <Button variant="outline" className="w-full">
+                      See upcoming meetings
+                    </Button>
+                  </Link>
                 </div>
               </CardContent>
             </Card>
