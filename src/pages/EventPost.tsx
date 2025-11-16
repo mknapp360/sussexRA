@@ -125,20 +125,30 @@ export default function EventPost() {
           dangerouslySetInnerHTML={{ __html: event.event_info }}
         />
 
-        {/* RSVP Button - Centered Above Image */}
-        <div className="flex justify-center mb-8">
-          <Button
-            size="lg"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-12"
-            onClick={() => {
-              if (event.rsvp_url) {
-                window.open(event.rsvp_url, '_blank');
-              }
-            }}
-          >
-            RSVP
-          </Button>
-        </div>
+        {/* Contact for RSVP (if no URL but has contact) - Show above image */}
+        {!event.rsvp_url && event.rsvp_contact && (
+          <div className="mb-8 p-6 bg-blue-50 rounded-lg">
+            <p className="text-sm font-medium text-blue-900 mb-2">
+              To RSVP for this event, please contact:
+            </p>
+            <p className="text-blue-700">{event.rsvp_contact}</p>
+          </div>
+        )}
+
+        {/* RSVP Button - Centered Above Image (only if rsvp_url exists) */}
+        {event.rsvp_url && (
+          <div className="flex justify-center mb-8">
+            <Button
+              size="lg"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-12"
+              onClick={() => {
+                window.open(event.rsvp_url!, '_blank');
+              }}
+            >
+              RSVP
+            </Button>
+          </div>
+        )}
 
         {/* Event Image - Below Info */}
         {event.event_image && (
@@ -150,36 +160,6 @@ export default function EventPost() {
             />
           </div>
         )}
-
-        {/* Time & Location Section */}
-        <div className="bg-slate-50 rounded-lg p-8 mb-8">
-          <h2 className="text-2xl font-bold mb-6">Time & Location</h2>
-          
-          <div className="space-y-3 mb-6">
-            <p className="text-foreground">
-              {event.event_date}, {event.event_time}
-            </p>
-            <p className="text-foreground font-medium">
-              {event.event_location_name}
-            </p>
-            <p className="text-muted-foreground">
-              {event.event_address}
-            </p>
-          </div>
-
-          {/* RSVP Button in Box */}
-          <Button
-            size="lg"
-            className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto px-12"
-            onClick={() => {
-              if (event.rsvp_url) {
-                window.open(event.rsvp_url, '_blank');
-              }
-            }}
-          >
-            RSVP
-          </Button>
-        </div>
 
         {/* Map Placeholder */}
         <div className="bg-slate-100 rounded-lg p-8 mb-8 min-h-[300px] flex items-center justify-center">
@@ -228,16 +208,6 @@ export default function EventPost() {
             </a>
           </div>
         </div>
-
-        {/* Contact for RSVP (if no URL) */}
-        {!event.rsvp_url && event.rsvp_contact && (
-          <div className="mt-8 p-6 bg-blue-50 rounded-lg">
-            <p className="text-sm font-medium text-blue-900 mb-2">
-              To RSVP for this event, please contact:
-            </p>
-            <p className="text-blue-700">{event.rsvp_contact}</p>
-          </div>
-        )}
       </article>
 
       {/* Back to Events */}

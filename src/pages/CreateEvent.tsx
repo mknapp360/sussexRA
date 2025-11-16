@@ -7,10 +7,11 @@ import { Calendar } from '../components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '../components/ui/popover';
 import { supabase } from '../lib/supabase';
 import { useToast } from '../hooks/use-toast';
-import { ArrowLeft, Save, CalendarIcon } from 'lucide-react';
+import { ArrowLeft, Save, CalendarIcon, Upload, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { cn } from '../lib/utils';
+import LocationSelector from '../components/LocationSelector';
 
 export default function CreateEvent() {
   // HOOKS
@@ -25,11 +26,15 @@ export default function CreateEvent() {
   const [eventTime, setEventTime] = useState('');
   const [eventLocationName, setEventLocationName] = useState('');
   const [eventAddress, setEventAddress] = useState('');
+  const [selectedLocationId, setSelectedLocationId] = useState<string | null>(null);
   const [eventImage, setEventImage] = useState('');
   const [eventInfo, setEventInfo] = useState('');
   const [rsvpUrl, setRsvpUrl] = useState('');
   const [rsvpContact, setRsvpContact] = useState('');
   const [saving, setSaving] = useState(false);
+  const [coverImage, setCoverImage] = useState('');
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const generateSlug = (text: string) => {
     return text
@@ -45,6 +50,82 @@ export default function CreateEvent() {
     if (!slug || slug === generateSlug(eventTitle)) {
       setSlug(generateSlug(newTitle));
     }
+  };
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+      toast({
+        title: 'Invalid file type',
+        description: 'Please upload a JPEG, PNG, WebP, or GIF image',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    // Validate file size (5MB limit)
+    const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+    if (file.size > maxSize) {
+      toast({
+        title: 'File too large',
+        description: 'Image must be less than 5MB',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setUploadingImage(true);
+
+    try {
+      // Create unique filename
+      const fileExt = file.name.split('.').pop();
+      const fileName = `event-covers/${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+
+      // Upload to Supabase Storage
+      const { error: uploadError } = await supabase.storage
+        .from('event-images')
+        .upload(fileName, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (uploadError) {
+        console.error('Upload error:', uploadError);
+        throw new Error('Failed to upload image');
+      }
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('event-images')
+        .getPublicUrl(fileName);
+
+      setCoverImage(publicUrl);
+      setImagePreview(publicUrl);
+
+      toast({
+        title: 'Image uploaded',
+        description: 'Your event image has been uploaded successfully',
+      });
+    } catch (error: any) {
+      console.error('Error uploading image:', error);
+      toast({
+        title: 'Upload failed',
+        description: error.message || 'Failed to upload image',
+        variant: 'destructive',
+      });
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  // Remove uploaded image
+  const handleRemoveImage = () => {
+    setCoverImage('');
+    setImagePreview(null);
   };
 
   const handleSave = async () => {
@@ -142,7 +223,8 @@ export default function CreateEvent() {
           event_time: eventTime,
           event_location_name: eventLocationName,
           event_address: eventAddress,
-          event_image: eventImage || null,
+          location_id: selectedLocationId || null,
+          event_image: coverImage || eventImage || null,
           event_info: eventInfo,
           rsvp_url: rsvpUrl || null,
           rsvp_contact: rsvpContact || null,
@@ -158,7 +240,6 @@ export default function CreateEvent() {
         description: 'Your event has been saved as a draft',
       });
 
-      // Navigate to events list (you'll need to create this)
       navigate('/admin/events');
 
     } catch (error: any) {
@@ -192,15 +273,52 @@ export default function CreateEvent() {
                 <p className="text-sm text-muted-foreground">Add a new event to the calendar</p>
               </div>
             </div>
-            
-            <Button 
-              onClick={handleSave} 
-              disabled={saving}
-              className="gap-2"
-            >
-              <Save className="w-4 h-4" />
-              {saving ? 'Saving...' : 'Save Draft'}
-            </Button>
+
+            {/* Image Upload Section */}
+            <div className="flex items-center gap-2">
+              {imagePreview && (
+                <div className="relative">
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="h-10 w-10 rounded object-cover"
+                  />
+                  <button
+                    onClick={handleRemoveImage}
+                    className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground rounded-full p-0.5 hover:bg-destructive/90"
+                    type="button"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+                id="cover-upload"
+                disabled={uploadingImage}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => document.getElementById('cover-upload')?.click()}
+                disabled={uploadingImage}
+              >
+                <Upload className="h-4 w-4 mr-2" />
+                {uploadingImage ? 'Uploading...' : 'Upload Cover'}
+              </Button>
+              <Button 
+                onClick={handleSave} 
+                disabled={saving}
+                className="gap-2"
+              >
+                <Save className="w-4 h-4" />
+                {saving ? 'Saving...' : 'Save Draft'}
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -267,7 +385,6 @@ export default function CreateEvent() {
                       onSelect={(date) => {
                         setSelectedDate(date);
                         if (date) {
-                          // Set the display date in a nice format
                           setEventDate(format(date, 'EEEE do MMMM yyyy'));
                         }
                       }}
@@ -296,33 +413,20 @@ export default function CreateEvent() {
               </div>
             </div>
 
-            {/* Location Name and Address */}
-            <div className="space-y-2">
-              <Label htmlFor="location-name">
-                Location Name <span className="text-red-500">*</span>
-              </Label>
-              <Input
-                id="location-name"
-                placeholder="Horsham Masonic Hall"
-                value={eventLocationName}
-                onChange={(e) => setEventLocationName(e.target.value)}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="event-address">
-                Full Address <span className="text-red-500">*</span>
-              </Label>
-              <Input
-                id="event-address"
-                placeholder="Denne Road, Horsham, West Sussex, RH12 1JF"
-                value={eventAddress}
-                onChange={(e) => setEventAddress(e.target.value)}
-              />
-              <p className="text-xs text-muted-foreground">
-                This will be used for the map and location details
-              </p>
-            </div>
+            {/* Location Selector */}
+            <LocationSelector
+              selectedLocationId={selectedLocationId}
+              manualLocationName={eventLocationName}
+              manualAddress={eventAddress}
+              onLocationSelect={(locationId) => {
+                setSelectedLocationId(locationId);
+              }}
+              onManualChange={(locationName, address) => {
+                setEventLocationName(locationName);
+                setEventAddress(address);
+              }}
+              required={true}
+            />
 
             {/* Event Image */}
             <div className="space-y-2">

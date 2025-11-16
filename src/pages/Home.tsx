@@ -95,7 +95,7 @@ const fetchRecentEvents = async () => {
     })
   }
 
-  const [showVideo, setShowVideo] = useState(false);
+  
   const [showSubscribe, setShowSubscribe] = useState(false);
 
   return (
@@ -482,7 +482,7 @@ const fetchRecentEvents = async () => {
               </p>
             </div>
             <Link 
-              to="/post" 
+              to="/posts" 
               className="hidden sm:flex items-center gap-2 text-tpblue hover:text-tpgold transition-colors"
             >
               View all posts
@@ -567,62 +567,7 @@ const fetchRecentEvents = async () => {
 
       
 
-      {/* 
-       Deeper Info Section *
-      <section className="bg-tpblue mx-auto px-4 sm:px-6 lg:px-8 text-white">
-        <div className="grid sm:grid-cols-3 gap-6 py-16 text-white">
-          {[
-            {title:'Kabbalah', body:'Living Tree insights and angelic correspondences.'},
-            {title:'Tarot Pathwork', body:'Structured spreads for clarity and action.'},
-            {title:'Courses', body:'Self-paced modules with weekly Q&A (coming soon).'},
-          ].map((c, i) => (
-            <div key={i} className="p-6 rounded-2xl border hover:shadow-sm">
-              <h3 className="text-lg font-medium">{c.title}</h3>
-              <p className="mt-2 text-white">{c.body}</p>
-            </div>
-          ))}
-        </div>
-      </section> */}
-
-      {showVideo && (
-  <div
-    className="fixed inset-0 z-[70] flex items-center justify-center"
-    aria-modal="true"
-    role="dialog"
-  >
-    {/* Backdrop */}
-    <div
-      className="absolute inset-0 bg-black/70 backdrop-blur-sm"
-      onClick={() => setShowVideo(false)}
-    />
-
-    {/* Modal panel */}
-    <div className="relative z-10 w-[92vw] max-w-3xl rounded-2xl border border-white/10 bg-[#0b0f1f] shadow-2xl">
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
-        <h3 className="text-tpwhite/90 font-medium">What is an Emanation?</h3>
-        <button
-          onClick={() => setShowVideo(false)}
-          className="rounded-lg px-2 py-1 text-tpwhite/70 hover:text-tpwhite hover:bg-white/10"
-          aria-label="Close"
-        >
-          ✕
-        </button>
-      </div>
-
-      {/* Video */}
-      <div className="aspect-video w-full">
-        <iframe
-          className="h-full w-full rounded-b-2xl"
-          src="https://www.youtube.com/embed/xYf8ocy6bdY?autoplay=1&rel=0&modestbranding=1"
-          title="What is an Emanation?"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowFullScreen
-        />
-      </div>
-    </div>
-  </div>
-)}
+      
 
       {/* Subscribe Modal */}
       <SubscribeModal 
