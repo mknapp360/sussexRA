@@ -32,7 +32,7 @@ export default function Navbar() {
       <NavLink to="/mentoring"   className={({ isActive }) => `${link} ${isActive ? active : ""}`} onClick={onClick}>Mentoring</NavLink>
       <NavLink to="/contact"     className={({ isActive }) => `${link} ${isActive ? active : ""}`} onClick={onClick}>Contact</NavLink>
 
-      <div className="hidden md:block w-px h-6 bg-gray-300 mx-2" />
+ {/*     <div className="hidden md:block w-px h-6 bg-gray-300 mx-2" />
 
       <div className="flex items-center gap-2">
         <a href="https://www.tiktok.com/@tarotpathwork" target="_blank" rel="noopener" className="opacity-80 hover:opacity-100" aria-label="TikTok">
@@ -44,7 +44,7 @@ export default function Navbar() {
         <a href="https://www.youtube.com/@tarotpathwork" target="_blank" rel="noopener" className="opacity-80 hover:opacity-100" aria-label="YouTube">
           <img src="/youtube-onBrand.png" alt="" className="w-6 h-6 object-contain" />
         </a>
-      </div>
+      </div> */}
     </>
   );
 
