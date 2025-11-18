@@ -161,16 +161,6 @@ export default function EventPost() {
           </div>
         )}
 
-        {/* Map Placeholder */}
-        <div className="bg-slate-100 rounded-lg p-8 mb-8 min-h-[300px] flex items-center justify-center">
-          <div className="text-center">
-            <p className="text-muted-foreground mb-4">Map Integration</p>
-            <p className="text-sm text-muted-foreground">
-              {event.event_address}
-            </p>
-          </div>
-        </div>
-
         {/* Share Section */}
         <div className="border-t pt-8">
           <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">

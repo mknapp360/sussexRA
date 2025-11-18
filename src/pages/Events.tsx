@@ -37,7 +37,7 @@ export default function Events() {
         .from('events')
         .select('*')
         .eq('published', true)
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: true });
 
       if (error) throw error;
       setEvents((data as Event[]) || []);

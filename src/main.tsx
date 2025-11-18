@@ -31,6 +31,10 @@ import Mentoring from './pages/Mentoring'
 import AdminFlipbooks from './pages/Adminflipbooks'
 import Near1066Meetings from './pages/1066Page'
 import NearBrightonMeetings from './pages/BrightonPage'
+import NearChichesterMeetings from './pages/ChichesterPage'
+import NearWorthingMeetings from './pages/WorthingPage'
+import NearCrawleyMeetings from './pages/CrawleyPage'
+import NearEastbourneMeetings from './pages/EastbournePage'
 
 
 const router = createBrowserRouter([
@@ -51,6 +55,10 @@ const router = createBrowserRouter([
       { path: 'mentoring', element: <Mentoring /> },
       { path: '1066-royal-arch', element: <Near1066Meetings /> },
       { path: 'near-brighton-royal-arch', element: <NearBrightonMeetings /> },
+      { path: 'near-chichester-royal-arch', element: <NearChichesterMeetings /> },
+      { path: 'near-worthing-royal-arch', element: <NearWorthingMeetings /> },
+      { path: 'near-crawley-royal-arch', element: <NearCrawleyMeetings /> },
+      { path: 'near-eastbourne-royal-arch', element: <NearEastbourneMeetings /> },
       { path: 'auth/callback', element: <AuthCallback /> },
       // Standalone admin login page (not in AdminLayout)
       { path: 'admin/login', element: <AdminNewPost /> },

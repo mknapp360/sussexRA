@@ -69,7 +69,7 @@ const fetchRecentEvents = async () => {
       .from('events')
       .select('id, slug, event_title, event_date, event_time, event_location_name, event_image, event_info')
       .eq('published', true)
-      .order('created_at', { ascending: false })
+      .order('created_at', { ascending: true })
       .limit(3);
 
     if (error) throw error;
@@ -318,9 +318,13 @@ const fetchRecentEvents = async () => {
                   <li className="text-muted-foreground">Peacehaven</li>
                 </ul>
                 <div className="mt-auto text-center">
-                  <Button variant="outline" className="w-full">
-                    See upcoming meetings
-                  </Button>
+                  <Link
+                    to={`/near-brighton-royal-arch`}
+                    >
+                    <Button variant="outline" className="w-full">
+                      See upcoming meetings
+                    </Button>
+                  </Link>
                 </div>
               </CardContent>
             </Card>
@@ -337,9 +341,13 @@ const fetchRecentEvents = async () => {
                   <li className="text-muted-foreground">Midhurst</li>
                 </ul>
                 <div className="mt-auto text-center">
-                  <Button variant="outline" className="w-full">
-                    See upcoming meetings
-                  </Button>
+                  <Link
+                    to={`/near-chichester-royal-arch`}
+                    >
+                    <Button variant="outline" className="w-full">
+                      See upcoming meetings
+                    </Button>
+                  </Link>
                 </div>
               </CardContent>
             </Card>
@@ -356,9 +364,13 @@ const fetchRecentEvents = async () => {
                   <li className="text-muted-foreground">Worthing</li>
                 </ul>
                 <div className="mt-auto text-center">
-                  <Button variant="outline" className="w-full">
-                    See upcoming meetings
-                  </Button>
+                  <Link
+                    to={`/near-worthing-royal-arch`}
+                    >
+                    <Button variant="outline" className="w-full">
+                      See upcoming meetings
+                    </Button>
+                  </Link>
                 </div>
               </CardContent>
             </Card>
@@ -376,9 +388,13 @@ const fetchRecentEvents = async () => {
                   <li className="text-muted-foreground">Pullborough</li>
                 </ul>
                 <div className="mt-auto text-center">
-                  <Button variant="outline" className="w-full">
-                    See upcoming meetings
-                  </Button>
+                  <Link
+                    to={`/near-crawley-royal-arch`}
+                    >
+                    <Button variant="outline" className="w-full">
+                      See upcoming meetings
+                    </Button>
+                  </Link>
                 </div>
               </CardContent>
             </Card>
@@ -396,9 +412,13 @@ const fetchRecentEvents = async () => {
                   <li className="text-muted-foreground">Uckfield</li>
                 </ul>
                 <div className="mt-auto text-center">
-                  <Button variant="outline" className="w-full">
-                    See upcoming meetings
-                  </Button>
+                  <Link
+                    to={`/near-eastbourne-royal-arch`}
+                    >
+                    <Button variant="outline" className="w-full">
+                      See upcoming meetings
+                    </Button>
+                  </Link>
                 </div>
               </CardContent>
             </Card>
