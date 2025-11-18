@@ -39,9 +39,7 @@ export default function Calendar({ meetings, onDateClick, className = '', areaFi
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
   };
 
-  const goToToday = () => {
-    setCurrentDate(new Date());
-  };
+ 
 
   // Generate calendar days
   const calendarDays = useMemo(() => {
@@ -104,7 +102,7 @@ export default function Calendar({ meetings, onDateClick, className = '', areaFi
   return (
     <div className={`bg-white rounded-lg border shadow-sm ${className}`}>
       {/* Header */}
-      <div className="bg-purple-600 text-white p-4 rounded-t-lg">
+      <div className="bg-blue-600 text-white p-4 rounded-t-lg">
         <div className="flex items-center justify-between mb-2">
           <Button
             variant="ghost"
@@ -116,14 +114,7 @@ export default function Calendar({ meetings, onDateClick, className = '', areaFi
           </Button>
           
           <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={goToToday}
-              className="text-white hover:bg-purple-700 text-sm"
-            >
-              TODAY
-            </Button>
+            
             <h2 className="text-xl font-semibold">
               {MONTHS[currentDate.getMonth()]} {currentDate.getFullYear()}
             </h2>

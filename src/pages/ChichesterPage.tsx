@@ -1,7 +1,7 @@
 // src/pages/Near1066Meetings.tsx
 import { useState, useEffect } from 'react'
 import { MapPin, X, Clock, Phone } from 'lucide-react'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../components/ui/card'
+import { Card, CardContent } from '../components/ui/card'
 import { Button } from '../components/ui/button'
 import Calendar from '../components/Calendar'
 import { supabase } from '../lib/supabase'
@@ -52,46 +52,6 @@ export default function NearChichesterMeetings() {
   }
 
   // Town data with their chapters
-  const towns = [
-    {
-      name: 'Battle',
-      chapters: [
-        { name: 'Battle Chapter', number: 'XXX' },
-        { name: 'Example Chapter', number: 'YYY' }
-      ]
-    },
-    {
-      name: 'Bexhill',
-      chapters: [
-        { name: 'Bexhill Chapter', number: 'XXX' }
-      ]
-    },
-    {
-      name: 'Burwash',
-      chapters: [
-        { name: 'Burwash Chapter', number: 'XXX' }
-      ]
-    },
-    {
-      name: 'Herstmonceux',
-      chapters: [
-        { name: 'Herstmonceux Chapter', number: 'XXX' }
-      ]
-    },
-    {
-      name: 'Hastings',
-      chapters: [
-        { name: 'Hastings Chapter', number: 'XXX' },
-        { name: 'Another Hastings Chapter', number: 'YYY' }
-      ]
-    },
-    {
-      name: 'Rye',
-      chapters: [
-        { name: 'Rye Chapter', number: 'XXX' }
-      ]
-    }
-  ]
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -138,50 +98,7 @@ export default function NearChichesterMeetings() {
         </section>
 
         {/* Regional Towns Section */}
-        <section>
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">
-            Chapters by Town
-          </h2>
-          
-          {/* Town Cards Grid - 3 per row on desktop */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {towns.map((town) => (
-              <Card key={town.name} className="hover:shadow-md transition-shadow flex flex-col">
-                <CardHeader className="pb-4">
-                  <CardTitle className="flex items-center space-x-2">
-                    <MapPin className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                    <span>{town.name}</span>
-                  </CardTitle>
-                </CardHeader>
-
-                <CardContent className="flex-1">
-                  {/* Chapters List */}
-                  <div className="space-y-3">
-                    {town.chapters.map((chapter, index) => (
-                      <div 
-                        key={index}
-                        className="flex items-baseline justify-between"
-                      >
-                        <span className="text-gray-700 dark:text-gray-300">
-                          {chapter.name}
-                        </span>
-                        <span className="text-sm text-gray-500 dark:text-gray-400 ml-2">
-                          No. {chapter.number}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-
-                <CardFooter className="pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <button className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm font-medium">
-                    See upcoming meetings
-                  </button>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
-        </section>
+        
       </div>
 
       {/* Meeting Details Modal */}
