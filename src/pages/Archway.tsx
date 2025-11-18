@@ -5,7 +5,7 @@ import SEO from '../components/SEO'
 import { X } from 'lucide-react';
 import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase';
-import TurnJSFlipBook from '../components/Turnjsflipbook'
+import TurnJSFlipBook from '../components/TurnJSFlipbook'
 
 interface Flipbook {
   id: string;
