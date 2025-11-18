@@ -19,10 +19,17 @@ export default function TurnJSFlipBook({ pageImages, onClose }: TurnJSFlipBookPr
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [zoom, setZoom] = useState(1);
+  const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
   const flipbookRef = useRef<HTMLDivElement>(null);
   const turnInstanceRef = useRef<any>(null);
   const [jqueryLoaded, setJqueryLoaded] = useState(false);
   const [turnLoaded, setTurnLoaded] = useState(false);
+  
+  // Touch tracking refs
+  const lastTouchDistance = useRef<number | null>(null);
+  const lastPanPosition = useRef<{ x: number; y: number } | null>(null);
+  const isPanning = useRef(false);
 
   // Mobile detection
   useEffect(() => {
@@ -59,7 +66,7 @@ export default function TurnJSFlipBook({ pageImages, onClose }: TurnJSFlipBookPr
 
       await loadScript('https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js');
       setTurnLoaded(true);
-      setLoading(false); // renders the div → ref becomes available
+      setLoading(false);
     } catch (e) {
       console.error(e);
       setError('Failed to load libraries.');
@@ -132,7 +139,7 @@ export default function TurnJSFlipBook({ pageImages, onClose }: TurnJSFlipBookPr
       const newMobile = window.innerWidth < 768;
       if (newMobile !== isMobile) {
         setIsMobile(newMobile);
-        initializeTurnJS(); // re-init to switch single/double
+        initializeTurnJS();
       } else {
         const w = window.innerWidth;
         const h = window.innerHeight;
@@ -145,8 +152,95 @@ export default function TurnJSFlipBook({ pageImages, onClose }: TurnJSFlipBookPr
     return () => window.removeEventListener('resize', handler);
   }, [isMobile]);
 
-  const nextPage = useCallback(() => turnInstanceRef.current?.turn('next'), []);
-  const prevPage = useCallback(() => turnInstanceRef.current?.turn('previous'), []);
+  // Touch event handlers for pinch-zoom
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (!isMobile) return;
+
+    if (e.touches.length === 2) {
+      // Pinch zoom starting
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      const distance = Math.hypot(
+        touch2.clientX - touch1.clientX,
+        touch2.clientY - touch1.clientY
+      );
+      lastTouchDistance.current = distance;
+      isPanning.current = false;
+    } else if (e.touches.length === 1 && zoom > 1) {
+      // Single finger pan when zoomed
+      isPanning.current = true;
+      lastPanPosition.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY
+      };
+    }
+  }, [isMobile, zoom]);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!isMobile) return;
+
+    if (e.touches.length === 2 && lastTouchDistance.current !== null) {
+      // Pinch zoom
+      e.preventDefault();
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      const distance = Math.hypot(
+        touch2.clientX - touch1.clientX,
+        touch2.clientY - touch1.clientY
+      );
+      
+      const scale = distance / lastTouchDistance.current;
+      const newZoom = Math.min(Math.max(zoom * scale, 1), 4); // Min 1x, Max 4x
+      
+      setZoom(newZoom);
+      lastTouchDistance.current = distance;
+
+      // Reset pan when zoom returns to 1
+      if (newZoom === 1) {
+        setPanOffset({ x: 0, y: 0 });
+      }
+    } else if (e.touches.length === 1 && isPanning.current && lastPanPosition.current && zoom > 1) {
+      // Pan when zoomed
+      e.preventDefault();
+      const touch = e.touches[0];
+      const deltaX = touch.clientX - lastPanPosition.current.x;
+      const deltaY = touch.clientY - lastPanPosition.current.y;
+      
+      setPanOffset(prev => ({
+        x: prev.x + deltaX,
+        y: prev.y + deltaY
+      }));
+      
+      lastPanPosition.current = {
+        x: touch.clientX,
+        y: touch.clientY
+      };
+    }
+  }, [isMobile, zoom]);
+
+  const handleTouchEnd = useCallback(() => {
+    lastTouchDistance.current = null;
+    lastPanPosition.current = null;
+    isPanning.current = false;
+  }, []);
+
+  // Reset zoom when page changes
+  useEffect(() => {
+    setZoom(1);
+    setPanOffset({ x: 0, y: 0 });
+  }, [currentPage]);
+
+  const nextPage = useCallback(() => {
+    if (zoom === 1) {
+      turnInstanceRef.current?.turn('next');
+    }
+  }, [zoom]);
+  
+  const prevPage = useCallback(() => {
+    if (zoom === 1) {
+      turnInstanceRef.current?.turn('previous');
+    }
+  }, [zoom]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -173,15 +267,34 @@ export default function TurnJSFlipBook({ pageImages, onClose }: TurnJSFlipBookPr
             <span className="text-white font-medium text-sm sm:text-base">
               Page {currentPage} / {totalPages}
             </span>
+            {isMobile && zoom > 1 && (
+              <span className="text-white/70 text-xs ml-2">
+                {zoom.toFixed(1)}x
+              </span>
+            )}
           </div>
         </div>
 
         {/* Flipbook */}
-        <div className="flex-1 flex items-center justify-center relative px-4 pb-20 sm:pb-0">
-          <div ref={flipbookRef} id="magazine" className="shadow-2xl" />
+        <div 
+          className="flex-1 flex items-center justify-center relative px-4 pb-20 sm:pb-0 overflow-hidden"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          <div 
+            ref={flipbookRef} 
+            id="magazine" 
+            className="shadow-2xl transition-transform"
+            style={{
+              transform: `scale(${zoom}) translate(${panOffset.x / zoom}px, ${panOffset.y / zoom}px)`,
+              transformOrigin: 'center center',
+              touchAction: zoom > 1 ? 'none' : 'auto'
+            }}
+          />
 
-          {/* Mobile bottom buttons */}
-          {isMobile && (
+          {/* Mobile bottom buttons - only show when not zoomed */}
+          {isMobile && zoom === 1 && (
             <div className="fixed bottom-6 left-1/2 -translate-x-1/2 flex gap-6 z-30">
               <button
                 onClick={prevPage}
@@ -248,7 +361,7 @@ export default function TurnJSFlipBook({ pageImages, onClose }: TurnJSFlipBookPr
         </div>
       )}
 
-      {/* Global styles – plain <style> tag (no styled-jsx) */}
+      {/* Global styles */}
       <style>{`
         .page-wrapper { background: white; }
         .page-content {
