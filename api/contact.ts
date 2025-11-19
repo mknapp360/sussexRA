@@ -81,7 +81,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         authorization: `Bearer ${supabaseAnon}`,
       },
       body: JSON.stringify({
-        to: to || 'fraterlucis@tarotpathwork.com',
+        to: to || 'martinknapp@sussexmasons.org.uk',
         subject:
           subject ||
           `New contact form message from ${firstName} ${lastName || ''}`.trim(),
