@@ -17,6 +17,7 @@ export interface RecurrencePatternItem {
  * Meeting recurrence rule for auto-generating meetings
  */
 export interface ChapterMeetingRule {
+  area: "1066" | "Brighton" | "Chichester" | "Crawley" | "Eastbourne" | "Worthing";
   id: string;
   chapter_name: string;
   chapter_number: string;

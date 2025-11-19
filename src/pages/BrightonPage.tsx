@@ -98,6 +98,31 @@ export default function NearBrightonMeetings() {
           )}
         </section>
 
+        {/* Legend */}
+      <section className="py-8 px-4 bg-slate-50">
+        <div className="container mx-auto max-w-6xl">
+          <h3 className="text-lg font-semibold mb-4 text-center">Meeting Types</h3>
+          <div className="flex flex-wrap justify-center gap-6">
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 bg-red-500 rounded"></div>
+              <span className="text-sm">Exaltation</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 bg-blue-500 rounded"></div>
+              <span className="text-sm">Regular Meeting</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 bg-purple-500 rounded"></div>
+              <span className="text-sm">Installation</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 bg-amber-500 rounded"></div>
+              <span className="text-sm">Special Event</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
         
       </div>
 

@@ -73,6 +73,31 @@ export default function Near1066Meetings() {
       >
       </section>
 
+      {/* Legend */}
+      <section className="py-8 px-4 bg-slate-50">
+        <div className="container mx-auto max-w-6xl">
+          <h3 className="text-lg font-semibold mb-4 text-center">Meeting Types</h3>
+          <div className="flex flex-wrap justify-center gap-6">
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 bg-red-500 rounded"></div>
+              <span className="text-sm">Exaltation</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 bg-blue-500 rounded"></div>
+              <span className="text-sm">Regular Meeting</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 bg-purple-500 rounded"></div>
+              <span className="text-sm">Installation</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 bg-amber-500 rounded"></div>
+              <span className="text-sm">Special Event</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Main Content Container */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         
@@ -98,15 +123,6 @@ export default function Near1066Meetings() {
           )}
         </section>
 
-        {/* Regional Towns Section */}
-        <section>
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">
-            Chapters by Town
-          </h2>
-          
-          {/* Town Cards Grid - 3 per row on desktop */}
-         
-        </section>
       </div>
 
       {/* Meeting Details Modal */}

@@ -270,7 +270,7 @@ const fetchRecentEvents = async () => {
         <div className="container mx-auto px-4 pt-12 pb-8">
           <div className="text-center max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-headerText">
-              Are you specifically looking to visit an exaltation?
+              Find Royal Arch meetings in your area
             </h2>
             <div className="h-1 w-32 bg-primary mx-auto"></div>
           </div>
@@ -352,28 +352,7 @@ const fetchRecentEvents = async () => {
               </CardContent>
             </Card>
 
-            {/* Near Worthing */}
-            <Card className="bg-[#f0f0f0] hover:shadow-lg transition-shadow">
-              <CardContent className="p-8 flex flex-col h-full">
-                <h3 className="text-2xl font-bold mb-6 text-headerText text-center">
-                  Near Worthing
-                </h3>
-                <ul className="space-y-2 mb-6 text-center flex-1">
-                  <li className="text-muted-foreground">Littlehampton</li>
-                  <li className="text-muted-foreground">Pullborough</li>
-                  <li className="text-muted-foreground">Worthing</li>
-                </ul>
-                <div className="mt-auto text-center">
-                  <Link
-                    to={`/near-worthing-royal-arch`}
-                    >
-                    <Button variant="outline" className="w-full">
-                      See upcoming meetings
-                    </Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
+            
 
             {/* Near Crawley */}
             <Card className="bg-[#f0f0f0] hover:shadow-lg transition-shadow">
@@ -422,6 +401,31 @@ const fetchRecentEvents = async () => {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Near Worthing */}
+            <Card className="bg-[#f0f0f0] hover:shadow-lg transition-shadow">
+              <CardContent className="p-8 flex flex-col h-full">
+                <h3 className="text-2xl font-bold mb-6 text-headerText text-center">
+                  Near Worthing
+                </h3>
+                <ul className="space-y-2 mb-6 text-center flex-1">
+                  <li className="text-muted-foreground">Littlehampton</li>
+                  <li className="text-muted-foreground">Pullborough</li>
+                  <li className="text-muted-foreground">Worthing</li>
+                </ul>
+                <div className="mt-auto text-center">
+                  <Link
+                    to={`/near-worthing-royal-arch`}
+                    >
+                    <Button variant="outline" className="w-full">
+                      See upcoming meetings
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+
+            
           </div>
         </div>
       </section>

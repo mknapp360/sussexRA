@@ -29,6 +29,7 @@ export default function AdminRecurringMeetingForm() {
     address: string;
     location_id: string | null;
     meeting_time: string;
+    area: '1066' | 'Brighton' | 'Chichester' | 'Crawley' | 'Eastbourne' | 'Worthing';
     meeting_contact: string;
     meeting_type: 'regular' | 'exaltation' | 'installation' | 'special';
     years_ahead: number;
@@ -41,6 +42,7 @@ export default function AdminRecurringMeetingForm() {
     address: '',
     location_id: null,
     meeting_time: '',
+    area: '1066',
     meeting_contact: '',
     meeting_type: 'regular',
     years_ahead: 2,
@@ -77,6 +79,7 @@ export default function AdminRecurringMeetingForm() {
           address: rule.address,
           location_id: (rule as any).location_id || null,
           meeting_time: rule.meeting_time,
+          area: rule.area,
           meeting_contact: rule.meeting_contact || '',
           meeting_type: rule.meeting_type,
           years_ahead: rule.years_ahead,
@@ -264,6 +267,26 @@ export default function AdminRecurringMeetingForm() {
                   className="w-full px-3 py-2 border rounded-md"
                   placeholder="e.g., 19:00 or 7:00 PM"
                 />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Meeting Area *
+                </label>
+                <select
+                  name="area"
+                  value={formData.area}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-3 py-2 border rounded-md"
+                >
+                  <option value="1066">1066</option>
+                  <option value="Brighton">Brighton</option>
+                  <option value="Chichester">Chichester</option>
+                  <option value="Crawley">Crawley</option>
+                  <option value="Eastbourne">Eastbourne</option>
+                  <option value="Worthing">Worthing</option>
+                </select>
               </div>
 
               {/* Location Selector */}
