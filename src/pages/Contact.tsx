@@ -41,7 +41,7 @@ export default function Contact() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          to: 'fraterlucis@tarotpathwork.com',
+          to: 'martinknapp@sussexmasons.org.uk',
           subject: `New contact form message from ${form.firstName} ${form.lastName || ''}`,
           payload: form,
         }),
@@ -52,7 +52,7 @@ export default function Contact() {
       toast({ title: 'Message sent', description: 'Thanks — I’ll get back to you shortly.' })
       setForm({ firstName: '', lastName: '', email: '', phone: '', message: '', company: '' })
     } catch {
-      // Fallback: open a mailto draft prefilled to Frater Lucis
+      // Fallback: open a mailto draft prefilled to email
       const body = [
         `Name: ${form.firstName} ${form.lastName}`,
         `Email: ${form.email}`,
@@ -61,7 +61,7 @@ export default function Contact() {
         form.message
       ].filter(Boolean).join('%0D%0A')
 
-      window.location.href = `mailto:fraterlucis@tarotpathwork.com?subject=Contact from ${encodeURIComponent(form.firstName)}&body=${body}`
+      window.location.href = `mailto:martinknapp@sussexmasons.org.uk?subject=Contact from ${encodeURIComponent(form.firstName)}&body=${body}`
       toast({ title: 'Opening email…', description: 'If no email app appears, your browser may be blocking it.' })
     } finally {
       setLoading(false)
