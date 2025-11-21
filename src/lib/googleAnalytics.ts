@@ -1,9 +1,17 @@
-// src/lib/googleAnalytics.ts (or adjust to your path)
+// src/lib/googleAnalytics.ts
+// Updated with AI referral tracking types
 
 export interface AnalyticsMetric {
   value: number;
   previousValue: number;
   percentageChange: number;
+}
+
+export interface AIReferral {
+  source: string;
+  sessions: number;
+  pageviews: number;
+  avgDuration: number;
 }
 
 export interface AnalyticsData {
@@ -15,6 +23,8 @@ export interface AnalyticsData {
   sessions7Day: { date: string; value: number }[];
   pageviews7Day: { date: string; value: number }[];
   topPages: { page: string; views: number }[];
+  aiReferrals: AIReferral[];
+  totalAISessions: number;
 }
 
 export async function fetchAnalyticsData(): Promise<AnalyticsData> {

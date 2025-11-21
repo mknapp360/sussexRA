@@ -1,5 +1,5 @@
 // api/analytics.ts
-// Fixed version with proper Vercel serverless function signature
+// Enhanced version with AI referral tracking
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { BetaAnalyticsDataClient } from '@google-analytics/data';
 
@@ -7,6 +7,13 @@ type AnalyticsMetric = {
   value: number; 
   previousValue: number; 
   percentageChange: number; 
+};
+
+type AIReferral = {
+  source: string;
+  sessions: number;
+  pageviews: number;
+  avgDuration: number;
 };
 
 type AnalyticsData = {
@@ -18,6 +25,8 @@ type AnalyticsData = {
   sessions7Day: { date: string; value: number }[];
   pageviews7Day: { date: string; value: number }[];
   topPages: { page: string; views: number }[];
+  aiReferrals: AIReferral[];
+  totalAISessions: number;
 };
 
 function pctChange(curr: number, prev: number): number {
@@ -25,21 +34,13 @@ function pctChange(curr: number, prev: number): number {
   return Math.round(((curr - prev) / prev) * 100);
 }
 
-// MUST be default export for Vercel
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
-    // Get environment variables
     const PROPERTY_ID = process.env.GA4_PROPERTY_ID;
     const CLIENT_EMAIL = process.env.GA4_CLIENT_EMAIL;
     const PRIVATE_KEY = process.env.GA4_PRIVATE_KEY?.replace(/\\n/g, '\n');
 
-    // Check if credentials are available
     if (!PROPERTY_ID || !CLIENT_EMAIL || !PRIVATE_KEY) {
-      console.error('Missing GA4 credentials:', {
-        hasPropertyId: !!PROPERTY_ID,
-        hasEmail: !!CLIENT_EMAIL,
-        hasKey: !!PRIVATE_KEY
-      });
       return res.status(500).json({ 
         error: 'Missing GA4 credentials',
         debug: {
@@ -50,7 +51,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
     }
 
-    // Initialize GA4 client
     const client = new BetaAnalyticsDataClient({
       credentials: { 
         client_email: CLIENT_EMAIL, 
@@ -58,10 +58,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       },
     });
 
-    // Helper to safely get numeric value
     const num = (arr: any[], i: number) => Number(arr[i]?.value ?? 0);
 
-    // 1) Totals: sessions + pageviews + users
+    // 1) Core metrics
     const [totals] = await client.runReport({
       property: `properties/${PROPERTY_ID}`,
       dateRanges: [
@@ -82,7 +81,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const mViews = { current: num(curr, 1), previous: num(prev, 1) };
     const mUsers = { current: num(curr, 2), previous: num(prev, 2) };
 
-    // 2) Sessions series (last 7 days)
+    // 2) Sessions time series
     const [seriesSessions] = await client.runReport({
       property: `properties/${PROPERTY_ID}`,
       dateRanges: [{ startDate: '7daysAgo', endDate: 'today' }],
@@ -97,7 +96,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return { date: iso, value: Number(r.metricValues?.[0]?.value ?? 0) };
     });
 
-    // 3) Pageviews series (last 7 days)
+    // 3) Pageviews time series
     const [seriesViews] = await client.runReport({
       property: `properties/${PROPERTY_ID}`,
       dateRanges: [{ startDate: '7daysAgo', endDate: 'today' }],
@@ -119,7 +118,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       dimensions: [{ name: 'pagePath' }],
       metrics: [{ name: 'screenPageViews' }],
       orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
-      limit: 5,
+      limit: 10,
     });
     
     const topPages = (top.rows ?? []).map(r => ({
@@ -171,7 +170,47 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       console.error('Error fetching session duration:', error);
     }
 
-    // Build response data
+    // 7) AI REFERRAL TRACKING - NEW!
+    let aiReferrals: AIReferral[] = [];
+    let totalAISessions = 0;
+    
+    try {
+      const [aiTraffic] = await client.runReport({
+        property: `properties/${PROPERTY_ID}`,
+        dateRanges: [{ startDate: '7daysAgo', endDate: 'today' }],
+        dimensions: [{ name: 'sessionSource' }],
+        metrics: [
+          { name: 'sessions' },
+          { name: 'screenPageViews' },
+          { name: 'averageSessionDuration' }
+        ],
+        dimensionFilter: {
+          filter: {
+            fieldName: 'sessionMedium',
+            stringFilter: {
+              matchType: 'EXACT',
+              value: 'ai'
+            }
+          }
+        },
+        orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
+      });
+
+      aiReferrals = (aiTraffic.rows ?? []).map(r => {
+        const sessions = Number(r.metricValues?.[0]?.value ?? 0);
+        totalAISessions += sessions;
+        
+        return {
+          source: r.dimensionValues?.[0]?.value ?? '',
+          sessions,
+          pageviews: Number(r.metricValues?.[1]?.value ?? 0),
+          avgDuration: Math.round(Number(r.metricValues?.[2]?.value ?? 0)),
+        };
+      });
+    } catch (error) {
+      console.error('Error fetching AI referrals:', error);
+    }
+
     const data: AnalyticsData = {
       sessions: { 
         value: mSessions.current, 
@@ -193,6 +232,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       sessions7Day,
       pageviews7Day,
       topPages,
+      aiReferrals,
+      totalAISessions,
     };
 
     return res.status(200).json(data);
