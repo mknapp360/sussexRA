@@ -39,7 +39,9 @@ export default function Calendar({ meetings, onDateClick, className = '', areaFi
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
   };
 
- 
+  const goToToday = () => {
+    setCurrentDate(new Date());
+  };
 
   // Generate calendar days
   const calendarDays = useMemo(() => {
@@ -48,7 +50,6 @@ export default function Calendar({ meetings, onDateClick, className = '', areaFi
     
     // First day of the month
     const firstDay = new Date(year, month, 1);
-    // Last day of the month
     
     // Start from Monday
     const startDate = new Date(firstDay);
@@ -66,12 +67,34 @@ export default function Calendar({ meetings, onDateClick, className = '', areaFi
       const date = new Date(startDate);
       date.setDate(startDate.getDate() + i);
       
-      const dateString = date.toISOString().split('T')[0];
-      const isCurrentMonth = date.getMonth() === month;
+      // Create date string in local timezone (not UTC) to match database dates
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const dateString = `${year}-${month}-${day}`;
+      
+      const isCurrentMonth = date.getMonth() === currentDate.getMonth();
       const isToday = date.getTime() === today.getTime();
       
       // Filter meetings for this date
-      const dayMeetings = filteredMeetings.filter(m => m.meeting_date === dateString);
+      // Ensure we're comparing pure date strings (no timezone conversion)
+      const dayMeetings = filteredMeetings.filter(m => {
+        // Normalize the meeting date to YYYY-MM-DD format
+        const meetingDateStr = m.meeting_date.split('T')[0]; // Handle if it comes as timestamp
+        return meetingDateStr === dateString;
+      });
+      
+      // DEBUG: Log St Wilfrid matches
+      if (dayMeetings.some(m => m.chapter_name === 'St Wilfrid Chapter')) {
+        console.log('📅 MATCH FOUND:', {
+          dateString,
+          cellDate: date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
+          gridIndex: i,
+          gridColumn: i % 7,
+          columnName: DAYS_OF_WEEK[i % 7],
+          meeting: dayMeetings.find(m => m.chapter_name === 'St Wilfrid Chapter')
+        });
+      }
       
       days.push({
         date,
@@ -102,7 +125,7 @@ export default function Calendar({ meetings, onDateClick, className = '', areaFi
   return (
     <div className={`bg-white rounded-lg border shadow-sm ${className}`}>
       {/* Header */}
-      <div className="bg-blue-600 text-white p-4 rounded-t-lg">
+      <div className="bg-purple-600 text-white p-4 rounded-t-lg">
         <div className="flex items-center justify-between mb-2">
           <Button
             variant="ghost"
@@ -114,7 +137,14 @@ export default function Calendar({ meetings, onDateClick, className = '', areaFi
           </Button>
           
           <div className="flex items-center gap-3">
-            
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={goToToday}
+              className="text-white hover:bg-purple-700 text-sm"
+            >
+              TODAY
+            </Button>
             <h2 className="text-xl font-semibold">
               {MONTHS[currentDate.getMonth()]} {currentDate.getFullYear()}
             </h2>

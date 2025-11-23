@@ -30,6 +30,17 @@ export default function Exaltations() {
       if (error) throw error;
 
       if (data) {
+
+        // DEBUG: Check the date format
+      const stWilfrid = data.find(m => m.chapter_name === 'St Wilfrid Chapter');
+      if (stWilfrid) {
+        console.log('🔍 St Wilfrid meeting from Supabase:', {
+          meeting_date: stWilfrid.meeting_date,
+          type: typeof stWilfrid.meeting_date,
+          asString: String(stWilfrid.meeting_date),
+          split: stWilfrid.meeting_date.split('T')[0]
+        });
+      }
         setMeetings(data as ChapterMeeting[]);
       }
     } catch (error) {
