@@ -92,9 +92,10 @@ export default function MembershipEnhanced() {
         <div className="max-w-6xl mx-auto">
           <h1 className="text-black text-center text-4xl md:text-5xl font-bold mb-4">Mentoring</h1>
           <p className="text-black text-lg md:text-xl">
-            Whether you are a freemason looking for information about the next stage in your masonic journey, 
-            or just visiting us with a general interest in freemasonry, we hope you find this membership section 
-            of the Sussex Royal Arch BLOG interesting and informative.
+            This <strong>ONUS Royal Arch Mentoring Page</strong> has been created to offer help and guidance on all aspects of the 
+            Mentoring process.  Including a description of the Sussex <strong>ONUS</strong> Mentoring System and bulletins promoting 
+            noteworthy lectures and Royal Arch Mentoring initiatives, along with documents, demonstrations, and presentations available 
+            via a link to the <strong>UGLE Solomon Mentors Corner Module.</strong>
           </p>
         </div>
       </section>
@@ -147,16 +148,11 @@ export default function MembershipEnhanced() {
             <img src="medals.png" className='mx-auto items-center' alt="" />
           </div>
           <p className="text-black text-lg md:text-xl">
-            If you are interested in becoming a Royal Arch Mason, you should initially talk to your Lodge's Royal Arch Representative, who will be able to put you in touch with a suitable Chapter. There are over 70 chapters that meet throughout the Province of Sussex. Otherwise, your Lodge Mentor, or anyone wearing a breast jewel of the Order with their Craft regalia will be delighted to be approached about membership. Alternatively, please click on the link below to register your interest and one of the Sussex Royal Arch Membership team will contact you.
+            The Provincial Mentoring Team is available to help any Chapter or Companion with the implementation of the ONUS system 
+            and provide additional resources in suppot of all aspects of this Mentoring  process. The team can be contacted at:  
+            <strong className='text-blue-600'><a href="mailto:ramentor@sussexmasons.org.uk"> ramentor@sussexmasons.org.uk</a></strong>
           </p>
-          <div className="text-center mt-4 mb-8">
-            <Link 
-              to="/contact" 
-              className="text-black text-2xl underline hover:text-primary"
-            >
-              Contact Us
-            </Link>
-          </div>
+          
         </div>
       </section>
 

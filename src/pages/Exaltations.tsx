@@ -1,6 +1,6 @@
 // src/pages/Exaltations.tsx
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { supabase } from '../lib/supabase'; 
 import Calendar from '../components/Calendar';
 import type { ChapterMeeting } from '../types/chapter-meetings';
 import { Button } from '../components/ui/button';
