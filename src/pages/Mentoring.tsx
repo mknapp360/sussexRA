@@ -148,7 +148,7 @@ export default function MembershipEnhanced() {
           </div>
           <p className="text-black text-lg md:text-xl">
             The Provincial Mentoring Team is available to help any Chapter or Companion with the implementation of the ONUS system 
-            and provide additional resources in suppot of all aspects of this Mentoring  process. The team can be contacted at:  
+            and provide additional resources in support of all aspects of this Mentoring  process. The team can be contacted at:  
             <strong className='text-blue-600'><a href="mailto:ramentor@sussexmasons.org.uk"> ramentor@sussexmasons.org.uk</a></strong>
           </p>
           
