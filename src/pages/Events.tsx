@@ -33,11 +33,18 @@ export default function Events() {
   const loadEvents = async () => {
     try {
       setLoading(true);
+      
+      // Get today's date in YYYY-MM-DD format
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const todayString = today.toISOString().split('T')[0];
+      
       const { data, error } = await supabase
         .from('events')
         .select('*')
         .eq('published', true)
-        .order('created_at', { ascending: true });
+        .gte('event_date', todayString) // Only show events today or in the future
+        .order('event_date', { ascending: true }); // Order by event date instead of created_at
 
       if (error) throw error;
       setEvents((data as Event[]) || []);
@@ -60,7 +67,7 @@ export default function Events() {
       <section className="bg-gradient-to-b from-slate-50 to-white py-16 px-4">
         <div className="container mx-auto max-w-6xl">
           <h1 className="text-4xl md:text-5xl font-bold text-center mb-4">
-            Upcoming & Recent Events
+            Upcoming Events
           </h1>
           <p className="text-center text-muted-foreground text-lg max-w-2xl mx-auto">
             Join us for upcoming meetings, presentations, and special events throughout the year.
@@ -77,7 +84,7 @@ export default function Events() {
             </div>
           ) : events.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-muted-foreground">No events scheduled at this time.</p>
+              <p className="text-muted-foreground">No upcoming events scheduled at this time.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -121,42 +128,27 @@ export default function Events() {
 
                     {/* Description (if available) */}
                     {event.event_info && (
-                      <p className="text-sm text-muted-foreground mb-4 line-clamp-3 flex-1">
+                      <p className="text-sm text-muted-foreground line-clamp-3 flex-1">
                         {event.event_info.replace(/<[^>]*>/g, '')}
                       </p>
                     )}
 
-                    {/* More Info Button - centered at bottom */}
-                    <div className="flex justify-center mt-auto pt-4">
-                      <Button
-                        variant="outline"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          navigate(`/events/${event.slug}`);
-                        }}
-                        className="w-full max-w-[200px]"
-                      >
-                        More Info
-                      </Button>
-                    </div>
+                    {/* View Details Button */}
+                    <Button 
+                      variant="outline" 
+                      className="mt-4 w-full"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/events/${event.slug}`);
+                      }}
+                    >
+                      View Details
+                    </Button>
                   </CardContent>
                 </Card>
               ))}
             </div>
           )}
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="py-16 px-4 bg-slate-50">
-        <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl font-bold mb-4">Want to Stay Updated?</h2>
-          <p className="text-muted-foreground mb-6">
-            Join our mailing list to receive notifications about upcoming events and meetings.
-          </p>
-          <Button size="lg" variant="default">
-            Subscribe to Updates
-          </Button>
         </div>
       </section>
     </div>
