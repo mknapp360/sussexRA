@@ -125,7 +125,7 @@ export default function Calendar({ meetings, onDateClick, className = '', areaFi
   return (
     <div className={`bg-white rounded-lg border shadow-sm ${className}`}>
       {/* Header */}
-      <div className="bg-blue-600 text-white p-4 rounded-t-lg">
+      <div className="bg-purple-600 text-white p-4 rounded-t-lg">
         <div className="flex items-center justify-between mb-2">
           <Button
             variant="ghost"
@@ -206,9 +206,9 @@ export default function Calendar({ meetings, onDateClick, className = '', areaFi
                 <div
                   key={meeting.id}
                   className={`text-xs p-1 rounded truncate ${getMeetingColor(meeting.meeting_type)}`}
-                  title={`${meeting.chapter_name} - ${meeting.chapter_number}`}
+                  title={meeting.event_title || `${meeting.chapter_name} - ${meeting.chapter_number}`}
                 >
-                  {meeting.chapter_name} - No. {meeting.chapter_number}
+                  {meeting.event_title || `${meeting.chapter_name} - No. ${meeting.chapter_number}`}
                 </div>
               ))}
             </div>

@@ -30,17 +30,6 @@ export default function Exaltations() {
       if (error) throw error;
 
       if (data) {
-
-        // DEBUG: Check the date format
-      const stWilfrid = data.find(m => m.chapter_name === 'St Wilfrid Chapter');
-      if (stWilfrid) {
-        console.log('🔍 St Wilfrid meeting from Supabase:', {
-          meeting_date: stWilfrid.meeting_date,
-          type: typeof stWilfrid.meeting_date,
-          asString: String(stWilfrid.meeting_date),
-          split: stWilfrid.meeting_date.split('T')[0]
-        });
-      }
         setMeetings(data as ChapterMeeting[]);
       }
     } catch (error) {
@@ -73,9 +62,9 @@ export default function Exaltations() {
       />
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-red-600 to-red-700 text-white py-12 px-4">
+      <section className="bg-gradient-to-r from-purple-700 to-purple-900 text-white py-16 px-4">
         <div className="container mx-auto max-w-6xl text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mt-8 mb-2">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Sussex Chapter Calendar
           </h1>
           <p className="text-xl text-purple-100">
@@ -89,7 +78,7 @@ export default function Exaltations() {
         <div className="container mx-auto max-w-6xl">
           <p className="text-center text-muted-foreground">
             If you are a Scribe E and don't see your exaltation listed here, make sure to{' '}
-            <a href="/contact" className="text-blue-600 hover:underline font-medium">
+            <a href="/contact" className="text-purple-600 hover:underline font-medium">
               contact us
             </a>{' '}
             so we may add it.
@@ -139,7 +128,18 @@ export default function Exaltations() {
         </div>
       </section>
 
-      
+      {/* Subscribe CTA */}
+      <section className="py-16 px-4">
+        <div className="container mx-auto max-w-4xl text-center">
+          <h2 className="text-3xl font-bold mb-4">Stay Updated</h2>
+          <p className="text-muted-foreground mb-6">
+            Subscribe to receive notifications about upcoming meetings and exaltations.
+          </p>
+          <Button size="lg" variant="default" onClick={() => window.location.href = '/contact'}>
+            Subscribe to Calendar Updates
+          </Button>
+        </div>
+      </section>
 
       {/* Meeting Details Modal */}
       {showModal && (
@@ -183,11 +183,13 @@ export default function Exaltations() {
                     </div>
 
                     <h3 className="text-xl font-bold mb-2">
-                      {meeting.chapter_name}
+                      {meeting.event_title || meeting.chapter_name}
                     </h3>
-                    <p className="text-muted-foreground mb-4">
-                      Chapter No. {meeting.chapter_number}
-                    </p>
+                    {!meeting.event_title && (
+                      <p className="text-muted-foreground mb-4">
+                        Chapter No. {meeting.chapter_number}
+                      </p>
+                    )}
 
                     <div className="space-y-2 text-sm">
                       <div className="flex items-start gap-2">
