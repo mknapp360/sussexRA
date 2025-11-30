@@ -125,7 +125,7 @@ export default function Calendar({ meetings, onDateClick, className = '', areaFi
   return (
     <div className={`bg-white rounded-lg border shadow-sm ${className}`}>
       {/* Header */}
-      <div className="bg-purple-600 text-white p-4 rounded-t-lg">
+      <div className="bg-blue-600 text-white p-4 rounded-t-lg">
         <div className="flex items-center justify-between mb-2">
           <Button
             variant="ghost"
