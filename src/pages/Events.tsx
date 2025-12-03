@@ -31,30 +31,53 @@ export default function Events() {
   }, []);
 
   const loadEvents = async () => {
-    try {
-      setLoading(true);
-      
-      // Get today's date in YYYY-MM-DD format
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const todayString = today.toISOString().split('T')[0];
-      
-      const { data, error } = await supabase
-        .from('events')
-        .select('*')
-        .eq('published', true)
-        .gte('event_date', todayString) // Only show events today or in the future
-        .order('event_date', { ascending: true }); // Order by event date instead of created_at
+  try {
+    setLoading(true);
+    
+    const { data, error } = await supabase
+      .from('events')
+      .select('*')
+      .eq('published', true);
 
-      if (error) throw error;
-      setEvents((data as Event[]) || []);
-    } catch (error) {
-      console.error('Error loading events:', error);
-      setEvents([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+    if (error) throw error;
+    
+    // Get today's date at midnight
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const upcomingEvents = (data as Event[])?.filter(event => {
+      try {
+        // Remove ordinal suffixes (st, nd, rd, th) from the date string
+        const cleanDate = event.event_date.replace(/(\d+)(st|nd|rd|th)/, '$1');
+        const eventDate = new Date(cleanDate);
+        
+        // Check if date is valid and is today or future
+        if (!isNaN(eventDate.getTime())) {
+          return eventDate >= today;
+        }
+        return false;
+      } catch {
+        return false;
+      }
+    }) || [];
+    
+    // Sort by event date
+    upcomingEvents.sort((a, b) => {
+      const cleanDateA = a.event_date.replace(/(\d+)(st|nd|rd|th)/, '$1');
+      const cleanDateB = b.event_date.replace(/(\d+)(st|nd|rd|th)/, '$1');
+      const dateA = new Date(cleanDateA);
+      const dateB = new Date(cleanDateB);
+      return dateA.getTime() - dateB.getTime();
+    });
+    
+    setEvents(upcomingEvents);
+  } catch (error) {
+    console.error('Error loading events:', error);
+    setEvents([]);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-background">
@@ -84,7 +107,7 @@ export default function Events() {
             </div>
           ) : events.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-muted-foreground">No upcoming events scheduled at this time.</p>
+              <p className="text-muted-foreground">No events scheduled at this time.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -128,7 +151,7 @@ export default function Events() {
 
                     {/* Description (if available) */}
                     {event.event_info && (
-                      <p className="text-sm text-muted-foreground line-clamp-3 flex-1">
+                      <p className="text-sm text-muted-foreground line-clamp-3 mb-4">
                         {event.event_info.replace(/<[^>]*>/g, '')}
                       </p>
                     )}
@@ -136,7 +159,7 @@ export default function Events() {
                     {/* View Details Button */}
                     <Button 
                       variant="outline" 
-                      className="mt-4 w-full"
+                      className="mt-auto"
                       onClick={(e) => {
                         e.stopPropagation();
                         navigate(`/events/${event.slug}`);

@@ -68,12 +68,42 @@ const fetchRecentEvents = async () => {
     const { data, error } = await supabase
       .from('events')
       .select('id, slug, event_title, event_date, event_time, event_location_name, event_image, event_info')
-      .eq('published', true)
-      .order('created_at', { ascending: true })
-      .limit(3);
+      .eq('published', true);
 
     if (error) throw error;
-    setRecentEvents((data as Event[]) || []);
+    
+    // Get today's date at midnight
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    // Filter for upcoming events only
+    const upcomingEvents = (data as Event[])?.filter(event => {
+      try {
+        // Remove ordinal suffixes (st, nd, rd, th) from the date string
+        const cleanDate = event.event_date.replace(/(\d+)(st|nd|rd|th)/, '$1');
+        const eventDate = new Date(cleanDate);
+        
+        // Check if date is valid and is today or future
+        if (!isNaN(eventDate.getTime())) {
+          return eventDate >= today;
+        }
+        return false;
+      } catch {
+        return false;
+      }
+    }) || [];
+    
+    // Sort by event date (earliest first)
+    upcomingEvents.sort((a, b) => {
+      const cleanDateA = a.event_date.replace(/(\d+)(st|nd|rd|th)/, '$1');
+      const cleanDateB = b.event_date.replace(/(\d+)(st|nd|rd|th)/, '$1');
+      const dateA = new Date(cleanDateA);
+      const dateB = new Date(cleanDateB);
+      return dateA.getTime() - dateB.getTime();
+    });
+    
+    // Take only the first 3 upcoming events
+    setRecentEvents(upcomingEvents.slice(0, 3));
   } catch (error) {
     console.error('Error fetching events:', error);
     setRecentEvents([]);
