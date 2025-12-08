@@ -128,18 +128,6 @@ export default function Exaltations() {
         </div>
       </section>
 
-      {/* Subscribe CTA */}
-      <section className="py-16 px-4">
-        <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl font-bold mb-4">Stay Updated</h2>
-          <p className="text-muted-foreground mb-6">
-            Subscribe to receive notifications about upcoming meetings and exaltations.
-          </p>
-          <Button size="lg" variant="default" onClick={() => window.location.href = '/contact'}>
-            Subscribe to Calendar Updates
-          </Button>
-        </div>
-      </section>
 
       {/* Meeting Details Modal */}
       {showModal && (
