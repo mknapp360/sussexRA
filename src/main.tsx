@@ -36,6 +36,7 @@ import NearChichesterMeetings from './pages/ChichesterPage'
 import NearWorthingMeetings from './pages/WorthingPage'
 import NearCrawleyMeetings from './pages/CrawleyPage'
 import NearEastbourneMeetings from './pages/EastbournePage'
+import PrivacyPolicy from './pages/PrivacyPolicy'
 
 
 const router = createBrowserRouter([
@@ -61,6 +62,7 @@ const router = createBrowserRouter([
       { path: 'near-crawley-royal-arch', element: <NearCrawleyMeetings /> },
       { path: 'near-eastbourne-royal-arch', element: <NearEastbourneMeetings /> },
       { path: 'auth/callback', element: <AuthCallback /> },
+      { path: 'privacy', element: <PrivacyPolicy /> },
       // Standalone admin login page (not in AdminLayout)
       { path: 'admin/login', element: <AdminNewPost /> },
     ],
