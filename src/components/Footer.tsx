@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="flex gap-4">
           <a href="/sitemap.xml" className="hover:text-slate-900">Sitemap</a>
           <a href="/robots.txt" className="hover:text-slate-900">Robots</a>
-          <a href="https://www.ugle.org.uk/data-protection-notice" className="hover:text-slate-900">Data Protection</a>
+          <a href="/privacy" className="hover:text-slate-900">Privacy Policy</a>
         </div>
       </div>
     </footer>
