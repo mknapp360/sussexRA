@@ -11,7 +11,37 @@
       "permanent": true
     },
     {
-      "source": "/how-to-join/:path(.*)",
+      "source": "/interested/:path(.*)",
+      "destination": "/membership",
+      "permanent": true
+    },
+    {
+      "source": "/media/:path(.*)",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/latest-news/:path(.*)",
+      "destination": "/posts",
+      "permanent": true
+    },
+    {
+      "source": "/latest-news/:path(.*)",
+      "destination": "/posts",
+      "permanent": true
+    },
+    {
+      "source": "/category/mentors-corner/:path(.*)",
+      "destination": "/mentoring",
+      "permanent": true
+    },
+    {
+      "source": "/out-and-about/out-and-about/:path(.*)",
+      "destination": "/exaltations",
+      "permanent": true
+    },
+    {
+      "source": "/wp-content/uploads/2021/07/Sussex-Discover-Freemasonry-booklet.pdf",
       "destination": "/membership",
       "permanent": true
     },
