@@ -46,7 +46,7 @@ export default function SubscribeModal({ isOpen, onClose }: SubscribeModalProps)
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          to: 'fraterlucis@tarotpathwork.com',
+          to: 'martinknapp@sussexmasons.org.uk',
           subject: `New newsletter subscriber: ${form.firstName} ${form.lastName || ''}`,
           payload: {
             firstName: form.firstName,
