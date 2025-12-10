@@ -89,7 +89,7 @@ export default function Events() {
       {/* Header Section */}
       <section className="bg-gradient-to-b from-slate-50 to-white py-16 px-4">
         <div className="container mx-auto max-w-6xl">
-          <h1 className="text-4xl md:text-5xl font-bold text-center mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-center mt-8 mb-4">
             Upcoming Events
           </h1>
           <p className="text-center text-muted-foreground text-lg max-w-2xl mx-auto">

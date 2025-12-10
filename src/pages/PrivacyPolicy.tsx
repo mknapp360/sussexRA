@@ -12,7 +12,7 @@ export default function PrivacyPolicy() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-4xl">
         {/* Header */}
         <div className="mb-12">
-          <h1 className="text-4xl font-bold text-slate-900 mb-4">Privacy Policy</h1>
+          <h1 className="text-4xl font-bold text-slate-900 mt-8 mb-4">Privacy Policy</h1>
           <p className="text-lg text-slate-600">
             Understanding how we collect, use, and protect your personal data
           </p>

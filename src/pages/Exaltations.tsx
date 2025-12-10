@@ -64,7 +64,7 @@ export default function Exaltations() {
       {/* Hero Section */}
       <section className="bg-red-600 text-white py-16 px-4">
         <div className="container mx-auto max-w-6xl text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold mt-8 mb-4">
             Sussex Chapter Calendar
           </h1>
           <p className="text-xl text-purple-100">
