@@ -1,17 +1,7 @@
 {
   "redirects": [
     {
-      "source": "/where-we-meet",
-      "destination": "/exaltations",
-      "permanent": true
-    },
-    {
       "source": "/where-we-meet/:path*",
-      "destination": "/exaltations",
-      "permanent": true
-    },
-    {
-      "source": "/diary-and-events",
       "destination": "/exaltations",
       "permanent": true
     },
@@ -21,18 +11,8 @@
       "permanent": true
     },
     {
-      "source": "/how-to-join",
-      "destination": "/membership",
-      "permanent": true
-    },
-    {
       "source": "/how-to-join/:path*",
       "destination": "/membership",
-      "permanent": true
-    },
-    {
-      "source": "/brighton-royal-arch",
-      "destination": "/near-brighton-royal-arch",
       "permanent": true
     },
     {
@@ -43,7 +23,7 @@
   ],
   "rewrites": [
     { 
-      "source": "/:path((?!api|_next/static|_next/image|favicon.ico|assets).*)",
+      "source": "/(.*)",
       "destination": "/" 
     }               
   ],
