@@ -1,10 +1,53 @@
 {
-    "rewrites": [
-      { "source": "/(.*)",
-"destination": "/" }               
-    ],
-
-    "crons": [
+  "redirects": [
+    {
+      "source": "/where-we-meet",
+      "destination": "/exaltations",
+      "permanent": true
+    },
+    {
+      "source": "/where-we-meet/:path*",
+      "destination": "/exaltations",
+      "permanent": true
+    },
+    {
+      "source": "/diary-and-events",
+      "destination": "/exaltations",
+      "permanent": true
+    },
+    {
+      "source": "/diary-and-events/:path*",
+      "destination": "/exaltations",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-join",
+      "destination": "/membership",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-join/:path*",
+      "destination": "/membership",
+      "permanent": true
+    },
+    {
+      "source": "/brighton-royal-arch",
+      "destination": "/near-brighton-royal-arch",
+      "permanent": true
+    },
+    {
+      "source": "/brighton-royal-arch/:path*",
+      "destination": "/near-brighton-royal-arch",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    { 
+      "source": "/(.*)",
+      "destination": "/" 
+    }               
+  ],
+  "crons": [
     {
       "path": "/api/cron/sync-analytics",
       "schedule": "0 0 * * *"
