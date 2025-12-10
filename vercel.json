@@ -43,7 +43,7 @@
   ],
   "rewrites": [
     { 
-      "source": "/(.*)",
+      "source": "/:path((?!api|_next/static|_next/image|favicon.ico|assets).*)",
       "destination": "/" 
     }               
   ],
