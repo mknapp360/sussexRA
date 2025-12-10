@@ -1,22 +1,22 @@
 {
   "redirects": [
     {
-      "source": "/where-we-meet/:path*",
+      "source": "/where-we-meet/:path(.*)",
       "destination": "/exaltations",
       "permanent": true
     },
     {
-      "source": "/diary-and-events/:path*",
+      "source": "/diary-and-events/:path(.*)",
       "destination": "/exaltations",
       "permanent": true
     },
     {
-      "source": "/how-to-join/:path*",
+      "source": "/how-to-join/:path(.*)",
       "destination": "/membership",
       "permanent": true
     },
     {
-      "source": "/brighton-royal-arch/:path*",
+      "source": "/brighton-royal-arch/:path(.*)",
       "destination": "/near-brighton-royal-arch",
       "permanent": true
     }
