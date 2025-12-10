@@ -57,8 +57,8 @@ export default function NearBrightonMeetings() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <SEO
-        title="Near 1066 Area Meetings - Sussex Royal Arch"
-        description="View upcoming Royal Arch Chapter meetings in the Near 1066 area including Battle, Bexhill, Hastings, and surrounding towns."
+        title="Royal Arch Near Brighton - Sussex Royal Arch"
+        description="View upcoming Royal Arch Chapter meetings near Brighton including Hove, Lewes, and Peacehaven."
       />
 
       {/* Header Image Section - Similar to Home.tsx */}
