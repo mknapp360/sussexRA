@@ -272,7 +272,27 @@ const fetchRecentEvents = async () => {
             </div>
           )}
         </div>
+          {/* Subscribe CTA */}
+        <div className="mt-12 mx-auto max-w-7xl border-t pt-8">
+          <div className="bg-gradient-to-r from-tpblue/10 to-tpgold/10 rounded-2xl p-8 text-center">
+            <h3 className="text-2xl font-display font-bold mb-3">
+              Stay updated with the latest Provincial news.
+            </h3>
+            <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
+              Subscribe to receive new articles direct to your inbox.
+            </p>
+            <Button 
+              onClick={() => setShowSubscribe(true)}
+              className="px-8 py-3 rounded-2xl bg-tpgold text-white hover:opacity-90 transition-opacity text-lg"
+            >
+              Subscribe Now
+            </Button>
+          </div>
+        </div>
+        
       </section>
+
+      
 
       <section className="bg-gray-50">
         <div className="mx-auto">
