@@ -30,6 +30,7 @@ export default function Navbar() {
       <NavLink to="/archway"     className={({ isActive }) => `${link} ${isActive ? active : ""}`} onClick={onClick}>Archway</NavLink>
       <NavLink to="/membership"  className={({ isActive }) => `${link} ${isActive ? active : ""}`} onClick={onClick}>Membership</NavLink>
       <NavLink to="/mentoring"   className={({ isActive }) => `${link} ${isActive ? active : ""}`} onClick={onClick}>Mentoring</NavLink>
+      <NavLink to="/docs-forms"   className={({ isActive }) => `${link} ${isActive ? active : ""}`} onClick={onClick}>Docs & Forms</NavLink>
       <NavLink to="/contact"     className={({ isActive }) => `${link} ${isActive ? active : ""}`} onClick={onClick}>Contact</NavLink>
 
  {/*     <div className="hidden md:block w-px h-6 bg-gray-300 mx-2" />

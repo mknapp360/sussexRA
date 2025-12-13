@@ -37,6 +37,14 @@ import NearWorthingMeetings from './pages/WorthingPage'
 import NearCrawleyMeetings from './pages/CrawleyPage'
 import NearEastbourneMeetings from './pages/EastbournePage'
 import PrivacyPolicy from './pages/PrivacyPolicy'
+import DocsNForms from './pages/DocsNforms'
+import AlmonerDocs from './pages/AlmonerDocs'
+import DCDocs from './pages/DCDocs'
+import JanitorDocs from './pages/Janitordocs'
+import ProvNoticesDocs from './pages/ProvNoticeDocs'
+import RARepDocs from './pages/RARepDocs'
+import ScribeEDocs from './pages/ScribeEDocs'
+import TreasurerDocs from './pages/TreasurerDocs'
 
 
 const router = createBrowserRouter([
@@ -63,6 +71,14 @@ const router = createBrowserRouter([
       { path: 'near-eastbourne-royal-arch', element: <NearEastbourneMeetings /> },
       { path: 'auth/callback', element: <AuthCallback /> },
       { path: 'privacy', element: <PrivacyPolicy /> },
+      { path: 'docs-forms', element: <DocsNForms /> },
+      { path: 'docs-forms/almoner-docs', element: <AlmonerDocs /> },
+      { path: 'docs-forms/dc-docs', element: <DCDocs /> },
+      { path: 'docs-forms/janitor-docs', element: <JanitorDocs /> },
+      { path: 'docs-forms/provincial-notes', element: <ProvNoticesDocs /> },
+      { path: 'docs-forms/ra-rep-docs', element: <RARepDocs /> },
+      { path: 'docs-forms/scribe-e-docs', element: <ScribeEDocs /> },
+      { path: 'docs-forms/treasurer-docs', element: <TreasurerDocs /> },
       // Standalone admin login page (not in AdminLayout)
       { path: 'admin/login', element: <AdminNewPost /> },
     ],
