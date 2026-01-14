@@ -15,7 +15,7 @@ export default function AdminMeetings() {
   const [rules, setRules] = useState<ChapterMeetingRule[]>([]);
   const [loading, setLoading] = useState(true);
   const [generatingAll, setGeneratingAll] = useState(false);
-  const [activeTab, setActiveTab] = useState<'meetings' | 'rules'>('meetings');
+  const [activeTab, setActiveTab] = useState<'meetings' | 'past' | 'rules'>('meetings');
 
   useEffect(() => {
     loadData();
@@ -158,6 +158,13 @@ export default function AdminMeetings() {
     }
   };
 
+  // Filter meetings by date
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Reset time to start of day
+  
+  const upcomingMeetings = meetings.filter(m => new Date(m.meeting_date) >= today);
+  const pastMeetings = meetings.filter(m => new Date(m.meeting_date) < today).reverse(); // Reverse so most recent past meetings are first
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -165,6 +172,58 @@ export default function AdminMeetings() {
       </div>
     );
   }
+
+  // Reusable meeting card component
+  const MeetingCard = ({ meeting }: { meeting: ChapterMeeting }) => (
+    <Card key={meeting.id}>
+      <CardContent className="p-6">
+        <div className="flex items-start justify-between">
+          <div className="flex-1">
+            <div className="flex items-center gap-3 mb-2">
+              <h3 className="text-lg font-semibold">
+                {meeting.chapter_name} - No. {meeting.chapter_number}
+              </h3>
+              <span className={`text-xs px-2 py-1 rounded ${getMeetingTypeColor(meeting.meeting_type)}`}>
+                {meeting.meeting_type}
+              </span>
+              {meeting.generated_from_rule_id && (
+                <span className="text-xs px-2 py-1 rounded bg-slate-100 text-slate-600">
+                  <Repeat className="w-3 h-3 inline mr-1" />
+                  Auto-generated
+                </span>
+              )}
+            </div>
+            <div className="text-sm text-muted-foreground space-y-1">
+              <p><strong>Date:</strong> {formatDate(meeting.meeting_date)}</p>
+              <p><strong>Time:</strong> {meeting.meeting_time}</p>
+              <p><strong>Location:</strong> {meeting.location_name}</p>
+              <p><strong>Address:</strong> {meeting.address}</p>
+              {meeting.meeting_contact && (
+                <p><strong>Contact:</strong> {meeting.meeting_contact}</p>
+              )}
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => navigate(`/admin/meetings/${meeting.id}/edit`)}
+            >
+              <Pencil className="w-4 h-4" />
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => deleteMeeting(meeting.id)}
+              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+            >
+              <Trash2 className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
 
   return (
     <div className="min-h-screen bg-background">
@@ -195,7 +254,17 @@ export default function AdminMeetings() {
                   : 'border-transparent text-muted-foreground hover:text-foreground'
               }`}
             >
-              Individual Meetings ({meetings.length})
+              Upcoming Meetings ({upcomingMeetings.length})
+            </button>
+            <button
+              onClick={() => setActiveTab('past')}
+              className={`pb-2 px-1 border-b-2 transition-colors ${
+                activeTab === 'past'
+                  ? 'border-purple-600 text-purple-600'
+                  : 'border-transparent text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Past Meetings ({pastMeetings.length})
             </button>
             <button
               onClick={() => setActiveTab('rules')}
@@ -215,67 +284,31 @@ export default function AdminMeetings() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {activeTab === 'meetings' ? (
           <div className="space-y-4">
-            {meetings.length === 0 ? (
+            {upcomingMeetings.length === 0 ? (
               <Card>
                 <CardContent className="p-12 text-center">
                   <Calendar className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                  <p className="text-muted-foreground mb-4">No meetings scheduled yet</p>
+                  <p className="text-muted-foreground mb-4">No upcoming meetings scheduled</p>
                   <Button onClick={() => navigate('/admin/meetings/new')}>
                     Create First Meeting
                   </Button>
                 </CardContent>
               </Card>
             ) : (
-              meetings.map(meeting => (
-                <Card key={meeting.id}>
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-lg font-semibold">
-                            {meeting.chapter_name} - No. {meeting.chapter_number}
-                          </h3>
-                          <span className={`text-xs px-2 py-1 rounded ${getMeetingTypeColor(meeting.meeting_type)}`}>
-                            {meeting.meeting_type}
-                          </span>
-                          {meeting.generated_from_rule_id && (
-                            <span className="text-xs px-2 py-1 rounded bg-slate-100 text-slate-600">
-                              <Repeat className="w-3 h-3 inline mr-1" />
-                              Auto-generated
-                            </span>
-                          )}
-                        </div>
-                        <div className="text-sm text-muted-foreground space-y-1">
-                          <p><strong>Date:</strong> {formatDate(meeting.meeting_date)}</p>
-                          <p><strong>Time:</strong> {meeting.meeting_time}</p>
-                          <p><strong>Location:</strong> {meeting.location_name}</p>
-                          <p><strong>Address:</strong> {meeting.address}</p>
-                          {meeting.meeting_contact && (
-                            <p><strong>Contact:</strong> {meeting.meeting_contact}</p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => navigate(`/admin/meetings/${meeting.id}/edit`)}
-                        >
-                          <Pencil className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => deleteMeeting(meeting.id)}
-                          className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))
+              upcomingMeetings.map(meeting => <MeetingCard key={meeting.id} meeting={meeting} />)
+            )}
+          </div>
+        ) : activeTab === 'past' ? (
+          <div className="space-y-4">
+            {pastMeetings.length === 0 ? (
+              <Card>
+                <CardContent className="p-12 text-center">
+                  <Calendar className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+                  <p className="text-muted-foreground">No past meetings recorded</p>
+                </CardContent>
+              </Card>
+            ) : (
+              pastMeetings.map(meeting => <MeetingCard key={meeting.id} meeting={meeting} />)
             )}
           </div>
         ) : (
