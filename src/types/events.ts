@@ -17,6 +17,7 @@ export interface Event {
   rsvp_url: string | null;
   rsvp_contact: string | null;
   published: boolean;
+  featured: boolean;
   created_at: string;
   updated_at?: string;
 }
@@ -34,6 +35,7 @@ export interface EventPreview {
   event_image: string;
   event_info: string;
   published: boolean;
+  featured: boolean;
 }
 
 /**
@@ -52,6 +54,7 @@ export interface EventFormData {
   rsvp_url?: string;
   rsvp_contact?: string;
   published?: boolean;
+  featured?: boolean;
 }
 
 /**

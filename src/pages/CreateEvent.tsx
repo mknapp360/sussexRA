@@ -35,6 +35,8 @@ export default function CreateEvent() {
   const [coverImage, setCoverImage] = useState('');
   const [uploadingImage, setUploadingImage] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [featured, setFeatured] = useState(false);
+
 
   const generateSlug = (text: string) => {
     return text
@@ -229,6 +231,7 @@ export default function CreateEvent() {
           rsvp_url: rsvpUrl || null,
           rsvp_contact: rsvpContact || null,
           published: false, // Draft by default
+          featured: featured,
         })
         .select()
         .single();
@@ -496,6 +499,13 @@ export default function CreateEvent() {
                 </div>
               </div>
             </div>
+            <input
+              type="checkbox"
+              id="featured"
+              checked={featured}
+              onChange={(e) => setFeatured(e.target.checked)}
+              className="mt-1 w-4 h-4 rounded border-gray-300"
+            />
           </CardContent>
         </Card>
       </div>

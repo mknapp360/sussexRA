@@ -19,11 +19,13 @@ interface Event {
   rsvp_url: string | null;
   rsvp_contact: string | null;
   published: boolean;
+  featured: boolean;
 }
 
 export default function Events() {
   const navigate = useNavigate();
   const [events, setEvents] = useState<Event[]>([]);
+  const [featuredEvent, setFeaturedEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -31,53 +33,63 @@ export default function Events() {
   }, []);
 
   const loadEvents = async () => {
-  try {
-    setLoading(true);
-    
-    const { data, error } = await supabase
-      .from('events')
-      .select('*')
-      .eq('published', true);
+    try {
+      setLoading(true);
+      
+      const { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .eq('published', true);
 
-    if (error) throw error;
-    
-    // Get today's date at midnight
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    const upcomingEvents = (data as Event[])?.filter(event => {
-      try {
-        // Remove ordinal suffixes (st, nd, rd, th) from the date string
-        const cleanDate = event.event_date.replace(/(\d+)(st|nd|rd|th)/, '$1');
-        const eventDate = new Date(cleanDate);
-        
-        // Check if date is valid and is today or future
-        if (!isNaN(eventDate.getTime())) {
-          return eventDate >= today;
+      if (error) throw error;
+      
+      // Get today's date at midnight
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
+      const upcomingEvents = (data as Event[])?.filter(event => {
+        try {
+          // Remove ordinal suffixes (st, nd, rd, th) from the date string
+          const cleanDate = event.event_date.replace(/(\d+)(st|nd|rd|th)/, '$1');
+          const eventDate = new Date(cleanDate);
+          
+          // Check if date is valid and is today or future
+          if (!isNaN(eventDate.getTime())) {
+            return eventDate >= today;
+          }
+          return false;
+        } catch {
+          return false;
         }
-        return false;
-      } catch {
-        return false;
+      }) || [];
+      
+      // Sort by event date
+      upcomingEvents.sort((a, b) => {
+        const cleanDateA = a.event_date.replace(/(\d+)(st|nd|rd|th)/, '$1');
+        const cleanDateB = b.event_date.replace(/(\d+)(st|nd|rd|th)/, '$1');
+        const dateA = new Date(cleanDateA);
+        const dateB = new Date(cleanDateB);
+        return dateA.getTime() - dateB.getTime();
+      });
+
+      // Find the featured event (take the most recent if multiple are marked)
+      const featured = upcomingEvents.filter(e => e.featured);
+      if (featured.length > 0) {
+        setFeaturedEvent(featured[0]); // Take the first (earliest date)
+        // Remove featured event from regular events list
+        setEvents(upcomingEvents.filter(e => !e.featured));
+      } else {
+        setFeaturedEvent(null);
+        setEvents(upcomingEvents);
       }
-    }) || [];
-    
-    // Sort by event date
-    upcomingEvents.sort((a, b) => {
-      const cleanDateA = a.event_date.replace(/(\d+)(st|nd|rd|th)/, '$1');
-      const cleanDateB = b.event_date.replace(/(\d+)(st|nd|rd|th)/, '$1');
-      const dateA = new Date(cleanDateA);
-      const dateB = new Date(cleanDateB);
-      return dateA.getTime() - dateB.getTime();
-    });
-    
-    setEvents(upcomingEvents);
-  } catch (error) {
-    console.error('Error loading events:', error);
-    setEvents([]);
-  } finally {
-    setLoading(false);
-  }
-};
+    } catch (error) {
+      console.error('Error loading events:', error);
+      setEvents([]);
+      setFeaturedEvent(null);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -98,6 +110,69 @@ export default function Events() {
         </div>
       </section>
 
+      {/* Featured Event Banner */}
+      {!loading && featuredEvent && (
+        <section className="py-8 px-4">
+          <div className="container mx-auto max-w-6xl">
+            <div 
+              className="relative overflow-hidden rounded-2xl shadow-2xl cursor-pointer group bg-slate-900"
+              onClick={() => navigate(`/events/${featuredEvent.slug}`)}
+            >
+              {/* Background Image with Overlay */}
+              <div className="absolute inset-0">
+                <img
+                  src={featuredEvent.event_image}
+                  alt={featuredEvent.event_title}
+                  className="w-full h-full object-cover opacity-60 group-hover:opacity-70 transition-opacity duration-300"
+                  onError={(e) => {
+                    e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="1200" height="400"%3E%3Crect fill="%231e293b" width="1200" height="400"/%3E%3C/svg%3E';
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-slate-900/50" />
+              </div>
+
+              {/* Content */}
+              <div className="relative z-10 px-8 py-12 md:py-16 lg:py-20">
+                <div className="max-w-3xl">
+                  {/* Featured Badge */}
+                  <div className="inline-block mb-4">
+                    <span className="px-4 py-1.5 bg-blue-600 text-white text-sm font-semibold rounded-full">
+                      Featured Event
+                    </span>
+                  </div>
+
+                  {/* Event Title */}
+                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 group-hover:text-blue-200 transition-colors">
+                    {featuredEvent.event_title}
+                  </h2>
+
+                  {/* Event Details */}
+                  <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mb-6 text-slate-200">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-5 h-5" />
+                      <span className="font-medium">{featuredEvent.event_date}</span>
+                      <span className="text-slate-400">at {featuredEvent.event_time}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <MapPin className="w-5 h-5" />
+                      <span className="font-medium">{featuredEvent.event_location_name}</span>
+                    </div>
+                  </div>
+
+                  {/* CTA Button */}
+                  <Button 
+                    size="lg"
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8"
+                  >
+                    View Event Details
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Events Grid */}
       <section className="py-12 px-4">
         <div className="container mx-auto max-w-6xl">
@@ -105,9 +180,13 @@ export default function Events() {
             <div className="text-center py-12">
               <p className="text-muted-foreground">Loading events...</p>
             </div>
-          ) : events.length === 0 ? (
+          ) : events.length === 0 && !featuredEvent ? (
             <div className="text-center py-12">
               <p className="text-muted-foreground">No events scheduled at this time.</p>
+            </div>
+          ) : events.length === 0 && featuredEvent ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">See the featured event above.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -124,7 +203,6 @@ export default function Events() {
                       alt={event.event_title}
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                       onError={(e) => {
-                        // Fallback for missing images
                         e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23f1f5f9" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" fill="%2394a3b8" font-family="sans-serif" font-size="18"%3EEvent Image%3C/text%3E%3C/svg%3E';
                       }}
                     />
@@ -149,24 +227,12 @@ export default function Events() {
                       <span>{event.event_location_name}</span>
                     </div>
 
-                    {/* Description (if available) */}
-                    {event.event_info && (
-                      <p className="text-sm text-muted-foreground line-clamp-3 mb-4">
-                        {event.event_info.replace(/<[^>]*>/g, '')}
-                      </p>
-                    )}
-
-                    {/* View Details Button */}
-                    <Button 
-                      variant="outline" 
-                      className="mt-auto"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/events/${event.slug}`);
-                      }}
-                    >
-                      View Details
-                    </Button>
+                    {/* Learn More Link */}
+                    <div className="mt-auto pt-4">
+                      <Button variant="outline" className="w-full">
+                        Learn More
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               ))}

@@ -44,6 +44,7 @@ export default function EditEvent() {
   const [rsvpUrl, setRsvpUrl] = useState('');
   const [rsvpContact, setRsvpContact] = useState('');
   const [published, setPublished] = useState(false);
+  const [featured, setFeatured] = useState(false);
 
   useEffect(() => {
     loadEvent();
@@ -71,6 +72,7 @@ export default function EditEvent() {
       setRsvpUrl(data.rsvp_url || '');
       setRsvpContact(data.rsvp_contact || '');
       setPublished(data.published);
+      setFeatured(data.featured || false);
 
       // Try to parse the date if it's in a recognizable format
       try {
@@ -209,6 +211,7 @@ export default function EditEvent() {
         event_info: eventInfo,
         rsvp_url: rsvpUrl || null,
         rsvp_contact: rsvpContact || null,
+        featured: featured,
         updated_at: new Date().toISOString(),
       };
 
@@ -548,6 +551,13 @@ export default function EditEvent() {
                 </div>
               </div>
             </div>
+            <input
+              type="checkbox"
+              id="featured"
+              checked={featured}
+              onChange={(e) => setFeatured(e.target.checked)}
+              className="mt-1 w-4 h-4 rounded border-gray-300"
+            />
           </CardContent>
         </Card>
       </div>
