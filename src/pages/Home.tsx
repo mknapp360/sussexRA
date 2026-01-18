@@ -320,7 +320,7 @@ const fetchRecentEvents = async () => {
             </p>
             <Button 
               onClick={() => setShowSubscribe(true)}
-              className="px-8 py-3 rounded-2xl bg-tpgold text-white hover:opacity-90 transition-opacity text-lg"
+              className="px-8 py-3 rounded-2xl bg-red-600 text-white hover:opacity-90 transition-opacity text-lg"
             >
               Subscribe Now
             </Button>
