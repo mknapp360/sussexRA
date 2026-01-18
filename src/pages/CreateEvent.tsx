@@ -499,6 +499,7 @@ export default function CreateEvent() {
                 </div>
               </div>
             </div>
+            <p>Tick box if it is a featured event</p>
             <input
               type="checkbox"
               id="featured"

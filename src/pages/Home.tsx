@@ -27,12 +27,14 @@ interface Event {
   event_image: string;
   event_info: string;
   published: boolean;
+  featured: boolean;
 }
 
 export default function Home() {
   const [recentPosts, setRecentPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(true)
   const [recentEvents, setRecentEvents] = useState<Event[]>([]);
+  const [featuredEvent, setFeaturedEvent] = useState<Event | null>(null);
 
   useEffect(() => {
     fetchRecentPosts()
@@ -67,7 +69,7 @@ const fetchRecentEvents = async () => {
     setLoading(true);
     const { data, error } = await supabase
       .from('events')
-      .select('id, slug, event_title, event_date, event_time, event_location_name, event_image, event_info')
+      .select('id, slug, event_title, event_date, event_time, event_location_name, event_image, event_info, featured')
       .eq('published', true);
 
     if (error) throw error;
@@ -102,11 +104,22 @@ const fetchRecentEvents = async () => {
       return dateA.getTime() - dateB.getTime();
     });
     
-    // Take only the first 3 upcoming events
-    setRecentEvents(upcomingEvents.slice(0, 3));
+    // Separate featured event from regular events
+    const featured = upcomingEvents.filter(e => e.featured);
+    if (featured.length > 0) {
+      setFeaturedEvent(featured[0]); // Take the earliest featured event
+      // Remove featured event from the list and take next 3
+      const regularEvents = upcomingEvents.filter(e => !e.featured).slice(0, 3);
+      setRecentEvents(regularEvents);
+    } else {
+      setFeaturedEvent(null);
+      // Take only the first 3 upcoming events
+      setRecentEvents(upcomingEvents.slice(0, 3));
+    }
   } catch (error) {
     console.error('Error fetching events:', error);
     setRecentEvents([]);
+    setFeaturedEvent(null);
   } finally {
     setLoading(false);
   }
@@ -198,6 +211,30 @@ const fetchRecentEvents = async () => {
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
+
+          {/* Featured Event Banner */}
+            {!loading && featuredEvent && (
+              <div className="mb-8">
+                <Link to={`/events/${featuredEvent.slug}`} className="block">
+                  <div className="relative overflow-hidden rounded-2xl shadow-2xl group">
+                    <img
+                      src={featuredEvent.event_image}
+                      alt={featuredEvent.event_title}
+                      className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                    />
+                    
+                    {/* Centered Button at Bottom */}
+                    <div className="absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2">
+                      <button 
+                        className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 md:px-12 py-3 md:py-4 text-sm md:text-base shadow-xl rounded-lg transition-colors"
+                      >
+                        View Event Details
+                      </button>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            )}
 
           {loading ? (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
