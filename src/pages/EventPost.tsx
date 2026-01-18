@@ -119,6 +119,32 @@ export default function EventPost() {
           </p>
         </div>
 
+        {/* Event Image - Below Info */}
+        {event.event_image && (
+          <div className="mb-8 rounded-lg overflow-hidden">
+            <img
+              src={event.event_image}
+              alt={event.event_title}
+              className="w-full h-auto"
+            />
+          </div>
+        )}
+
+        {/* RSVP Button - Centered Above Image (only if rsvp_url exists) */}
+        {event.rsvp_url && (
+          <div className="flex justify-center mb-8">
+            <Button
+              size="lg"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-12"
+              onClick={() => {
+                window.open(event.rsvp_url!, '_blank');
+              }}
+            >
+              RSVP HERE
+            </Button>
+          </div>
+        )}
+
         {/* Event Info Text - Above Image */}
         <div 
           className="prose prose-slate max-w-none mb-8 text-center"
@@ -145,21 +171,12 @@ export default function EventPost() {
                 window.open(event.rsvp_url!, '_blank');
               }}
             >
-              RSVP
+              RSVP HERE
             </Button>
           </div>
         )}
 
-        {/* Event Image - Below Info */}
-        {event.event_image && (
-          <div className="mb-8 rounded-lg overflow-hidden">
-            <img
-              src={event.event_image}
-              alt={event.event_title}
-              className="w-full h-auto"
-            />
-          </div>
-        )}
+        
 
         {/* Share Section */}
         <div className="border-t pt-8">
