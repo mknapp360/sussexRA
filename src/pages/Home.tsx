@@ -191,8 +191,9 @@ const fetchRecentEvents = async () => {
         </div>
       </section>
 
-      {/* Upcoming Events Section */}
+      {/* Upcoming Events Section - hidden when no events */}
       <section className="py-16 bg-white">
+        {(loading || featuredEvent || recentEvents.length > 0) && (
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
             <div>
@@ -203,8 +204,8 @@ const fetchRecentEvents = async () => {
                 Join us for our upcoming meetings and special gatherings
               </p>
             </div>
-            <Link 
-              to="/events" 
+            <Link
+              to="/events"
               className="hidden sm:flex items-center gap-2 text-tpblue hover:text-tpgold transition-colors"
             >
               View all events
@@ -222,10 +223,10 @@ const fetchRecentEvents = async () => {
                       alt={featuredEvent.event_title}
                       className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                     />
-                    
+
                     {/* Centered Button at Bottom */}
                     <div className="absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2">
-                      <button 
+                      <button
                         className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 md:px-12 py-3 md:py-4 text-sm md:text-base shadow-xl rounded-lg transition-colors"
                       >
                         View Event Details
@@ -247,7 +248,7 @@ const fetchRecentEvents = async () => {
                 </div>
               ))}
             </div>
-          ) : recentEvents.length > 0 ? (
+          ) : (
             <>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {recentEvents.map((event) => (
@@ -261,7 +262,7 @@ const fetchRecentEvents = async () => {
                         <article className="h-full flex flex-col">
                           {event.event_image && (
                             <div className="relative aspect-video overflow-hidden rounded-lg mb-4 bg-slate-100">
-                              <img 
+                              <img
                                 src={event.event_image}
                                 alt={event.event_title}
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -294,8 +295,8 @@ const fetchRecentEvents = async () => {
                 ))}
               </div>
               <div className="mt-8 text-center sm:hidden">
-                <Link 
-                  to="/events" 
+                <Link
+                  to="/events"
                   className="inline-flex items-center gap-2 text-tpblue hover:text-tpgold transition-colors"
                 >
                   View all events
@@ -303,12 +304,9 @@ const fetchRecentEvents = async () => {
                 </Link>
               </div>
             </>
-          ) : (
-            <div className="text-center py-12 text-slate-500">
-              <p>No upcoming events scheduled. Check back soon!</p>
-            </div>
           )}
         </div>
+        )}
           {/* Subscribe CTA */}
         <div className="mt-12 mx-auto max-w-7xl border-t pt-8">
           <div className="bg-gradient-to-r from-tpblue/10 to-tpgold/10 rounded-2xl p-8 text-center">
