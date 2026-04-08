@@ -30,6 +30,8 @@ import Membership from './pages/Membership'
 import Archway from './pages/Archway'
 import Mentoring from './pages/Mentoring'
 import AdminFlipbooks from './pages/Adminflipbooks'
+import AdminDocForms from './pages/AdminDocForms'
+import DocCategoryPage from './pages/DocCategoryPage'
 import Near1066Meetings from './pages/1066Page'
 import NearBrightonMeetings from './pages/BrightonPage'
 import NearChichesterMeetings from './pages/ChichesterPage'
@@ -72,13 +74,7 @@ const router = createBrowserRouter([
       { path: 'auth/callback', element: <AuthCallback /> },
       { path: 'privacy', element: <PrivacyPolicy /> },
       { path: 'docs-forms', element: <DocsNForms /> },
-      { path: 'docs-forms/almoner-docs', element: <AlmonerDocs /> },
-      { path: 'docs-forms/dc-docs', element: <DCDocs /> },
-      { path: 'docs-forms/janitor-docs', element: <JanitorDocs /> },
-      { path: 'docs-forms/provincial-notes', element: <ProvNoticesDocs /> },
-      { path: 'docs-forms/ra-rep-docs', element: <RARepDocs /> },
-      { path: 'docs-forms/scribe-e-docs', element: <ScribeEDocs /> },
-      { path: 'docs-forms/treasurer-docs', element: <TreasurerDocs /> },
+      { path: 'docs-forms/:slug', element: <DocCategoryPage /> },
       // Standalone admin login page (not in AdminLayout)
       { path: 'admin/login', element: <AdminNewPost /> },
     ],
@@ -102,6 +98,7 @@ const router = createBrowserRouter([
       { path: 'meetings/recurring/:id/edit', element: <AdminRecurringMeetingForm /> },
       { path: 'locations', element: <AdminLocations /> },
       { path: 'flipbooks', element: <AdminFlipbooks /> },
+      { path: 'doc-forms', element: <AdminDocForms /> },
     ],
   },
 ])
