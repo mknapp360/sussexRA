@@ -166,7 +166,7 @@ export default function Exaltations() {
                             : 'bg-blue-500 text-white'
                         }`}
                       >
-                        {meeting.meeting_type.charAt(0).toUpperCase() + meeting.meeting_type.slice(1)}
+                        {meeting.meeting_type ? meeting.meeting_type.charAt(0).toUpperCase() + meeting.meeting_type.slice(1) : 'Meeting'}
                       </span>
                     </div>
 
